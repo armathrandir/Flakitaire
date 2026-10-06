@@ -21,7 +21,7 @@
         <label class="control-label" for="select-deal-type">
           Deal:
           <select id="select-deal-type" class="select-input" title="Choose whether deals are guaranteed solvable">
-            <option value="solvable" selected>🌟 Solvable (Rigged)</option>
+            <option value="solvable" selected>🌟 Solvable</option>
             <option value="random">🎲 Random</option>
           </select>
         </label>
@@ -38,11 +38,11 @@
           Felt:
           <select id="select-felt-theme" class="select-input" title="Customize table background color">
             <option value="emerald">🟢 Emerald</option>
-            <option value="navy">🔵 Royal Navy</option>
+            <option value="navy">🔵 Navy</option>
             <option value="burgundy">🔴 Burgundy</option>
             <option value="slate">⚫ Slate</option>
-            <option value="violet">🟣 Deep Violet</option>
-            <option value="oak">🪵 Oak Wood</option>
+            <option value="violet">🟣 Violet</option>
+            <option value="oak">🪵 Oak</option>
           </select>
         </label>
       </div>
@@ -68,6 +68,9 @@
         <button id="btn-autocomplete" class="btn btn-gold hidden" title="All hidden cards revealed! Automatically send cards to foundations">
           ⚡ Auto-Finish
         </button>
+        <button id="btn-sweep" class="btn btn-sweep" title="Sweep all possible cards to Foundations (or right-click / double-tap the table felt)">
+          ⚡ Sweep
+        </button>
         <button id="btn-hint" class="btn btn-secondary" title="Highlight an available move">
           💡 Hint
         </button>
@@ -92,23 +95,21 @@
     <!-- Playing Field -->
     <main class="table-felt">
       <!-- Top Row: Stock & Waste on left, 4 Foundations on right -->
+      <!-- Top Row: Stock & Waste on left, Spacer, 4 Foundations on right (Aligned to 7 columns) -->
       <section class="top-row">
-        <div class="stock-waste-group">
-          <!-- Stock / Draw pile -->
-          <div id="stock-pile" class="card-slot stock-slot" title="Click to draw cards">
-            <div class="slot-marker">↺</div>
-          </div>
-          <!-- Waste pile (supports fanned out cards in Draw 3) -->
-          <div id="waste-pile" class="card-slot waste-slot" title="Drawn cards"></div>
+        <!-- Col 1: Stock / Draw pile -->
+        <div id="stock-pile" class="card-slot stock-slot" title="Click to draw cards">
+          <div class="slot-marker">↺</div>
         </div>
-
-        <!-- 4 Foundations for the 4 Suits (2 Black, 2 Green: Shot Glasses & Hip Flasks) -->
-        <div class="foundations-group">
-          <div id="foundation-0" class="card-slot foundation-slot" data-suit="hearts" title="Green Hip Flask Foundation"></div>
-          <div id="foundation-1" class="card-slot foundation-slot" data-suit="diamonds" title="Green Shot Glass Foundation"></div>
-          <div id="foundation-2" class="card-slot foundation-slot" data-suit="clubs" title="Black Shot Glass Foundation"></div>
-          <div id="foundation-3" class="card-slot foundation-slot" data-suit="spades" title="Black Hip Flask Foundation"></div>
-        </div>
+        <!-- Col 2: Waste pile (supports fanned out cards in Draw 3) -->
+        <div id="waste-pile" class="card-slot waste-slot" title="Drawn cards"></div>
+        <!-- Col 3: Spacer -->
+        <div class="top-spacer"></div>
+        <!-- Cols 4-7: 4 Foundations for the 4 Suits (2 Black, 2 Green) -->
+        <div id="foundation-0" class="card-slot foundation-slot" data-suit="hearts" title="Green Hip Flask Foundation"></div>
+        <div id="foundation-1" class="card-slot foundation-slot" data-suit="diamonds" title="Green Shot Glass Foundation"></div>
+        <div id="foundation-2" class="card-slot foundation-slot" data-suit="clubs" title="Black Shot Glass Foundation"></div>
+        <div id="foundation-3" class="card-slot foundation-slot" data-suit="spades" title="Black Hip Flask Foundation"></div>
       </section>
 
       <!-- Bottom Row: 7 Tableau Columns -->
@@ -140,7 +141,7 @@
           <span class="legend-item"><span class="legend-dot dot-green-flask"></span> Green Hip Flask (♥)</span>
         </span>
         <span class="legend-sep">|</span>
-        <span>🖱️ <em>Right-click</em> to auto-sweep cards to Foundations!</span>
+        <span>🖱️ <em>Right-click</em>, tap <strong>⚡ Sweep</strong>, or double-tap felt to auto-sweep cards to Foundations!</span>
       </div>
     </footer>
   </div>

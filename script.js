@@ -1103,6 +1103,9 @@ class SolitaireGame {
     this.history = [];
     this.selected = null;
     this.dragData = null;
+    this.pointerDragState = null;
+    this.lastCardClick = null;
+    this.justFinishedDrag = false;
     this.currentScoreTab = this.drawMode === 3 ? 'draw3' : 'draw1';
 
     this.pendingWinRecord = null;
@@ -1132,6 +1135,8 @@ class SolitaireGame {
       dealBadge: document.getElementById('deal-badge'),
       gameToast: document.getElementById('game-toast'),
       btnAutocomplete: document.getElementById('btn-autocomplete'),
+      btnSweep: document.getElementById('btn-sweep'),
+      tableFelt: document.querySelector('.table-felt'),
       btnReplay: document.getElementById('btn-replay'),
       foundations: [
         document.getElementById('foundation-0'),
@@ -1210,6 +1215,12 @@ class SolitaireGame {
     this.dom.btnUndo.addEventListener('click', () => this.undo());
     this.dom.btnHint.addEventListener('click', () => this.giveHint());
     this.dom.btnAutocomplete.addEventListener('click', () => this.autoFinish());
+
+    if (this.dom.btnSweep) {
+      this.dom.btnSweep.addEventListener('click', () => {
+        this.sendAllPossibleToFoundations();
+      });
+    }
 
     this.dom.btnSound.addEventListener('click', () => {
       this.sound.enabled = !this.sound.enabled;
@@ -1298,6 +1309,29 @@ class SolitaireGame {
       e.preventDefault();
       this.sendAllPossibleToFoundations();
     });
+
+    // Mobile / Touch Felt double-tap or double-click to sweep to foundations
+    let lastFeltTapTime = 0;
+    const triggerFeltSweep = (e) => {
+      if (e.target.closest('.card.face-up') || e.target.closest('button') || e.target.closest('select') || e.target.closest('input') || e.target.closest('.modal-card')) {
+        return;
+      }
+      const now = Date.now();
+      if (now - lastFeltTapTime < 380) {
+        if (e.cancelable) e.preventDefault();
+        this.sendAllPossibleToFoundations();
+        lastFeltTapTime = 0;
+      } else {
+        lastFeltTapTime = now;
+      }
+    };
+
+    if (this.dom.tableFelt) {
+      this.dom.tableFelt.addEventListener('touchend', triggerFeltSweep, { passive: false });
+      this.dom.tableFelt.addEventListener('dblclick', triggerFeltSweep);
+    }
+
+    this.initPointerDrag();
 
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
@@ -1641,7 +1675,210 @@ class SolitaireGame {
     this.render();
   }
 
-  // --- Interaction: Drag & Drop ---
+  // --- Interaction: Drag & Drop (Touch, Pointer & Mouse) ---
+  initPointerDrag() {
+    window.addEventListener('pointermove', (e) => this.handlePointerMove(e), { passive: false });
+    window.addEventListener('pointerup', (e) => this.handlePointerUp(e));
+    window.addEventListener('pointercancel', (e) => this.handlePointerCancel(e));
+  }
+
+  handleCardPointerDown(card, source, colIndex, cardIndex, el, event) {
+    if (this.autoFinishing || this.gameWon) return;
+    if (!card.faceUp) return;
+    if (source === 'waste' && cardIndex !== this.waste.length - 1) return;
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+
+    this.pointerDragState = {
+      isDragging: false,
+      pointerId: event.pointerId,
+      pointerType: event.pointerType,
+      startX: event.clientX,
+      startY: event.clientY,
+      source,
+      colIndex,
+      cardIndex,
+      card,
+      sourceElement: el,
+      elementsToMove: [],
+      proxyContainer: null,
+      grabOffsetX: 0,
+      grabOffsetY: 0
+    };
+  }
+
+  findTargetSlot(x, y) {
+    // 1. Point test through floating proxy (which has pointer-events: none)
+    const hit = document.elementFromPoint(x, y);
+    if (hit) {
+      const slot = hit.closest('.card-slot');
+      if (slot) {
+        const fIdx = this.dom.foundations.indexOf(slot);
+        if (fIdx !== -1) return { slot, targetType: 'foundation', targetIndex: fIdx };
+        const tIdx = this.dom.tableau.indexOf(slot);
+        if (tIdx !== -1) return { slot, targetType: 'tableau', targetIndex: tIdx };
+      }
+    }
+
+    // 2. Bounding-box test with generous touch margin tolerance (forgiving on mobile)
+    for (let f = 0; f < 4; f++) {
+      const slot = this.dom.foundations[f];
+      const r = slot.getBoundingClientRect();
+      if (x >= r.left - 8 && x <= r.right + 8 && y >= r.top - 8 && y <= r.bottom + 12) {
+        return { slot, targetType: 'foundation', targetIndex: f };
+      }
+    }
+
+    for (let t = 0; t < 7; t++) {
+      const slot = this.dom.tableau[t];
+      const r = slot.getBoundingClientRect();
+      if (x >= r.left - 6 && x <= r.right + 6 && y >= r.top - 6 && y <= r.bottom + 25) {
+        return { slot, targetType: 'tableau', targetIndex: t };
+      }
+    }
+
+    return null;
+  }
+
+  handlePointerMove(event) {
+    if (!this.pointerDragState) return;
+    if (event.pointerId !== this.pointerDragState.pointerId) return;
+
+    const dx = event.clientX - this.pointerDragState.startX;
+    const dy = event.clientY - this.pointerDragState.startY;
+
+    if (!this.pointerDragState.isDragging) {
+      if (Math.hypot(dx, dy) > 7) {
+        this.pointerDragState.isDragging = true;
+        this.clearSelection();
+
+        const { source, colIndex, cardIndex, sourceElement } = this.pointerDragState;
+
+        // Collect elements to move: single card or substack
+        if (source === 'tableau') {
+          const colCards = Array.from(this.dom.tableau[colIndex].querySelectorAll('.card'));
+          this.pointerDragState.elementsToMove = colCards.slice(cardIndex);
+        } else {
+          this.pointerDragState.elementsToMove = [sourceElement];
+        }
+
+        // Setup floating drag proxy
+        let proxy = document.getElementById('drag-proxy-container');
+        if (!proxy) {
+          proxy = document.createElement('div');
+          proxy.id = 'drag-proxy-container';
+          proxy.className = 'drag-proxy-container';
+          document.body.appendChild(proxy);
+        }
+        proxy.innerHTML = '';
+        this.pointerDragState.proxyContainer = proxy;
+
+        const baseRect = sourceElement.getBoundingClientRect();
+        this.pointerDragState.grabOffsetX = this.pointerDragState.startX - baseRect.left;
+        this.pointerDragState.grabOffsetY = this.pointerDragState.startY - baseRect.top;
+
+        const baseTop = sourceElement.offsetTop;
+        this.pointerDragState.elementsToMove.forEach(cEl => {
+          const clone = cEl.cloneNode(true);
+          clone.classList.remove('selected', 'hint-highlight');
+          clone.style.position = 'absolute';
+          clone.style.left = '0';
+          clone.style.top = `${cEl.offsetTop - baseTop}px`;
+          clone.style.width = `${baseRect.width}px`;
+          clone.style.height = `${baseRect.height}px`;
+          clone.style.margin = '0';
+          clone.style.pointerEvents = 'none';
+          clone.style.transition = 'none';
+          proxy.appendChild(clone);
+          cEl.style.opacity = '0.22';
+        });
+
+        document.body.classList.add('is-pointer-dragging');
+        proxy.style.display = 'block';
+        proxy.style.transform = `translate3d(${event.clientX - this.pointerDragState.grabOffsetX}px, ${event.clientY - this.pointerDragState.grabOffsetY}px, 0)`;
+      }
+    }
+
+    if (this.pointerDragState.isDragging) {
+      if (event.cancelable) event.preventDefault();
+
+      const proxy = this.pointerDragState.proxyContainer;
+      if (proxy) {
+        proxy.style.transform = `translate3d(${event.clientX - this.pointerDragState.grabOffsetX}px, ${event.clientY - this.pointerDragState.grabOffsetY}px, 0)`;
+      }
+
+      // Highlight target slot if valid
+      document.querySelectorAll('.card-slot.drag-over').forEach(s => s.classList.remove('drag-over'));
+
+      const target = this.findTargetSlot(event.clientX, event.clientY);
+      if (target) {
+        const { slot, targetType, targetIndex } = target;
+        let isLegal = false;
+        if (targetType === 'foundation') {
+          if (this.pointerDragState.elementsToMove.length === 1) {
+            isLegal = this.canMoveToFoundation(this.pointerDragState.card, targetIndex);
+          }
+        } else if (targetType === 'tableau') {
+          if (this.pointerDragState.source !== 'tableau' || this.pointerDragState.colIndex !== targetIndex) {
+            isLegal = this.canMoveToTableau(this.pointerDragState.card, targetIndex);
+          }
+        }
+        if (isLegal) {
+          slot.classList.add('drag-over');
+        }
+      }
+    }
+  }
+
+  handlePointerUp(event) {
+    if (!this.pointerDragState) return;
+    if (event.pointerId !== this.pointerDragState.pointerId) return;
+
+    if (this.pointerDragState.isDragging) {
+      this.justFinishedDrag = true;
+      setTimeout(() => { this.justFinishedDrag = false; }, 150);
+
+      document.body.classList.remove('is-pointer-dragging');
+      document.querySelectorAll('.card-slot.drag-over').forEach(s => s.classList.remove('drag-over'));
+
+      if (this.pointerDragState.elementsToMove) {
+        this.pointerDragState.elementsToMove.forEach(cEl => {
+          cEl.style.opacity = '1';
+        });
+      }
+
+      if (this.pointerDragState.proxyContainer) {
+        this.pointerDragState.proxyContainer.innerHTML = '';
+        this.pointerDragState.proxyContainer.style.display = 'none';
+      }
+
+      const target = this.findTargetSlot(event.clientX, event.clientY);
+      const { source, colIndex, cardIndex } = this.pointerDragState;
+      this.pointerDragState = null;
+
+      if (target) {
+        this.executeMove(source, colIndex, cardIndex, target.targetType, target.targetIndex);
+      }
+    } else {
+      this.pointerDragState = null;
+    }
+  }
+
+  handlePointerCancel(event) {
+    if (!this.pointerDragState) return;
+    if (this.pointerDragState.isDragging) {
+      document.body.classList.remove('is-pointer-dragging');
+      document.querySelectorAll('.card-slot.drag-over').forEach(s => s.classList.remove('drag-over'));
+      if (this.pointerDragState.elementsToMove) {
+        this.pointerDragState.elementsToMove.forEach(cEl => { cEl.style.opacity = '1'; });
+      }
+      if (this.pointerDragState.proxyContainer) {
+        this.pointerDragState.proxyContainer.innerHTML = '';
+        this.pointerDragState.proxyContainer.style.display = 'none';
+      }
+    }
+    this.pointerDragState = null;
+  }
+
   attachDropHandlers(element, targetType, targetIndex) {
     element.addEventListener('dragover', (e) => {
       e.preventDefault();
@@ -1664,12 +1901,24 @@ class SolitaireGame {
 
   handleCardClick(card, source, colIndex, cardIndex, event) {
     if (this.autoFinishing) return;
+    if (this.justFinishedDrag) return;
     event.stopPropagation();
     if (!card.faceUp) return;
 
     if (source === 'waste' && cardIndex !== this.waste.length - 1) {
       return;
     }
+
+    // Double-tap / Quick-tap detection for mobile touch & responsive play
+    const now = Date.now();
+    const cardKey = `${source}-${colIndex}-${cardIndex}-${card.id}`;
+    if (this.lastCardClick && this.lastCardClick.key === cardKey && (now - this.lastCardClick.time) < 380) {
+      this.lastCardClick = null;
+      this.clearSelection();
+      this.handleCardDoubleClick(card, source, colIndex, cardIndex, event);
+      return;
+    }
+    this.lastCardClick = { key: cardKey, time: now };
 
     if (this.selected) {
       if (this.selected.source === source && this.selected.colIndex === colIndex && this.selected.cardIndex === cardIndex) {
@@ -1679,6 +1928,12 @@ class SolitaireGame {
 
       if (source === 'tableau') {
         const success = this.executeMove(this.selected.source, this.selected.colIndex, this.selected.cardIndex, 'tableau', colIndex);
+        if (success) {
+          this.clearSelection();
+          return;
+        }
+      } else if (source === 'foundation') {
+        const success = this.executeMove(this.selected.source, this.selected.colIndex, this.selected.cardIndex, 'foundation', colIndex);
         if (success) {
           this.clearSelection();
           return;
@@ -2085,21 +2340,9 @@ class SolitaireGame {
 
     const isInteractive = source !== 'waste' || cardIndex === this.waste.length - 1;
     if (isInteractive) {
-      el.draggable = true;
-
       el.addEventListener('click', (e) => this.handleCardClick(card, source, colIndex, cardIndex, e));
       el.addEventListener('dblclick', (e) => this.handleCardDoubleClick(card, source, colIndex, cardIndex, e));
-
-      el.addEventListener('dragstart', (e) => {
-        this.dragData = { source, colIndex, cardIndex, card };
-        el.classList.add('dragging');
-        e.dataTransfer.setData('text/plain', '');
-      });
-
-      el.addEventListener('dragend', () => {
-        el.classList.remove('dragging');
-        this.dragData = null;
-      });
+      el.addEventListener('pointerdown', (e) => this.handleCardPointerDown(card, source, colIndex, cardIndex, el, e));
     }
 
     const rankValue = card.rank || card.value || 1;
