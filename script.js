@@ -2126,7 +2126,7 @@ class SolitaireGame {
 
     this.dom.tableau.forEach((slot, tIdx) => {
       slot.addEventListener('click', (e) => {
-        if (e.target === slot) {
+        if (!e.target.closest('.card')) {
           this.handleSlotClick('tableau', tIdx);
         }
       });
@@ -2581,22 +2581,58 @@ class SolitaireGame {
       }
     }
 
-    // 2. Bounding-box test with generous touch margin tolerance (forgiving on mobile)
+    // Determine dragged card center coordinates from proxy if dragging
+    let cardCx = x;
+    let cardCy = y;
+    if (this.pointerDragState && this.pointerDragState.proxyContainer) {
+      const firstChild = this.pointerDragState.proxyContainer.firstElementChild;
+      if (firstChild) {
+        const proxyRect = firstChild.getBoundingClientRect();
+        cardCx = proxyRect.left + proxyRect.width / 2;
+        cardCy = proxyRect.top + proxyRect.height / 2;
+      }
+    }
+
+    // 2. Foundation bounding box test
     for (let f = 0; f < 4; f++) {
       const slot = this.dom.foundations[f];
       const r = slot.getBoundingClientRect();
-      if (x >= r.left - 8 && x <= r.right + 8 && y >= r.top - 8 && y <= r.bottom + 12) {
+      const inFinger = (x >= r.left - 10 && x <= r.right + 10 && y >= r.top - 10 && y <= r.bottom + 15);
+      const inCardCenter = (cardCx >= r.left - 6 && cardCx <= r.right + 6 && cardCy >= r.top - 6 && cardCy <= r.bottom + 12);
+      if (inFinger || inCardCenter) {
         return { slot, targetType: 'foundation', targetIndex: f };
       }
     }
 
+    // 3. Tableau bounding box test with generous vertical corridor and horizontal tolerance
+    // On touch screens, columns are narrow; checking both finger point and dragged card center,
+    // and extending the hit corridor downwards ensures natural, effortless King drops.
+    let bestTableau = null;
+    let bestDist = Infinity;
+
     for (let t = 0; t < 7; t++) {
       const slot = this.dom.tableau[t];
       const r = slot.getBoundingClientRect();
-      if (x >= r.left - 6 && x <= r.right + 6 && y >= r.top - 6 && y <= r.bottom + 25) {
-        return { slot, targetType: 'tableau', targetIndex: t };
+      const colWidth = r.width;
+      const horizMargin = Math.max(12, colWidth * 0.25);
+      const topBound = r.top - 20;
+      // Allow dropping anywhere in the column down to the bottom of the board/viewport
+      const bottomBound = Math.max(r.bottom + 160, window.innerHeight - 60);
+
+      const fingerInside = (x >= r.left - horizMargin && x <= r.right + horizMargin && y >= topBound && y <= bottomBound);
+      const cardInside = (cardCx >= r.left - horizMargin && cardCx <= r.right + horizMargin && cardCy >= topBound && cardCy <= bottomBound);
+
+      if (fingerInside || cardInside) {
+        const colCenter = r.left + colWidth / 2;
+        const dist = Math.min(Math.abs(x - colCenter), Math.abs(cardCx - colCenter));
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestTableau = { slot, targetType: 'tableau', targetIndex: t };
+        }
       }
     }
+
+    if (bestTableau) return bestTableau;
 
     return null;
   }
@@ -2818,22 +2854,31 @@ class SolitaireGame {
     event.stopPropagation();
     if (!card.faceUp) return;
 
-    const isTopCard =
+    if (source === 'waste' && cardIndex !== this.waste.length - 1) return;
+
+    // 1. Single top card: Try moving to Foundation first
+    const isSingleCard =
       (source === 'waste' && cardIndex === this.waste.length - 1) ||
       (source === 'tableau' && cardIndex === this.tableau[colIndex].length - 1) ||
       (source === 'foundation');
 
-    if (!isTopCard) return;
-
-    for (let f = 0; f < 4; f++) {
-      if (this.canMoveToFoundation(card, f)) {
-        this.executeMove(source, colIndex, cardIndex, 'foundation', f);
-        return;
+    if (isSingleCard) {
+      for (let f = 0; f < 4; f++) {
+        if (this.canMoveToFoundation(card, f)) {
+          this.executeMove(source, colIndex, cardIndex, 'foundation', f);
+          return;
+        }
       }
     }
 
+    // 2. Try moving to Tableau column (including Kings moving to empty spaces)
+    // Avoid moving a King already sitting alone at the base of an empty column (cardIndex === 0)
+    // to another empty column.
     for (let t = 0; t < 7; t++) {
       if (source === 'tableau' && colIndex === t) continue;
+      if (card.rank === 13 && source === 'tableau' && cardIndex === 0 && this.tableau[t].length === 0) {
+        continue;
+      }
       if (this.canMoveToTableau(card, t)) {
         this.executeMove(source, colIndex, cardIndex, 'tableau', t);
         return;
@@ -2848,9 +2893,10 @@ class SolitaireGame {
 
   renderHighlights() {
     document.querySelectorAll('.card.selected').forEach(el => el.classList.remove('selected'));
+    document.querySelectorAll('.empty-tableau-base.valid-target').forEach(el => el.classList.remove('valid-target'));
     if (!this.selected) return;
 
-    const { source, colIndex, cardIndex } = this.selected;
+    const { source, colIndex, cardIndex, card } = this.selected;
 
     if (source === 'waste') {
       const cards = this.dom.waste.querySelectorAll('.card');
@@ -2861,6 +2907,13 @@ class SolitaireGame {
       for (let i = cardIndex; i < cards.length; i++) {
         if (cards[i]) cards[i].classList.add('selected');
       }
+    }
+
+    // If selected card is a King, highlight all empty tableau column placeholders
+    if (card && card.rank === 13) {
+      document.querySelectorAll('.empty-tableau-base').forEach(base => {
+        base.classList.add('valid-target');
+      });
     }
   }
 
@@ -3295,10 +3348,32 @@ class SolitaireGame {
     });
   }
 
+  createEmptyTableauBase(colIdx) {
+    const el = document.createElement('div');
+    el.className = 'empty-tableau-base';
+    el.setAttribute('data-col', colIdx);
+    el.setAttribute('role', 'button');
+    el.setAttribute('aria-label', `Empty Column ${colIdx + 1} - Place King`);
+    el.innerHTML = `
+      <span class="empty-slot-crown">👑</span>
+      <span class="empty-slot-label">K</span>
+    `;
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.handleSlotClick('tableau', colIdx);
+    });
+    return el;
+  }
+
   renderTableau() {
     this.tableau.forEach((col, colIdx) => {
       const slot = this.dom.tableau[colIdx];
       slot.innerHTML = '';
+
+      if (col.length === 0) {
+        slot.appendChild(this.createEmptyTableauBase(colIdx));
+        return;
+      }
 
       let topOffset = 0;
       col.forEach((card, cardIdx) => {
