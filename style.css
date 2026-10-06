@@ -3,9 +3,9 @@
    ========================================================================== */
 
 :root {
-  /* Default Emerald Theme */
-  --table-bg-dark: #0e3d1a;
-  --table-bg-light: #1b632c;
+  /* Default Oak Wood Theme */
+  --table-bg-dark: #1b0e04;
+  --table-bg-light: #4c260f;
   --col-gap: clamp(2px, 0.9vw, 8px);
   --card-radius: clamp(4px, 0.8vw, 8px);
   --card-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
@@ -13,8 +13,8 @@
   --suit-blue: #0277bd;
   --suit-green: #007e33;
   --suit-black: #1a1a1a;
-  --slot-border: rgba(255, 255, 255, 0.18);
-  --slot-bg: rgba(0, 0, 0, 0.22);
+  --slot-border: rgba(255, 218, 160, 0.32);
+  --slot-bg: rgba(18, 10, 4, 0.45);
   --accent-gold: #ffca28;
   --accent-gold-glow: rgba(255, 202, 40, 0.6);
   --text-light: #f5f5f5;
@@ -25,26 +25,41 @@
 body[data-felt="emerald"] {
   --table-bg-dark: #0a3014;
   --table-bg-light: #185a27;
+  --slot-border: rgba(255, 255, 255, 0.18);
+  --slot-bg: rgba(0, 0, 0, 0.22);
+  background: radial-gradient(circle at 50% 30%, var(--table-bg-light), var(--table-bg-dark) 90%);
 }
 
 body[data-felt="navy"] {
   --table-bg-dark: #0a1b2e;
   --table-bg-light: #16365c;
+  --slot-border: rgba(255, 255, 255, 0.18);
+  --slot-bg: rgba(0, 0, 0, 0.22);
+  background: radial-gradient(circle at 50% 30%, var(--table-bg-light), var(--table-bg-dark) 90%);
 }
 
 body[data-felt="burgundy"] {
   --table-bg-dark: #2c090e;
   --table-bg-light: #52151e;
+  --slot-border: rgba(255, 255, 255, 0.18);
+  --slot-bg: rgba(0, 0, 0, 0.22);
+  background: radial-gradient(circle at 50% 30%, var(--table-bg-light), var(--table-bg-dark) 90%);
 }
 
 body[data-felt="slate"] {
   --table-bg-dark: #12181c;
   --table-bg-light: #263238;
+  --slot-border: rgba(255, 255, 255, 0.18);
+  --slot-bg: rgba(0, 0, 0, 0.22);
+  background: radial-gradient(circle at 50% 30%, var(--table-bg-light), var(--table-bg-dark) 90%);
 }
 
 body[data-felt="violet"] {
   --table-bg-dark: #1b0a24;
   --table-bg-light: #3e1b52;
+  --slot-border: rgba(255, 255, 255, 0.18);
+  --slot-bg: rgba(0, 0, 0, 0.22);
+  background: radial-gradient(circle at 50% 30%, var(--table-bg-light), var(--table-bg-dark) 90%);
 }
 
 body[data-felt="oak"] {
@@ -67,7 +82,9 @@ body[data-felt="oak"] {
 
 body {
   font-family: var(--font-family);
-  background: radial-gradient(circle at 50% 30%, var(--table-bg-light), var(--table-bg-dark) 90%);
+  background:
+    radial-gradient(circle at 50% 35%, rgba(255, 200, 130, 0.12) 0%, rgba(12, 6, 2, 0.65) 85%),
+    url('oak_wood.jpg') center center / cover no-repeat fixed #2b1708;
   color: var(--text-light);
   min-height: 100vh;
   display: flex;
@@ -575,10 +592,10 @@ body.is-pointer-dragging * {
    ========================================================================== */
 .card-pips {
   position: absolute;
-  top: 26px;
-  bottom: 24px;
-  left: 8px;
-  right: 8px;
+  top: 18px;
+  bottom: 18px;
+  left: 6px;
+  right: 6px;
   pointer-events: none;
 }
 
@@ -590,31 +607,16 @@ body.is-pointer-dragging * {
   transform: translate(-50%, -50%);
 }
 
-/* Sizing of shot glasses inside number cards based on pip density */
-.card-pips-1 .shot-svg-pip {
-  width: clamp(28px, 3.8vw, 40px);
-  height: clamp(36px, 4.8vw, 50px);
-}
-
-.card-pips-2 .shot-svg-pip,
-.card-pips-3 .shot-svg-pip {
+/* All number cards (2 to 10) have the exact same icon size, perfectly matching card 3 */
+.card-pip .shot-svg-pip {
   width: clamp(21px, 2.7vw, 29px);
   height: clamp(26px, 3.4vw, 36px);
 }
 
-.card-pips-4 .shot-svg-pip,
-.card-pips-5 .shot-svg-pip,
-.card-pips-6 .shot-svg-pip {
-  width: clamp(17px, 2.2vw, 23px);
-  height: clamp(21px, 2.8vw, 29px);
-}
-
-.card-pips-7 .shot-svg-pip,
-.card-pips-8 .shot-svg-pip,
-.card-pips-9 .shot-svg-pip,
-.card-pips-10 .shot-svg-pip {
-  width: clamp(13px, 1.7vw, 18px);
-  height: clamp(16px, 2.2vw, 23px);
+/* Aces (1) have a prominent, larger center symbol */
+.card-pips-1 .shot-svg-pip {
+  width: clamp(30px, 4.0vw, 42px);
+  height: clamp(38px, 5.0vw, 54px);
 }
 
 /* ==========================================================================
@@ -1042,22 +1044,23 @@ body.is-pointer-dragging * {
   .settings-group {
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
     gap: 3px;
   }
 
   .control-label {
-    font-size: 0.65rem;
+    font-size: 0.63rem;
     gap: 2px;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    white-space: nowrap;
   }
 
   .select-input {
     padding: 3px 2px;
-    font-size: 0.66rem;
+    font-size: 0.65rem;
     width: 100%;
     max-width: 100%;
   }
@@ -1139,16 +1142,24 @@ body.is-pointer-dragging * {
     height: 15px;
   }
 
-  .card-pips-1 .shot-svg-pip { width: 22px; height: 28px; }
-  .card-pips-2 .shot-svg-pip,
-  .card-pips-3 .shot-svg-pip { width: 16px; height: 21px; }
-  .card-pips-4 .shot-svg-pip,
-  .card-pips-5 .shot-svg-pip,
-  .card-pips-6 .shot-svg-pip { width: 13px; height: 17px; }
-  .card-pips-7 .shot-svg-pip,
-  .card-pips-8 .shot-svg-pip,
-  .card-pips-9 .shot-svg-pip,
-  .card-pips-10 .shot-svg-pip { width: 10px; height: 13px; }
+  .card-pips {
+    top: 14px;
+    bottom: 14px;
+    left: 4px;
+    right: 4px;
+  }
+
+  /* All number cards (2 to 10) have the exact same icon size on mobile */
+  .card-pip .shot-svg-pip {
+    width: 16px;
+    height: 21px;
+  }
+
+  /* Aces (1) remain larger */
+  .card-pips-1 .shot-svg-pip {
+    width: 22px;
+    height: 28px;
+  }
 
   .card-pips-container {
     padding: 8px 2px;

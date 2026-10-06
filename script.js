@@ -56,7 +56,756 @@ const STORAGE_KEYS = {
   PLAYER_NAME: 'solitaire_player_name',
   FELT_THEME: 'solitaire_felt_theme',
   DRAW_MODE: 'solitaire_draw_mode',
-  DEAL_TYPE: 'solitaire_deal_type'
+  DEAL_TYPE: 'solitaire_deal_type',
+  LANGUAGE: 'solitaire_lang_v2'
+};
+
+// --- Comprehensive Multilingual Localization Dictionary ---
+const TRANSLATIONS = {
+  de: {
+    pageTitle: 'Klassisches Klondike Solitär - Schnaps Edition',
+    mainTitle: 'Solitär',
+    badgeEdition: '🥃 Schnaps Edition',
+    dealSolvable: '✨ Lösbar',
+    dealRandom: '🎲 Zufällig',
+    dealSolvableTitle: 'Dieses Spiel ist mathematisch garantiert zu 100% lösbar!',
+    dealRandomTitle: 'Klassische, unmodifizierte Kartenzufallsmischung',
+    labelDeal: 'Spiel:',
+    optSolvable: '🌟 Lösbar',
+    optRandom: '🎲 Zufällig',
+    labelDraw: 'Karten:',
+    optDraw1: '1 Karte',
+    optDraw3: '3 Karten',
+    labelFelt: 'Tisch:',
+    optOak: '🪵 Eiche',
+    optEmerald: '🟢 Smaragd',
+    optNavy: '🔵 Marine',
+    optBurgundy: '🔴 Bordeaux',
+    optSlate: '⚫ Schiefer',
+    optViolet: '🟣 Violett',
+    labelLang: 'Sprache:',
+    statScore: 'PUNKTE',
+    statMoves: 'ZÜGE',
+    statTime: 'ZEIT',
+    btnAutoFinish: '⚡ Auto-Fertig',
+    btnAutoFinishTitle: 'Alle verdeckten Karten aufgedeckt! Karten automatisch ablegen',
+    btnSweep: '⚡ Abräumen',
+    btnSweepTitle: 'Alle möglichen Karten auf die Ablagestapel legen (oder Rechtsklick / Spielfeld doppeltippen)',
+    btnHint: '💡 Tipp',
+    btnHintTitle: 'Verfügbaren Zug hervorheben',
+    btnUndo: '↩ Zurück',
+    btnUndoTitle: 'Letzten Zug rückgängig machen',
+    btnReplay: '↺ Neustart',
+    btnReplayTitle: 'Diesen Spielstand von Anfang an neu starten',
+    btnScores: '🏆 Rekorde',
+    btnScoresTitle: 'Bestenliste anzeigen',
+    btnSoundOn: '🔊 Ton',
+    btnSoundOff: '🔇 Stumm',
+    btnSoundTitle: 'Audio ein-/ausschalten',
+    btnNew: 'Neues Spiel',
+    btnNewTitle: 'Ein neues Spiel beginnen',
+    stockTitle: 'Klicken zum Ziehen',
+    wasteTitle: 'Gezogene Karten',
+    foundations: {
+      clubs: 'Schwarzes Schnapsglas Ablage',
+      spades: 'Schwarzer Tropfen Ablage',
+      diamonds: 'Grünes Schnapsglas Ablage',
+      hearts: 'Grüner Tropfen Ablage'
+    },
+    legend: {
+      rulesTitle: '🥃 <strong>Regeln: Wechselnde Farben (Schwarz ⇄ Grün):</strong>',
+      blackGlass: 'Schwarzes Schnapsglas (♣)',
+      blackDrop: 'Schwarzer Tropfen (♠)',
+      greenGlass: 'Grünes Schnapsglas (♦)',
+      greenDrop: 'Grüner Tropfen (♥)',
+      sweepHint: '🖱️ <em>Rechtsklick</em>, <strong>⚡ Abräumen</strong> tippen oder Spielfeld doppeltippen zum Ablegen!'
+    },
+    courtTitles: {
+      11: 'BUBE',
+      12: 'DAME',
+      13: 'KÖNIG'
+    },
+    suitTitles: {
+      clubs: 'Schwarzes Schnapsglas',
+      spades: 'Schwarzer Tropfen',
+      diamonds: 'Grünes Schnapsglas',
+      hearts: 'Grüner Tropfen'
+    },
+    winModal: {
+      badge: '🏆 PROST! GEWONNEN!',
+      title: 'Herzlichen Glückwunsch!',
+      desc: 'Du hast die Schnaps Solitaire Edition gemeistert!',
+      labelDeal: 'Spieltyp:',
+      labelMode: 'Modus:',
+      labelTime: 'Zeit:',
+      labelMoves: 'Züge:',
+      labelScore: 'Endstand:',
+      labelName: 'Gib deinen Namen für die Bestenliste ein:',
+      namePlaceholder: 'Spielername',
+      btnSaveScore: 'Speichern',
+      saveSuccess: '✅ Rekord in die Bestenliste eingetragen!',
+      btnScores: 'Bestenliste',
+      btnReplay: 'Nochmal spielen',
+      dealSolvable: 'Lösbar',
+      dealRandom: 'Zufällig',
+      modeDraw1: '1 Karte',
+      modeDraw3: '3 Karten'
+    },
+    scoresModal: {
+      badge: 'RUHMESHALLE',
+      title: '🏆 Bestenliste',
+      tabDraw1: '🃏 1 Karte (Top 100)',
+      tabDraw3: '🃏 3 Karten (Top 100)',
+      thPlayer: 'Spieler',
+      thScore: 'Punkte',
+      thTime: 'Zeit',
+      thMoves: 'Züge',
+      thDate: 'Datum',
+      empty: 'Noch keine Rekorde erfasst. Gewinne ein Spiel, um Geschichte zu schreiben!',
+      btnClear: 'Diese Liste leeren',
+      btnClearTitle: 'Ergebnisse des aktuellen Tabs löschen',
+      btnClose: 'Schließen',
+      clearConfirm: (mode) => `Möchtest du die Bestenliste für ${mode} wirklich unwiderruflich löschen?`,
+      clearedToast: (mode) => `Bestenliste für ${mode} gelöscht.`
+    },
+    toasts: {
+      dealSolvable: '🌟 Lösbarer Modus: Mathematisch garantiert gewinnbar!',
+      dealRandom: '🎲 Zufälliger Modus: Klassisch ungemischter Zufalls-Deal.',
+      switchDrawConfirm: 'Beim Wechseln des Zieh-Modus wird ein neues Spiel gestartet. Fortfahren?',
+      sweptSuccess: (count) => `⚡ ${count} Karte(n) auf Ablagen abgelegt!`,
+      noSweep: 'Aktuell kann keine Karte abgelegt werden.',
+      dealRestarted: '↺ Spiel von Zug 1 neu gestartet! Viel Erfolg.',
+      deckCycled: 'Stapel durchblättert',
+      autoFinishReady: '⚡ Alle Karten aufgedeckt! Du kannst jetzt "Auto-Fertig" nutzen.',
+      autoFinishing: 'Lege verbleibende Karten automatisch ab...',
+      cannotUndo: 'Kein weiterer Zug zum Rückgängigmachen vorhanden.',
+      moveUndone: 'Zug rückgängig gemacht.',
+      hintFoundFoundation: (label, suit) => `Lege ${label} (${suit}) auf die Ablage`,
+      hintFoundReveal: (col) => `Verschiebe Karten, um verdeckte Karte in Spalte ${col} aufzudecken`,
+      hintFoundTableau: (label, suit, col) => `Lege ${label} (${suit}) auf Spalte ${col}`,
+      hintStock: '💡 Tipp: Ziehe eine neue Karte vom Nachziehstapel!'
+    }
+  },
+  en: {
+    pageTitle: 'Classic Klondike Solitaire - Schnaps Edition',
+    mainTitle: 'Solitaire',
+    badgeEdition: '🥃 Schnaps Edition',
+    dealSolvable: '✨ Solvable',
+    dealRandom: '🎲 Random',
+    dealSolvableTitle: 'This deal is mathematically verified to be 100% winnable!',
+    dealRandomTitle: 'Classic unmodified card deal',
+    labelDeal: 'Deal:',
+    optSolvable: '🌟 Solvable',
+    optRandom: '🎲 Random',
+    labelDraw: 'Draw:',
+    optDraw1: 'Draw 1',
+    optDraw3: 'Draw 3',
+    labelFelt: 'Felt:',
+    optOak: '🪵 Oak',
+    optEmerald: '🟢 Emerald',
+    optNavy: '🔵 Navy',
+    optBurgundy: '🔴 Burgundy',
+    optSlate: '⚫ Slate',
+    optViolet: '🟣 Violet',
+    labelLang: 'Language:',
+    statScore: 'SCORE',
+    statMoves: 'MOVES',
+    statTime: 'TIME',
+    btnAutoFinish: '⚡ Auto-Finish',
+    btnAutoFinishTitle: 'All hidden cards revealed! Automatically send cards to foundations',
+    btnSweep: '⚡ Sweep',
+    btnSweepTitle: 'Sweep all possible cards to Foundations (or right-click / double-tap the table felt)',
+    btnHint: '💡 Hint',
+    btnHintTitle: 'Highlight an available move',
+    btnUndo: '↩ Undo',
+    btnUndoTitle: 'Undo previous move',
+    btnReplay: '↺ Replay Deal',
+    btnReplayTitle: 'Restart this exact deal from the beginning',
+    btnScores: '🏆 Scores',
+    btnScoresTitle: 'View High Scores leaderboards',
+    btnSoundOn: '🔊 Sound',
+    btnSoundOff: '🔇 Muted',
+    btnSoundTitle: 'Toggle audio',
+    btnNew: 'New Game',
+    btnNewTitle: 'Start a fresh game',
+    stockTitle: 'Click to draw cards',
+    wasteTitle: 'Drawn cards',
+    foundations: {
+      clubs: 'Black Shot Glass Foundation',
+      spades: 'Black Drop Foundation',
+      diamonds: 'Green Shot Glass Foundation',
+      hearts: 'Green Drop Foundation'
+    },
+    legend: {
+      rulesTitle: '🥃 <strong>Alternating Rules (Black ⇄ Green):</strong>',
+      blackGlass: 'Black Shot Glass (♣)',
+      blackDrop: 'Black Drop (♠)',
+      greenGlass: 'Green Shot Glass (♦)',
+      greenDrop: 'Green Drop (♥)',
+      sweepHint: '🖱️ <em>Right-click</em>, tap <strong>⚡ Sweep</strong>, or double-tap felt to auto-sweep cards to Foundations!'
+    },
+    courtTitles: {
+      11: 'JACK',
+      12: 'QUEEN',
+      13: 'KING'
+    },
+    suitTitles: {
+      clubs: 'Black Shot Glass',
+      spades: 'Black Drop',
+      diamonds: 'Green Shot Glass',
+      hearts: 'Green Drop'
+    },
+    winModal: {
+      badge: '🏆 PROST! VICTORY!',
+      title: 'Congratulations!',
+      desc: 'You conquered the Schnaps Solitaire Edition!',
+      labelDeal: 'Deal Type:',
+      labelMode: 'Game Mode:',
+      labelTime: 'Time:',
+      labelMoves: 'Moves:',
+      labelScore: 'Final Score:',
+      labelName: 'Enter your name for the Highscores:',
+      namePlaceholder: 'Player Name',
+      btnSaveScore: 'Save Score',
+      saveSuccess: '✅ Score saved to leaderboard!',
+      btnScores: 'Leaderboard',
+      btnReplay: 'Play Again',
+      dealSolvable: 'Solvable',
+      dealRandom: 'Random',
+      modeDraw1: 'Draw 1',
+      modeDraw3: 'Draw 3'
+    },
+    scoresModal: {
+      badge: 'HALL OF FAME',
+      title: '🏆 High Scores',
+      tabDraw1: '🃏 Draw 1 (Top 100)',
+      tabDraw3: '🃏 Draw 3 (Top 100)',
+      thPlayer: 'Player',
+      thScore: 'Score',
+      thTime: 'Time',
+      thMoves: 'Moves',
+      thDate: 'Date',
+      empty: 'No high scores recorded yet. Win a game to make history!',
+      btnClear: 'Clear This Board',
+      btnClearTitle: 'Clear scores for current tab',
+      btnClose: 'Close',
+      clearConfirm: (mode) => `Are you sure you want to permanently clear the ${mode} leaderboard?`,
+      clearedToast: (mode) => `Cleared ${mode} Leaderboard.`
+    },
+    toasts: {
+      dealSolvable: '🌟 Solvable Mode: Guaranteed winnable deal!',
+      dealRandom: '🎲 Random Mode: Unmodified shuffle.',
+      switchDrawConfirm: 'Switching draw mode will start a fresh game. Proceed?',
+      sweptSuccess: (count) => `⚡ Swept ${count} card(s) to Foundations!`,
+      noSweep: 'No cards can be moved to Foundations right now.',
+      dealRestarted: '↺ Deal restarted from move 1! Try a fresh approach.',
+      deckCycled: 'Deck cycled',
+      autoFinishReady: '⚡ All hidden cards revealed! You can now Auto-Finish.',
+      autoFinishing: 'Auto-finishing remaining cards...',
+      cannotUndo: 'Cannot undo further.',
+      moveUndone: 'Move undone.',
+      hintFoundFoundation: (label, suit) => `Move ${label} of ${suit} to Foundation`,
+      hintFoundReveal: (col) => `Move stack to reveal hidden card in column ${col}`,
+      hintFoundTableau: (label, suit, col) => `Move ${label} of ${suit} to column ${col}`,
+      hintStock: '💡 Hint: Draw from the Stock pile to find new cards!'
+    }
+  },
+  es: {
+    pageTitle: 'Solitario Klondike Clásico - Edición Schnaps',
+    mainTitle: 'Solitario',
+    badgeEdition: '🥃 Edición Schnaps',
+    dealSolvable: '✨ Con solución',
+    dealRandom: '🎲 Aleatorio',
+    dealSolvableTitle: '¡Esta partida está matemáticamente verificada como 100% ganable!',
+    dealRandomTitle: 'Reparto aleatorio sin modificaciones',
+    labelDeal: 'Reparto:',
+    optSolvable: '🌟 Con solución',
+    optRandom: '🎲 Aleatorio',
+    labelDraw: 'Robo:',
+    optDraw1: '1 Carta',
+    optDraw3: '3 Cartas',
+    labelFelt: 'Tapete:',
+    optOak: '🪵 Roble',
+    optEmerald: '🟢 Esmeralda',
+    optNavy: '🔵 Marino',
+    optBurgundy: '🔴 Burdeos',
+    optSlate: '⚫ Pizarra',
+    optViolet: '🟣 Violeta',
+    labelLang: 'Idioma:',
+    statScore: 'PUNTOS',
+    statMoves: 'MOVIM.',
+    statTime: 'TIEMPO',
+    btnAutoFinish: '⚡ Auto-Completar',
+    btnAutoFinishTitle: '¡Todas las cartas descubiertas! Enviar cartas a las bases automáticamente',
+    btnSweep: '⚡ Recoger',
+    btnSweepTitle: 'Enviar todas las cartas posibles a las bases (o clic derecho / doble toque al tapete)',
+    btnHint: '💡 Pista',
+    btnHintTitle: 'Mostrar un movimiento disponible',
+    btnUndo: '↩ Deshacer',
+    btnUndoTitle: 'Deshacer el último movimiento',
+    btnReplay: '↺ Repetir',
+    btnReplayTitle: 'Reiniciar este mismo reparto desde el principio',
+    btnScores: '🏆 Récords',
+    btnScoresTitle: 'Ver tabla de récords',
+    btnSoundOn: '🔊 Sonido',
+    btnSoundOff: '🔇 Silencio',
+    btnSoundTitle: 'Activar o desactivar sonido',
+    btnNew: 'Nueva partida',
+    btnNewTitle: 'Iniciar una nueva partida',
+    stockTitle: 'Clic para robar cartas',
+    wasteTitle: 'Cartas robadas',
+    foundations: {
+      clubs: 'Base de vaso de chupito negro',
+      spades: 'Base de gota negra',
+      diamonds: 'Base de vaso de chupito verde',
+      hearts: 'Base de gota verde'
+    },
+    legend: {
+      rulesTitle: '🥃 <strong>Reglas de alternancia (Negro ⇄ Verde):</strong>',
+      blackGlass: 'Vaso de chupito negro (♣)',
+      blackDrop: 'Gota negra (♠)',
+      greenGlass: 'Vaso de chupito verde (♦)',
+      greenDrop: 'Gota verde (♥)',
+      sweepHint: '🖱️ <em>Clic derecho</em>, pulsa <strong>⚡ Recoger</strong> o doble toque al tapete para enviar a las bases!'
+    },
+    courtTitles: {
+      11: 'SOTA',
+      12: 'REINA',
+      13: 'REY'
+    },
+    suitTitles: {
+      clubs: 'Vaso de chupito negro',
+      spades: 'Gota negra',
+      diamonds: 'Vaso de chupito verde',
+      hearts: 'Gota verde'
+    },
+    winModal: {
+      badge: '🏆 ¡SALUD! ¡VICTORIA!',
+      title: '¡Felicidades!',
+      desc: '¡Has completado la edición Schnaps del Solitario!',
+      labelDeal: 'Tipo de reparto:',
+      labelMode: 'Modo de juego:',
+      labelTime: 'Tiempo:',
+      labelMoves: 'Movimientos:',
+      labelScore: 'Puntuación:',
+      labelName: 'Introduce tu nombre para la clasificación:',
+      namePlaceholder: 'Nombre de jugador',
+      btnSaveScore: 'Guardar',
+      saveSuccess: '✅ ¡Puntuación guardada en la tabla!',
+      btnScores: 'Clasificación',
+      btnReplay: 'Jugar de nuevo',
+      dealSolvable: 'Con solución',
+      dealRandom: 'Aleatorio',
+      modeDraw1: '1 Carta',
+      modeDraw3: '3 Cartas'
+    },
+    scoresModal: {
+      badge: 'SALÓN DE LA FAMA',
+      title: '🏆 Récords',
+      tabDraw1: '🃏 1 Carta (Top 100)',
+      tabDraw3: '🃏 3 Cartas (Top 100)',
+      thPlayer: 'Jugador',
+      thScore: 'Puntos',
+      thTime: 'Tiempo',
+      thMoves: 'Movim.',
+      thDate: 'Fecha',
+      empty: '¡Aún no hay récords registrados! Gana una partida para entrar en la historia.',
+      btnClear: 'Borrar esta tabla',
+      btnClearTitle: 'Borrar los récords de la pestaña actual',
+      btnClose: 'Cerrar',
+      clearConfirm: (mode) => `¿Seguro que deseas borrar definitivamente la clasificación de ${mode}?`,
+      clearedToast: (mode) => `Clasificación de ${mode} borrada.`
+    },
+    toasts: {
+      dealSolvable: '🌟 Modo con solución: ¡Partida ganable garantizada!',
+      dealRandom: '🎲 Modo aleatorio: Barajado clásico sin filtros.',
+      switchDrawConfirm: 'Cambiar el modo de robo iniciará una nueva partida. ¿Continuar?',
+      sweptSuccess: (count) => `⚡ ¡${count} carta(s) enviada(s) a las bases!`,
+      noSweep: 'No hay cartas que se puedan mover a las bases en este momento.',
+      dealRestarted: '↺ ¡Partida reiniciada desde el primer movimiento!',
+      deckCycled: 'Mazo recorrido',
+      autoFinishReady: '⚡ ¡Todas las cartas descubiertas! Puedes usar Auto-Completar.',
+      autoFinishing: 'Completando cartas restantes automáticamente...',
+      cannotUndo: 'No se puede deshacer más.',
+      moveUndone: 'Movimiento deshecho.',
+      hintFoundFoundation: (label, suit) => `Mueve ${label} (${suit}) a la base`,
+      hintFoundReveal: (col) => `Mueve cartas para descubrir la oculta en columna ${col}`,
+      hintFoundTableau: (label, suit, col) => `Mueve ${label} (${suit}) a la columna ${col}`,
+      hintStock: '💡 Pista: ¡Roba una carta del mazo para encontrar jugadas!'
+    }
+  },
+  ru: {
+    pageTitle: 'Классический пасьянс Косынка - Schnaps Edition',
+    mainTitle: 'Пасьянс',
+    badgeEdition: '🥃 Schnaps Edition',
+    dealSolvable: '✨ Решаемая',
+    dealRandom: '🎲 Случайная',
+    dealSolvableTitle: 'Этот расклад гарантированно решается на 100%!',
+    dealRandomTitle: 'Классическая случайная тасовка колоды',
+    labelDeal: 'Расклад:',
+    optSolvable: '🌟 Решаемый',
+    optRandom: '🎲 Случайный',
+    labelDraw: 'Раздача:',
+    optDraw1: 'По 1 карте',
+    optDraw3: 'По 3 карты',
+    labelFelt: 'Сукно:',
+    optOak: '🪵 Дуб',
+    optEmerald: '🟢 Изумруд',
+    optNavy: '🔵 Синий',
+    optBurgundy: '🔴 Бордо',
+    optSlate: '⚫ Сланец',
+    optViolet: '🟣 Фиолетовый',
+    labelLang: 'Язык:',
+    statScore: 'СЧЁТ',
+    statMoves: 'ХОДЫ',
+    statTime: 'ВРЕМЯ',
+    btnAutoFinish: '⚡ Автозавершение',
+    btnAutoFinishTitle: 'Все карты открыты! Автоматически собрать карты в дом',
+    btnSweep: '⚡ Собрать',
+    btnSweepTitle: 'Перенести все возможные карты в дом (или правый клик / двойной тап по столу)',
+    btnHint: '💡 Подсказка',
+    btnHintTitle: 'Показать доступный ход',
+    btnUndo: '↩ Отмена',
+    btnUndoTitle: 'Отменить предыдущий ход',
+    btnReplay: '↺ Заново',
+    btnReplayTitle: 'Переиграть этот расклад с начала',
+    btnScores: '🏆 Рекорды',
+    btnScoresTitle: 'Посмотреть таблицу рекордов',
+    btnSoundOn: '🔊 Звук',
+    btnSoundOff: '🔇 Без звука',
+    btnSoundTitle: 'Включить / выключить звук',
+    btnNew: 'Новая игра',
+    btnNewTitle: 'Начать новую партию',
+    stockTitle: 'Нажмите, чтобы взять карту',
+    wasteTitle: 'Сброс',
+    foundations: {
+      clubs: 'Дом чёрной рюмки',
+      spades: 'Дом чёрной капли',
+      diamonds: 'Дом зелёной рюмки',
+      hearts: 'Дом зелёной капли'
+    },
+    legend: {
+      rulesTitle: '🥃 <strong>Правило чередования (Чёрный ⇄ Зелёный):</strong>',
+      blackGlass: 'Чёрная рюмка (♣)',
+      blackDrop: 'Чёрная капля (♠)',
+      greenGlass: 'Зелёная рюмка (♦)',
+      greenDrop: 'Зелёная капля (♥)',
+      sweepHint: '🖱️ <em>Правый клик</em>, кнопка <strong>⚡ Собрать</strong> или двойной тап по столу для автосбора в дом!'
+    },
+    courtTitles: {
+      11: 'ВАЛЕТ',
+      12: 'ДАМА',
+      13: 'КОРОЛЬ'
+    },
+    suitTitles: {
+      clubs: 'Чёрная рюмка',
+      spades: 'Чёрная капля',
+      diamonds: 'Зелёная рюмка',
+      hearts: 'Зелёная капля'
+    },
+    winModal: {
+      badge: '🏆 НА ЗДОРОВЬЕ! ПОБЕДА!',
+      title: 'Поздравляем!',
+      desc: 'Вы успешно покорили пасьянс Schnaps Edition!',
+      labelDeal: 'Тип расклада:',
+      labelMode: 'Режим игры:',
+      labelTime: 'Время:',
+      labelMoves: 'Ходы:',
+      labelScore: 'Итоговый счёт:',
+      labelName: 'Введите имя для таблицы рекордов:',
+      namePlaceholder: 'Имя игрока',
+      btnSaveScore: 'Сохранить',
+      saveSuccess: '✅ Результат успешно сохранён в таблице!',
+      btnScores: 'Рекорды',
+      btnReplay: 'Сыграть ещё',
+      dealSolvable: 'Решаемый',
+      dealRandom: 'Случайный',
+      modeDraw1: 'По 1 карте',
+      modeDraw3: 'По 3 карты'
+    },
+    scoresModal: {
+      badge: 'ЗАЛ СЛАВЫ',
+      title: '🏆 Рекорды',
+      tabDraw1: '🃏 По 1 (Топ 100)',
+      tabDraw3: '🃏 По 3 (Топ 100)',
+      thPlayer: 'Игрок',
+      thScore: 'Счёт',
+      thTime: 'Время',
+      thMoves: 'Ходы',
+      thDate: 'Дата',
+      empty: 'Пока нет рекордов. Выиграйте партию, чтобы войти в историю!',
+      btnClear: 'Очистить список',
+      btnClearTitle: 'Удалить рекорды в этой вкладке',
+      btnClose: 'Закрыть',
+      clearConfirm: (mode) => `Вы уверены, что хотите безвозвратно очистить таблицу ${mode}?`,
+      clearedToast: (mode) => `Таблица рекордов (${mode}) очищена.`
+    },
+    toasts: {
+      dealSolvable: '🌟 Решаемый режим: расклад со 100% гарантией победы!',
+      dealRandom: '🎲 Случайный режим: классическая случайная тасовка.',
+      switchDrawConfirm: 'Переключение режима раздачи начнет новую игру. Продолжить?',
+      sweptSuccess: (count) => `⚡ Собрано карт в дом: ${count}!`,
+      noSweep: 'Сейчас нет карт для перемещения в дом.',
+      dealRestarted: '↺ Расклад начат заново с 1 хода! Попробуйте другой подход.',
+      deckCycled: 'Колода пролистана',
+      autoFinishReady: '⚡ Все карты открыты! Теперь можно использовать автозавершение.',
+      autoFinishing: 'Автоматический сбор оставшихся карт...',
+      cannotUndo: 'Больше ходов для отмены нет.',
+      moveUndone: 'Ход отменён.',
+      hintFoundFoundation: (label, suit) => `Положите ${label} (${suit}) в дом`,
+      hintFoundReveal: (col) => `Переместите стопку, чтобы открыть карту в колонке ${col}`,
+      hintFoundTableau: (label, suit, col) => `Положите ${label} (${suit}) на колонку ${col}`,
+      hintStock: '💡 Подсказка: возьмите карту из колоды!'
+    }
+  },
+  sv: {
+    pageTitle: 'Klassisk Klondike Patiens - Schnaps Edition',
+    mainTitle: 'Patiens',
+    badgeEdition: '🥃 Schnaps Edition',
+    dealSolvable: '✨ Lösbar giv',
+    dealRandom: '🎲 Slumpad',
+    dealSolvableTitle: 'Denna giv är matematiskt garanterad att kunna lösas till 100%!',
+    dealRandomTitle: 'Klassisk slumpmässigt blandad kortlek',
+    labelDeal: 'Giv:',
+    optSolvable: '🌟 Lösbar',
+    optRandom: '🎲 Slumpad',
+    labelDraw: 'Dra:',
+    optDraw1: '1 kort',
+    optDraw3: '3 kort',
+    labelFelt: 'Filt:',
+    optOak: '🪵 Ek',
+    optEmerald: '🟢 Smaragd',
+    optNavy: '🔵 Marin',
+    optBurgundy: '🔴 Vinröd',
+    optSlate: '⚫ Skiffer',
+    optViolet: '🟣 Violett',
+    labelLang: 'Språk:',
+    statScore: 'POÄNG',
+    statMoves: 'DRAG',
+    statTime: 'TID',
+    btnAutoFinish: '⚡ Slutför aut.',
+    btnAutoFinishTitle: 'Alla dolda kort har visats! Skicka automatiskt kort till baserna',
+    btnSweep: '⚡ Samla in',
+    btnSweepTitle: 'Samla alla möjliga kort till baserna (eller högerklicka / dubbeltryck på filten)',
+    btnHint: '💡 Tips',
+    btnHintTitle: 'Visa ett tillgängligt drag',
+    btnUndo: '↩ Ångra',
+    btnUndoTitle: 'Ångra senaste draget',
+    btnReplay: '↺ Spela om',
+    btnReplayTitle: 'Starta om denna giv från början',
+    btnScores: '🏆 Topplista',
+    btnScoresTitle: 'Visa poängtopplista',
+    btnSoundOn: '🔊 Ljud',
+    btnSoundOff: '🔇 Ljud av',
+    btnSoundTitle: 'Slå på/av ljud',
+    btnNew: 'Nytt spel',
+    btnNewTitle: 'Starta en ny omgång',
+    stockTitle: 'Klicka för att dra kort',
+    wasteTitle: 'Draget kort',
+    foundations: {
+      clubs: 'Bas för svart snapsglas',
+      spades: 'Bas för svart droppe',
+      diamonds: 'Bas för grönt snapsglas',
+      hearts: 'Bas för grön droppe'
+    },
+    legend: {
+      rulesTitle: '🥃 <strong>Regler: Växlande färger (Svart ⇄ Grön):</strong>',
+      blackGlass: 'Svart snapsglas (♣)',
+      blackDrop: 'Svart droppe (♠)',
+      greenGlass: 'Grönt snapsglas (♦)',
+      greenDrop: 'Grön droppe (♥)',
+      sweepHint: '🖱️ <em>Högerklicka</em>, tryck <strong>⚡ Samla in</strong> eller dubbeltryck på filten för automatisk insamling!'
+    },
+    courtTitles: {
+      11: 'KNEKT',
+      12: 'DAM',
+      13: 'KUNG'
+    },
+    suitTitles: {
+      clubs: 'Svart snapsglas',
+      spades: 'Svart droppe',
+      diamonds: 'Grönt snapsglas',
+      hearts: 'Grön droppe'
+    },
+    winModal: {
+      badge: '🏆 SKÅL! SEGER!',
+      title: 'Grattis!',
+      desc: 'Du klarade Schnaps Solitaire Edition!',
+      labelDeal: 'Givtyp:',
+      labelMode: 'Spelläge:',
+      labelTime: 'Tid:',
+      labelMoves: 'Drag:',
+      labelScore: 'Slutpoäng:',
+      labelName: 'Ange ditt namn för topplistan:',
+      namePlaceholder: 'Spelarnamn',
+      btnSaveScore: 'Spara resultat',
+      saveSuccess: '✅ Resultatet sparades i topplistan!',
+      btnScores: 'Topplista',
+      btnReplay: 'Spela igen',
+      dealSolvable: 'Lösbar',
+      dealRandom: 'Slumpad',
+      modeDraw1: '1 kort',
+      modeDraw3: '3 kort'
+    },
+    scoresModal: {
+      badge: 'HALL OF FAME',
+      title: '🏆 Topplista',
+      tabDraw1: '🃏 1 Kort (Topp 100)',
+      tabDraw3: '🃏 3 Kort (Topp 100)',
+      thPlayer: 'Spelare',
+      thScore: 'Poäng',
+      thTime: 'Tid',
+      thMoves: 'Drag',
+      thDate: 'Datum',
+      empty: 'Inga sparade poäng än. Vinn ett spel för att skriva historia!',
+      btnClear: 'Rensa denna lista',
+      btnClearTitle: 'Rensa poängen för denna flik',
+      btnClose: 'Stäng',
+      clearConfirm: (mode) => `Är du säker på att du vill rensa topplistan för ${mode}?`,
+      clearedToast: (mode) => `Topplistan för ${mode} har rensats.`
+    },
+    toasts: {
+      dealSolvable: '🌟 Lösbart läge: Garanterat vinnbar giv!',
+      dealRandom: '🎲 Slumpmässigt läge: Helt slumpad giv.',
+      switchDrawConfirm: 'Att byta dragläge startar ett nytt spel. Fortsätta?',
+      sweptSuccess: (count) => `⚡ Samlade ${count} kort till baserna!`,
+      noSweep: 'Inga kort kan flyttas till baserna just nu.',
+      dealRestarted: '↺ Givan startades om från drag 1! Försök igen.',
+      deckCycled: 'Leken vänd',
+      autoFinishReady: '⚡ Alla dolda kort framme! Du kan nu slutföra automatiskt.',
+      autoFinishing: 'Slutför resterande kort automatiskt...',
+      cannotUndo: 'Det finns inga fler drag att ångra.',
+      moveUndone: 'Draget ångrades.',
+      hintFoundFoundation: (label, suit) => `Flytta ${label} (${suit}) till basen`,
+      hintFoundReveal: (col) => `Flytta kort för att visa dolt kort i kolumn ${col}`,
+      hintFoundTableau: (label, suit, col) => `Flytta ${label} (${suit}) till kolumn ${col}`,
+      hintStock: '💡 Tips: Dra ett kort från leken för att hitta nya drag!'
+    }
+  },
+  it: {
+    pageTitle: 'Solitario Klondike Classico - Schnaps Edition',
+    mainTitle: 'Solitario',
+    badgeEdition: '🥃 Schnaps Edition',
+    dealSolvable: '✨ Risolvibile',
+    dealRandom: '🎲 Casuale',
+    dealSolvableTitle: 'Questa partita è matematicamente verificata come risolvibile al 100%!',
+    dealRandomTitle: 'Mescolamento classico delle carte',
+    labelDeal: 'Distrib.:',
+    optSolvable: '🌟 Risolvibile',
+    optRandom: '🎲 Casuale',
+    labelDraw: 'Pesca:',
+    optDraw1: '1 Carta',
+    optDraw3: '3 Carte',
+    labelFelt: 'Tavolo:',
+    optOak: '🪵 Quercia',
+    optEmerald: '🟢 Smeraldo',
+    optNavy: '🔵 Blu Navy',
+    optBurgundy: '🔴 Borgogna',
+    optSlate: '⚫ Ardesia',
+    optViolet: '🟣 Viola',
+    labelLang: 'Lingua:',
+    statScore: 'PUNTI',
+    statMoves: 'MOSSE',
+    statTime: 'TEMPO',
+    btnAutoFinish: '⚡ Auto-Completa',
+    btnAutoFinishTitle: 'Tutte le carte coperte sono scoperte! Invia automaticamente alle basi',
+    btnSweep: '⚡ Raccogli',
+    btnSweepTitle: 'Invia tutte le carte possibili alle basi (o clic destro / doppio tocco sul tavolo)',
+    btnHint: '💡 Aiuto',
+    btnHintTitle: 'Mostra una mossa disponibile',
+    btnUndo: '↩ Annulla',
+    btnUndoTitle: 'Annulla l\'ultima mossa',
+    btnReplay: '↺ Rigioca',
+    btnReplayTitle: 'Rigioca questa stessa partita dall\'inizio',
+    btnScores: '🏆 Record',
+    btnScoresTitle: 'Visualizza la classifica dei record',
+    btnSoundOn: '🔊 Audio',
+    btnSoundOff: '🔇 Muto',
+    btnSoundTitle: 'Attiva/disattiva audio',
+    btnNew: 'Nuova partita',
+    btnNewTitle: 'Inizia una nuova partita',
+    stockTitle: 'Clicca per pescare carte',
+    wasteTitle: 'Carte pescate',
+    foundations: {
+      clubs: 'Base bicchierino nero',
+      spades: 'Base goccia nera',
+      diamonds: 'Base bicchierino verde',
+      hearts: 'Base goccia verde'
+    },
+    legend: {
+      rulesTitle: '🥃 <strong>Regole: Colori alternati (Nero ⇄ Verde):</strong>',
+      blackGlass: 'Bicchierino nero (♣)',
+      blackDrop: 'Goccia nera (♠)',
+      greenGlass: 'Bicchierino verde (♦)',
+      greenDrop: 'Goccia verde (♥)',
+      sweepHint: '🖱️ <em>Clic destro</em>, tocca <strong>⚡ Raccogli</strong> o doppio tocco sul tavolo per inviare alle basi!'
+    },
+    courtTitles: {
+      11: 'FANTE',
+      12: 'REGINA',
+      13: 'RE'
+    },
+    suitTitles: {
+      clubs: 'Bicchierino nero',
+      spades: 'Goccia nera',
+      diamonds: 'Bicchierino verde',
+      hearts: 'Goccia verde'
+    },
+    winModal: {
+      badge: '🏆 PROSIT! VITTORIA!',
+      title: 'Congratulazioni!',
+      desc: 'Hai conquistato la Schnaps Solitaire Edition!',
+      labelDeal: 'Tipo partita:',
+      labelMode: 'Modalità:',
+      labelTime: 'Tempo:',
+      labelMoves: 'Mosse:',
+      labelScore: 'Punteggio:',
+      labelName: 'Inserisci il tuo nome per la classifica:',
+      namePlaceholder: 'Nome giocatore',
+      btnSaveScore: 'Salva record',
+      saveSuccess: '✅ Record salvato in classifica!',
+      btnScores: 'Classifica',
+      btnReplay: 'Gioca ancora',
+      dealSolvable: 'Risolvibile',
+      dealRandom: 'Casuale',
+      modeDraw1: '1 Carta',
+      modeDraw3: '3 Carte'
+    },
+    scoresModal: {
+      badge: 'SALA DELLA GLORIA',
+      title: '🏆 Classifica',
+      tabDraw1: '🃏 1 Carta (Top 100)',
+      tabDraw3: '🃏 3 Carte (Top 100)',
+      thPlayer: 'Giocatore',
+      thScore: 'Punti',
+      thTime: 'Tempo',
+      thMoves: 'Mosse',
+      thDate: 'Data',
+      empty: 'Nessun record salvato. Vinci una partita per entrare nella storia!',
+      btnClear: 'Azzera lista',
+      btnClearTitle: 'Cancella i punteggi per questa scheda',
+      btnClose: 'Chiudi',
+      clearConfirm: (mode) => `Sei sicuro di voler azzerare definitivamente la classifica di ${mode}?`,
+      clearedToast: (mode) => `Classifica per ${mode} azzerata.`
+    },
+    toasts: {
+      dealSolvable: '🌟 Modalità risolvibile: Partita garantita al 100%!',
+      dealRandom: '🎲 Modalità casuale: Mescolamento classico.',
+      switchDrawConfirm: 'Cambiare la modalità di pesca avvierà una nuova partita. Continuare?',
+      sweptSuccess: (count) => `⚡ Inviate ${count} carta/e alle basi!`,
+      noSweep: 'Nessuna carta può essere inviata alle basi in questo momento.',
+      dealRestarted: '↺ Partita ricominciata dalla mossa 1! Buona fortuna.',
+      deckCycled: 'Mazzo scorso',
+      autoFinishReady: '⚡ Tutte le carte scoperte! Ora puoi usare Auto-Completa.',
+      autoFinishing: 'Completamento automatico delle carte rimanenti...',
+      cannotUndo: 'Nessun\'altra mossa da annullare.',
+      moveUndone: 'Mossa annullata.',
+      hintFoundFoundation: (label, suit) => `Sposta ${label} (${suit}) sulla base`,
+      hintFoundReveal: (col) => `Sposta le carte per scoprire la carta nella colonna ${col}`,
+      hintFoundTableau: (label, suit, col) => `Sposta ${label} (${suit}) nella colonna ${col}`,
+      hintStock: '💡 Aiuto: Pesca una carta dal mazzo per trovare nuove mosse!'
+    }
+  }
 };
 
 // --- Custom Schnaps Shot Glass SVG Generator ---
@@ -180,14 +929,14 @@ function getPipsHTML(rankValue, suitName) {
   const coordsMap = {
     1: [{ x: 50, y: 50 }],
     2: [{ x: 50, y: 22 }, { x: 50, y: 78 }],
-    3: [{ x: 50, y: 20 }, { x: 50, y: 50 }, { x: 50, y: 80 }],
-    4: [{ x: 28, y: 24 }, { x: 72, y: 24 }, { x: 28, y: 76 }, { x: 72, y: 76 }],
-    5: [{ x: 28, y: 22 }, { x: 72, y: 22 }, { x: 50, y: 50 }, { x: 28, y: 78 }, { x: 72, y: 78 }],
-    6: [{ x: 28, y: 22 }, { x: 72, y: 22 }, { x: 28, y: 50 }, { x: 72, y: 50 }, { x: 28, y: 78 }, { x: 72, y: 78 }],
-    7: [{ x: 28, y: 20 }, { x: 72, y: 20 }, { x: 50, y: 35 }, { x: 28, y: 50 }, { x: 72, y: 50 }, { x: 28, y: 80 }, { x: 72, y: 80 }],
-    8: [{ x: 28, y: 18 }, { x: 72, y: 18 }, { x: 50, y: 34 }, { x: 28, y: 50 }, { x: 72, y: 50 }, { x: 50, y: 66 }, { x: 28, y: 82 }, { x: 72, y: 82 }],
-    9: [{ x: 28, y: 18 }, { x: 72, y: 18 }, { x: 28, y: 39 }, { x: 72, y: 39 }, { x: 50, y: 50 }, { x: 28, y: 61 }, { x: 72, y: 61 }, { x: 28, y: 82 }, { x: 72, y: 82 }],
-    10: [{ x: 28, y: 17 }, { x: 72, y: 17 }, { x: 50, y: 28 }, { x: 28, y: 39 }, { x: 72, y: 39 }, { x: 28, y: 61 }, { x: 72, y: 61 }, { x: 50, y: 72 }, { x: 28, y: 83 }, { x: 72, y: 83 }]
+    3: [{ x: 50, y: 19 }, { x: 50, y: 50 }, { x: 50, y: 81 }],
+    4: [{ x: 26, y: 22 }, { x: 74, y: 22 }, { x: 26, y: 78 }, { x: 74, y: 78 }],
+    5: [{ x: 26, y: 20 }, { x: 74, y: 20 }, { x: 50, y: 50 }, { x: 26, y: 80 }, { x: 74, y: 80 }],
+    6: [{ x: 26, y: 20 }, { x: 74, y: 20 }, { x: 26, y: 50 }, { x: 74, y: 50 }, { x: 26, y: 80 }, { x: 74, y: 80 }],
+    7: [{ x: 26, y: 20 }, { x: 74, y: 20 }, { x: 50, y: 35 }, { x: 26, y: 50 }, { x: 74, y: 50 }, { x: 26, y: 80 }, { x: 74, y: 80 }],
+    8: [{ x: 26, y: 20 }, { x: 74, y: 20 }, { x: 50, y: 35 }, { x: 26, y: 50 }, { x: 74, y: 50 }, { x: 50, y: 65 }, { x: 26, y: 80 }, { x: 74, y: 80 }],
+    9: [{ x: 26, y: 16 }, { x: 74, y: 16 }, { x: 26, y: 38 }, { x: 74, y: 38 }, { x: 50, y: 50 }, { x: 26, y: 62 }, { x: 74, y: 62 }, { x: 26, y: 84 }, { x: 74, y: 84 }],
+    10: [{ x: 26, y: 16 }, { x: 74, y: 16 }, { x: 50, y: 27 }, { x: 26, y: 38 }, { x: 74, y: 38 }, { x: 26, y: 62 }, { x: 74, y: 62 }, { x: 50, y: 73 }, { x: 26, y: 84 }, { x: 74, y: 84 }]
   };
 
   const coords = coordsMap[rankValue] || [{ x: 50, y: 50 }];
@@ -203,11 +952,10 @@ function getPipsHTML(rankValue, suitName) {
 }
 
 // --- Court Card Generator: Jack, Queen, King holding Suit Shot Glass ---
-function getCourtCardSVG(rankValue, suitName) {
+function getCourtCardSVG(rankValue, suitName, lang = 'de') {
   const uid = Math.random().toString(36).substr(2, 6);
-  let roleTitle = 'JACK';
-  if (rankValue === 12) roleTitle = 'QUEEN';
-  if (rankValue === 13) roleTitle = 'KING';
+  const tDict = TRANSLATIONS[lang] || TRANSLATIONS.de;
+  const roleTitle = (tDict.courtTitles && tDict.courtTitles[rankValue]) || (rankValue === 12 ? 'QUEEN' : (rankValue === 13 ? 'KING' : 'JACK'));
 
   const themes = {
     hearts: {
@@ -1047,8 +1795,11 @@ class SolitaireGame {
   constructor() {
     this.drawMode = parseInt(localStorage.getItem(STORAGE_KEYS.DRAW_MODE) || '1', 10);
     const urlTheme = new URLSearchParams(window.location.search).get('theme');
-    this.feltTheme = urlTheme || localStorage.getItem(STORAGE_KEYS.FELT_THEME) || 'emerald';
+    const storedFelt = localStorage.getItem(STORAGE_KEYS.FELT_THEME);
+    this.feltTheme = urlTheme || (storedFelt && storedFelt !== 'emerald' ? storedFelt : 'oak');
     this.dealType = localStorage.getItem(STORAGE_KEYS.DEAL_TYPE) || 'solvable';
+    const urlLang = new URLSearchParams(window.location.search).get('lang');
+    this.lang = urlLang || localStorage.getItem(STORAGE_KEYS.LANGUAGE) || 'de';
 
     this.stock = [];
     this.waste = [];
@@ -1095,6 +1846,7 @@ class SolitaireGame {
       selectDraw: document.getElementById('select-draw-mode'),
       selectFelt: document.getElementById('select-felt-theme'),
       selectDeal: document.getElementById('select-deal-type'),
+      selectLanguage: document.getElementById('select-language'),
       dealBadge: document.getElementById('deal-badge'),
       gameToast: document.getElementById('game-toast'),
       btnAutocomplete: document.getElementById('btn-autocomplete'),
@@ -1143,6 +1895,140 @@ class SolitaireGame {
     this.dom.selectDraw.value = this.drawMode.toString();
     this.dom.selectFelt.value = this.feltTheme;
     this.dom.selectDeal.value = this.dealType;
+    if (this.dom.selectLanguage) this.dom.selectLanguage.value = this.lang;
+    this.updateUIText();
+  }
+
+  setLanguage(lang) {
+    if (!TRANSLATIONS[lang]) return;
+    this.lang = lang;
+    localStorage.setItem(STORAGE_KEYS.LANGUAGE, lang);
+    if (this.dom.selectLanguage) this.dom.selectLanguage.value = lang;
+    this.updateUIText();
+    this.render();
+  }
+
+  updateUIText() {
+    const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
+    document.documentElement.lang = this.lang;
+    document.title = t.pageTitle;
+
+    const elMainTitle = document.getElementById('title-main');
+    if (elMainTitle) elMainTitle.textContent = t.mainTitle;
+
+    const elBadge = document.getElementById('badge-edition');
+    if (elBadge) elBadge.textContent = t.badgeEdition;
+
+    this.updateDealBadge();
+
+    const setTxt = (id, txt) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = txt;
+    };
+    const setHtml = (id, html) => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = html;
+    };
+
+    setTxt('label-deal', t.labelDeal);
+    setTxt('opt-deal-solvable', t.optSolvable);
+    setTxt('opt-deal-random', t.optRandom);
+    setTxt('label-draw', t.labelDraw);
+    setTxt('opt-draw-1', t.optDraw1);
+    setTxt('opt-draw-3', t.optDraw3);
+    setTxt('label-felt', t.labelFelt);
+    setTxt('opt-felt-oak', t.optOak);
+    setTxt('opt-felt-emerald', t.optEmerald);
+    setTxt('opt-felt-navy', t.optNavy);
+    setTxt('opt-felt-burgundy', t.optBurgundy);
+    setTxt('opt-felt-slate', t.optSlate);
+    setTxt('opt-felt-violet', t.optViolet);
+    setTxt('label-lang', t.labelLang);
+
+    setTxt('label-stat-score', t.statScore);
+    setTxt('label-stat-moves', t.statMoves);
+    setTxt('label-stat-time', t.statTime);
+
+    if (this.dom.btnAutocomplete) {
+      this.dom.btnAutocomplete.textContent = t.btnAutoFinish;
+      this.dom.btnAutocomplete.title = t.btnAutoFinishTitle;
+    }
+    if (this.dom.btnSweep) {
+      this.dom.btnSweep.textContent = t.btnSweep;
+      this.dom.btnSweep.title = t.btnSweepTitle;
+    }
+    if (this.dom.btnHint) {
+      this.dom.btnHint.textContent = t.btnHint;
+      this.dom.btnHint.title = t.btnHintTitle;
+    }
+    if (this.dom.btnUndo) {
+      this.dom.btnUndo.textContent = t.btnUndo;
+      this.dom.btnUndo.title = t.btnUndoTitle;
+    }
+    if (this.dom.btnReplay) {
+      this.dom.btnReplay.textContent = t.btnReplay;
+      this.dom.btnReplay.title = t.btnReplayTitle;
+    }
+    if (this.dom.btnScores) {
+      this.dom.btnScores.textContent = t.btnScores;
+      this.dom.btnScores.title = t.btnScoresTitle;
+    }
+    if (this.dom.btnSound) {
+      this.dom.btnSound.textContent = this.sound.enabled ? t.btnSoundOn : t.btnSoundOff;
+      this.dom.btnSound.title = t.btnSoundTitle;
+    }
+    if (this.dom.btnNew) {
+      this.dom.btnNew.textContent = t.btnNew;
+      this.dom.btnNew.title = t.btnNewTitle;
+    }
+
+    if (this.dom.stock) this.dom.stock.title = t.stockTitle;
+    if (this.dom.waste) this.dom.waste.title = t.wasteTitle;
+    if (this.dom.foundations) {
+      const suits = ['clubs', 'spades', 'diamonds', 'hearts'];
+      suits.forEach((suit, i) => {
+        if (this.dom.foundations[i]) {
+          this.dom.foundations[i].title = t.foundations[suit];
+        }
+      });
+    }
+
+    setHtml('legend-rules-title', t.legend.rulesTitle);
+    setTxt('legend-black-glass', t.legend.blackGlass);
+    setTxt('legend-black-drop', t.legend.blackDrop);
+    setTxt('legend-green-glass', t.legend.greenGlass);
+    setTxt('legend-green-drop', t.legend.greenDrop);
+    setHtml('legend-sweep-hint', t.legend.sweepHint);
+
+    setTxt('win-modal-badge', t.winModal.badge);
+    setTxt('win-modal-title', t.winModal.title);
+    setTxt('win-modal-desc', t.winModal.desc);
+    setTxt('win-label-deal', t.winModal.labelDeal);
+    setTxt('win-label-mode', t.winModal.labelMode);
+    setTxt('win-label-time', t.winModal.labelTime);
+    setTxt('win-label-moves', t.winModal.labelMoves);
+    setTxt('win-label-score', t.winModal.labelScore);
+    setTxt('win-label-name', t.winModal.labelName);
+    if (this.dom.winNameInput) this.dom.winNameInput.placeholder = t.winModal.namePlaceholder;
+    setTxt('btn-save-score', t.winModal.btnSaveScore);
+    setTxt('win-save-msg', t.winModal.saveSuccess);
+    setTxt('btn-win-scores', t.winModal.btnScores);
+    setTxt('btn-win-replay', t.winModal.btnReplay);
+
+    setTxt('scores-modal-badge', t.scoresModal.badge);
+    setTxt('scores-modal-title', t.scoresModal.title);
+    setTxt('tab-draw1', t.scoresModal.tabDraw1);
+    setTxt('tab-draw3', t.scoresModal.tabDraw3);
+    setTxt('th-player', t.scoresModal.thPlayer);
+    setTxt('th-score', t.scoresModal.thScore);
+    setTxt('th-time', t.scoresModal.thTime);
+    setTxt('th-moves', t.scoresModal.thMoves);
+    setTxt('th-date', t.scoresModal.thDate);
+    if (this.dom.btnClearScores) {
+      this.dom.btnClearScores.textContent = t.scoresModal.btnClear;
+      this.dom.btnClearScores.title = t.scoresModal.btnClearTitle;
+    }
+    setTxt('btn-close-scores', t.scoresModal.btnClose);
   }
 
   applyTheme(theme) {
@@ -1152,14 +2038,15 @@ class SolitaireGame {
   }
 
   updateDealBadge() {
+    const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
     if (this.dealType === 'solvable') {
-      this.dom.dealBadge.textContent = '✨ Solvable Deal';
+      this.dom.dealBadge.textContent = t.dealSolvable;
       this.dom.dealBadge.className = 'badge badge-gold';
-      this.dom.dealBadge.title = 'Guaranteed 100% winnable deal!';
+      this.dom.dealBadge.title = t.dealSolvableTitle;
     } else {
-      this.dom.dealBadge.textContent = '🎲 Random Deal';
+      this.dom.dealBadge.textContent = t.dealRandom;
       this.dom.dealBadge.className = 'badge';
-      this.dom.dealBadge.title = 'Standard random shuffle';
+      this.dom.dealBadge.title = t.dealRandomTitle;
     }
   }
 
@@ -1187,8 +2074,15 @@ class SolitaireGame {
 
     this.dom.btnSound.addEventListener('click', () => {
       this.sound.enabled = !this.sound.enabled;
-      this.dom.btnSound.textContent = this.sound.enabled ? '🔊 Sound' : '🔇 Muted';
+      const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
+      this.dom.btnSound.textContent = this.sound.enabled ? t.btnSoundOn : t.btnSoundOff;
     });
+
+    if (this.dom.selectLanguage) {
+      this.dom.selectLanguage.addEventListener('change', (e) => {
+        this.setLanguage(e.target.value);
+      });
+    }
 
     this.dom.selectFelt.addEventListener('change', (e) => {
       this.applyTheme(e.target.value);
@@ -1199,13 +2093,15 @@ class SolitaireGame {
       localStorage.setItem(STORAGE_KEYS.DEAL_TYPE, this.dealType);
       this.updateDealBadge();
       this.startNewGame();
-      this.showToast(this.dealType === 'solvable' ? '🌟 Solvable Mode: Guaranteed winnable deal!' : '🎲 Random Mode: Unmodified shuffle.');
+      const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
+      this.showToast(this.dealType === 'solvable' ? t.toasts.dealSolvable : t.toasts.dealRandom);
     });
 
     this.dom.selectDraw.addEventListener('change', (e) => {
       const newMode = parseInt(e.target.value, 10);
+      const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
       if (this.moves > 0 && !this.gameWon) {
-        if (confirm('Switching draw mode will start a fresh game. Proceed?')) {
+        if (confirm(t.toasts.switchDrawConfirm)) {
           this.drawMode = newMode;
           localStorage.setItem(STORAGE_KEYS.DRAW_MODE, newMode.toString());
           this.startNewGame();
@@ -1368,10 +2264,12 @@ class SolitaireGame {
       this.sound.playFoundation();
       this.clearSelection();
       this.render();
-      this.showToast(`⚡ Sent ${totalMoved} shot glass${totalMoved > 1 ? 'es' : ''} to Foundation!`);
+      const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
+      this.showToast(t.toasts.sweptSuccess(totalMoved));
       this.checkWinCondition();
     } else {
-      this.showToast('No cards can be moved to Foundations right now.', 1800);
+      const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
+      this.showToast(t.toasts.noSweep, 1800);
     }
   }
 
@@ -1487,7 +2385,8 @@ class SolitaireGame {
 
     this.sound.playFlip();
     this.render();
-    this.showToast('↺ Deal restarted from move 1! Try a fresh approach.');
+    const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
+    this.showToast(t.toasts.dealRestarted);
   }
 
   // --- State Snapshot & Undo ---
@@ -2035,19 +2934,21 @@ class SolitaireGame {
     this.clearSelection();
     document.querySelectorAll('.hint-highlight').forEach(el => el.classList.remove('hint-highlight'));
 
+    const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
+    const suitName = (suit) => (t.suitTitles && t.suitTitles[suit]) || suit;
     let hintFound = null;
 
-    for (let t = 0; t < 7; t++) {
-      const col = this.tableau[t];
+    for (let tr = 0; tr < 7; tr++) {
+      const col = this.tableau[tr];
       if (col.length === 0) continue;
       const topCard = col[col.length - 1];
       if (!topCard.faceUp) continue;
       for (let f = 0; f < 4; f++) {
         if (this.canMoveToFoundation(topCard, f)) {
           hintFound = {
-            srcEl: this.dom.tableau[t].querySelector(`.card[data-id="${topCard.id}"]`),
+            srcEl: this.dom.tableau[tr].querySelector(`.card[data-id="${topCard.id}"]`),
             dstEl: this.dom.foundations[f],
-            msg: `Move ${topCard.label} of ${topCard.suitTitle} to Foundation`
+            msg: t.toasts.hintFoundFoundation(topCard.label, suitName(topCard.suit))
           };
           break;
         }
@@ -2062,7 +2963,7 @@ class SolitaireGame {
           hintFound = {
             srcEl: this.dom.waste.querySelector(`.card[data-id="${wasteCard.id}"]`),
             dstEl: this.dom.foundations[f],
-            msg: `Move ${wasteCard.label} of ${wasteCard.suitTitle} to Foundation`
+            msg: t.toasts.hintFoundFoundation(wasteCard.label, suitName(wasteCard.suit))
           };
           break;
         }
@@ -2070,18 +2971,18 @@ class SolitaireGame {
     }
 
     if (!hintFound) {
-      for (let t = 0; t < 7; t++) {
-        const col = this.tableau[t];
+      for (let tr = 0; tr < 7; tr++) {
+        const col = this.tableau[tr];
         const firstFaceUpIdx = col.findIndex(c => c.faceUp);
         if (firstFaceUpIdx > 0) {
           const card = col[firstFaceUpIdx];
           for (let targetT = 0; targetT < 7; targetT++) {
-            if (targetT === t) continue;
+            if (targetT === tr) continue;
             if (this.canMoveToTableau(card, targetT)) {
               hintFound = {
-                srcEl: this.dom.tableau[t].querySelector(`.card[data-id="${card.id}"]`),
+                srcEl: this.dom.tableau[tr].querySelector(`.card[data-id="${card.id}"]`),
                 dstEl: this.dom.tableau[targetT],
-                msg: `Move stack to reveal hidden card in column ${t + 1}`
+                msg: t.toasts.hintFoundReveal(tr + 1)
               };
               break;
             }
@@ -2093,12 +2994,12 @@ class SolitaireGame {
 
     if (!hintFound && this.waste.length > 0) {
       const wasteCard = this.waste[this.waste.length - 1];
-      for (let t = 0; t < 7; t++) {
-        if (this.canMoveToTableau(wasteCard, t)) {
+      for (let tr = 0; tr < 7; tr++) {
+        if (this.canMoveToTableau(wasteCard, tr)) {
           hintFound = {
             srcEl: this.dom.waste.querySelector(`.card[data-id="${wasteCard.id}"]`),
-            dstEl: this.dom.tableau[t],
-            msg: `Move ${wasteCard.label} of ${wasteCard.suitTitle} to column ${t + 1}`
+            dstEl: this.dom.tableau[tr],
+            msg: t.toasts.hintFoundTableau(wasteCard.label, suitName(wasteCard.suit), tr + 1)
           };
           break;
         }
@@ -2108,14 +3009,14 @@ class SolitaireGame {
     if (hintFound && hintFound.srcEl && hintFound.dstEl) {
       hintFound.srcEl.classList.add('hint-highlight');
       hintFound.dstEl.classList.add('hint-highlight');
-      this.showToast(`💡 Hint: ${hintFound.msg}`);
+      this.showToast(`💡 ${hintFound.msg}`);
       setTimeout(() => {
         hintFound.srcEl.classList.remove('hint-highlight');
         hintFound.dstEl.classList.remove('hint-highlight');
       }, 2500);
     } else {
       this.dom.stock.classList.add('hint-highlight');
-      this.showToast('💡 Hint: Draw from the Stock pile to find new cards!');
+      this.showToast(t.toasts.hintStock);
       setTimeout(() => this.dom.stock.classList.remove('hint-highlight'), 2000);
     }
   }
@@ -2129,10 +3030,11 @@ class SolitaireGame {
       this.sound.playVictory();
       this.celebration.start();
 
-      const modeName = this.drawMode === 3 ? 'Draw 3' : 'Draw 1';
+      const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
+      const modeName = this.drawMode === 3 ? t.winModal.modeDraw3 : t.winModal.modeDraw1;
       const timeFormatted = this.formatTime(this.timerSeconds);
 
-      this.dom.winDealType.textContent = this.dealType === 'solvable' ? '🌟 Solvable (Rigged)' : '🎲 Random';
+      this.dom.winDealType.textContent = this.dealType === 'solvable' ? t.winModal.dealSolvable : t.winModal.dealRandom;
       this.dom.winMode.textContent = modeName;
       this.dom.winTime.textContent = timeFormatted;
       this.dom.winMoves.textContent = this.moves;
@@ -2141,18 +3043,18 @@ class SolitaireGame {
       const savedName = localStorage.getItem(STORAGE_KEYS.PLAYER_NAME) || '';
       this.dom.winNameInput.value = savedName;
       this.dom.winSaveMsg.classList.add('hidden');
-      this.dom.btnSaveScore.textContent = 'Save Score';
+      this.dom.btnSaveScore.textContent = t.winModal.btnSaveScore;
       this.dom.btnSaveScore.disabled = false;
       this.hasSavedCurrentWin = false;
 
       this.pendingWinRecord = {
-        mode: modeName,
-        dealType: this.dealType === 'solvable' ? 'Solvable' : 'Random',
+        mode: this.drawMode === 3 ? 'draw3' : 'draw1',
+        dealType: this.dealType,
         score: this.score,
         timeSeconds: this.timerSeconds,
         timeFormatted: timeFormatted,
         moves: this.moves,
-        date: new Date().toLocaleDateString()
+        date: new Date().toLocaleDateString(this.lang)
       };
 
       this.dom.winModal.classList.remove('hidden');
@@ -2177,13 +3079,13 @@ class SolitaireGame {
 
     this.hasSavedCurrentWin = true;
     this.dom.winSaveMsg.classList.remove('hidden');
-    this.dom.btnSaveScore.textContent = 'Saved ✓';
+    this.dom.btnSaveScore.textContent = '✓';
     this.dom.btnSaveScore.disabled = true;
   }
 
   // --- Two Distinct High Score Boards (Draw 1 & Draw 3, up to 100 entries each) ---
   getStorageKeyForMode(mode) {
-    return mode === 'Draw 3' || mode === 'draw3'
+    return mode === 'Draw 3' || mode === 'draw3' || mode === 3 || (typeof mode === 'string' && mode.includes('3'))
       ? STORAGE_KEYS.HIGH_SCORES_DRAW3
       : STORAGE_KEYS.HIGH_SCORES_DRAW1;
   }
@@ -2223,14 +3125,14 @@ class SolitaireGame {
   }
 
   renderHighScoresTable() {
+    const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
     const scores = this.getHighScoresForMode(this.currentScoreTab);
-    const boardTitle = this.currentScoreTab === 'draw3' ? 'Draw 3' : 'Draw 1';
 
     this.dom.scoresTbody.innerHTML = '';
     if (scores.length === 0) {
       this.dom.scoresTbody.innerHTML = `
         <tr>
-          <td colspan="6" class="no-scores-msg">No recorded victories in ${boardTitle} yet. Win a game to take the #1 spot!</td>
+          <td colspan="6" class="no-scores-msg">${t.scoresModal.empty}</td>
         </tr>
       `;
       return;
@@ -2252,12 +3154,13 @@ class SolitaireGame {
   }
 
   clearCurrentBoardScores() {
-    const boardTitle = this.currentScoreTab === 'draw3' ? 'Draw 3' : 'Draw 1';
-    if (confirm(`Are you sure you want to clear the entire ${boardTitle} Leaderboard?`)) {
+    const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
+    const boardTitle = this.currentScoreTab === 'draw3' ? t.winModal.modeDraw3 : t.winModal.modeDraw1;
+    if (confirm(t.scoresModal.clearConfirm(boardTitle))) {
       const key = this.getStorageKeyForMode(this.currentScoreTab);
       localStorage.removeItem(key);
       this.renderHighScoresTable();
-      this.showToast(`Cleared ${boardTitle} Leaderboard.`);
+      this.showToast(t.scoresModal.clearedToast(boardTitle));
     }
   }
 
@@ -2313,7 +3216,7 @@ class SolitaireGame {
 
     if (rankValue >= 11) {
       // Picture / Court Cards (J, Q, K) - Illustrated person holding the suit's shot glass
-      cardBodyHTML = `<div class="card-court-container">${getCourtCardSVG(rankValue, card.suit)}</div>`;
+      cardBodyHTML = `<div class="card-court-container">${getCourtCardSVG(rankValue, card.suit, this.lang)}</div>`;
     } else {
       // Number Cards (1 to 10) - Shot glasses matching the number of the card
       cardBodyHTML = getPipsHTML(rankValue, card.suit);

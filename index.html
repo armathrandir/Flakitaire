@@ -1,48 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Classic Klondike Solitaire - Schnaps Edition</title>
+  <title>Klassisches Klondike Solitär - Schnaps Edition</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body data-felt="emerald">
+<body data-felt="oak">
   <div class="game-container">
     <!-- Top Control Bar -->
     <header class="header">
       <div class="title-group">
-        <h1>Solitaire</h1>
-        <span class="badge" title="Special Schnaps Edition">🥃 Schnaps Edition</span>
-        <span id="deal-badge" class="badge badge-gold" title="This deal is mathematically verified to be 100% winnable!">✨ Solvable Deal</span>
+        <h1 id="title-main">Solitär</h1>
+        <span id="badge-edition" class="badge" title="Spezielle Schnaps-Edition">🥃 Schnaps Edition</span>
+        <span id="deal-badge" class="badge badge-gold" title="Dieses Spiel ist mathematisch garantiert zu 100% lösbar!">✨ Lösbar</span>
       </div>
 
-      <!-- Quick Settings: Deal Type, Draw Mode & Felt Theme -->
+      <!-- Quick Settings: Deal Type, Draw Mode, Felt Theme & Language -->
       <div class="settings-group">
         <label class="control-label" for="select-deal-type">
-          Deal:
-          <select id="select-deal-type" class="select-input" title="Choose whether deals are guaranteed solvable">
-            <option value="solvable" selected>🌟 Solvable</option>
-            <option value="random">🎲 Random</option>
+          <span id="label-deal">Spiel:</span>
+          <select id="select-deal-type" class="select-input" title="Garantiert lösbare oder zufällige Spiele wählen">
+            <option value="solvable" selected id="opt-deal-solvable">🌟 Lösbar</option>
+            <option value="random" id="opt-deal-random">🎲 Zufällig</option>
           </select>
         </label>
 
         <label class="control-label" for="select-draw-mode">
-          Draw:
-          <select id="select-draw-mode" class="select-input" title="Choose cards drawn per turn">
-            <option value="1" selected>Draw 1</option>
-            <option value="3">Draw 3</option>
+          <span id="label-draw">Karten:</span>
+          <select id="select-draw-mode" class="select-input" title="Anzahl der gezogenen Karten wählen">
+            <option value="1" selected id="opt-draw-1">1 Karte</option>
+            <option value="3" id="opt-draw-3">3 Karten</option>
           </select>
         </label>
 
         <label class="control-label" for="select-felt-theme">
-          Felt:
-          <select id="select-felt-theme" class="select-input" title="Customize table background color">
-            <option value="emerald">🟢 Emerald</option>
-            <option value="navy">🔵 Navy</option>
-            <option value="burgundy">🔴 Burgundy</option>
-            <option value="slate">⚫ Slate</option>
-            <option value="violet">🟣 Violet</option>
-            <option value="oak">🪵 Oak</option>
+          <span id="label-felt">Tisch:</span>
+          <select id="select-felt-theme" class="select-input" title="Hintergrund und Tischoberfläche anpassen">
+            <option value="oak" selected id="opt-felt-oak">🪵 Eiche</option>
+            <option value="emerald" id="opt-felt-emerald">🟢 Smaragd</option>
+            <option value="navy" id="opt-felt-navy">🔵 Marine</option>
+            <option value="burgundy" id="opt-felt-burgundy">🔴 Bordeaux</option>
+            <option value="slate" id="opt-felt-slate">⚫ Schiefer</option>
+            <option value="violet" id="opt-felt-violet">🟣 Violett</option>
+          </select>
+        </label>
+
+        <label class="control-label" for="select-language">
+          <span id="label-lang">Sprache:</span>
+          <select id="select-language" class="select-input" title="Sprache ändern / Change language">
+            <option value="de" selected>🇩🇪 DE</option>
+            <option value="en">🇬🇧 EN</option>
+            <option value="es">🇪🇸 ES</option>
+            <option value="ru">🇷🇺 RU</option>
+            <option value="sv">🇸🇪 SV</option>
+            <option value="it">🇮🇹 IT</option>
           </select>
         </label>
       </div>
@@ -50,66 +62,65 @@
       <!-- Stats display -->
       <div class="stats-group">
         <div class="stat-box">
-          <span class="stat-label">SCORE</span>
+          <span id="label-stat-score" class="stat-label">PUNKTE</span>
           <span id="score-val" class="stat-value">0</span>
         </div>
         <div class="stat-box">
-          <span class="stat-label">MOVES</span>
+          <span id="label-stat-moves" class="stat-label">ZÜGE</span>
           <span id="moves-val" class="stat-value">0</span>
         </div>
         <div class="stat-box">
-          <span class="stat-label">TIME</span>
+          <span id="label-stat-time" class="stat-label">ZEIT</span>
           <span id="timer-val" class="stat-value">00:00</span>
         </div>
       </div>
 
       <!-- Main Action Buttons -->
       <div class="action-buttons">
-        <button id="btn-autocomplete" class="btn btn-gold hidden" title="All hidden cards revealed! Automatically send cards to foundations">
-          ⚡ Auto-Finish
+        <button id="btn-autocomplete" class="btn btn-gold hidden" title="Alle verdeckten Karten aufgedeckt! Karten automatisch ablegen">
+          ⚡ Auto-Fertig
         </button>
-        <button id="btn-sweep" class="btn btn-sweep" title="Sweep all possible cards to Foundations (or right-click / double-tap the table felt)">
-          ⚡ Sweep
+        <button id="btn-sweep" class="btn btn-sweep" title="Alle möglichen Karten auf die Ablagestapel legen (oder Rechtsklick / Spielfeld doppeltippen)">
+          ⚡ Abräumen
         </button>
-        <button id="btn-hint" class="btn btn-secondary" title="Highlight an available move">
-          💡 Hint
+        <button id="btn-hint" class="btn btn-secondary" title="Verfügbaren Zug hervorheben">
+          💡 Tipp
         </button>
-        <button id="btn-undo" class="btn btn-secondary" title="Undo previous move">
-          ↩ Undo
+        <button id="btn-undo" class="btn btn-secondary" title="Letzten Zug rückgängig machen">
+          ↩ Zurück
         </button>
-        <button id="btn-replay" class="btn btn-secondary" title="Restart this exact deal from the beginning">
-          ↺ Replay Deal
+        <button id="btn-replay" class="btn btn-secondary" title="Diesen Spielstand von Anfang an neu starten">
+          ↺ Neustart
         </button>
-        <button id="btn-scores" class="btn btn-secondary" title="View High Scores leaderboards">
-          🏆 Scores
+        <button id="btn-scores" class="btn btn-secondary" title="Bestenliste anzeigen">
+          🏆 Rekorde
         </button>
-        <button id="btn-sound" class="btn btn-secondary" title="Toggle audio">
-          🔊 Sound
+        <button id="btn-sound" class="btn btn-secondary" title="Audio ein-/ausschalten">
+          🔊 Ton
         </button>
-        <button id="btn-new" class="btn btn-primary" title="Start a fresh game">
-          New Game
+        <button id="btn-new" class="btn btn-primary" title="Ein neues Spiel beginnen">
+          Neues Spiel
         </button>
       </div>
     </header>
 
     <!-- Playing Field -->
     <main class="table-felt">
-      <!-- Top Row: Stock & Waste on left, 4 Foundations on right -->
       <!-- Top Row: Stock & Waste on left, Spacer, 4 Foundations on right (Aligned to 7 columns) -->
       <section class="top-row">
         <!-- Col 1: Stock / Draw pile -->
-        <div id="stock-pile" class="card-slot stock-slot" title="Click to draw cards">
+        <div id="stock-pile" class="card-slot stock-slot" title="Klicken zum Ziehen">
           <div class="slot-marker">↺</div>
         </div>
         <!-- Col 2: Waste pile (supports fanned out cards in Draw 3) -->
-        <div id="waste-pile" class="card-slot waste-slot" title="Drawn cards"></div>
+        <div id="waste-pile" class="card-slot waste-slot" title="Gezogene Karten"></div>
         <!-- Col 3: Spacer -->
         <div class="top-spacer"></div>
         <!-- Cols 4-7: 4 Foundations: Black shot glass, black drop, green shot glass, green drop -->
-        <div id="foundation-0" class="card-slot foundation-slot" data-suit="clubs" title="Black Shot Glass Foundation"></div>
-        <div id="foundation-1" class="card-slot foundation-slot" data-suit="spades" title="Black Drop Foundation"></div>
-        <div id="foundation-2" class="card-slot foundation-slot" data-suit="diamonds" title="Green Shot Glass Foundation"></div>
-        <div id="foundation-3" class="card-slot foundation-slot" data-suit="hearts" title="Green Drop Foundation"></div>
+        <div id="foundation-0" class="card-slot foundation-slot" data-suit="clubs" title="Schwarzes Schnapsglas Ablage"></div>
+        <div id="foundation-1" class="card-slot foundation-slot" data-suit="spades" title="Schwarzer Tropfen Ablage"></div>
+        <div id="foundation-2" class="card-slot foundation-slot" data-suit="diamonds" title="Grünes Schnapsglas Ablage"></div>
+        <div id="foundation-3" class="card-slot foundation-slot" data-suit="hearts" title="Grüner Tropfen Ablage"></div>
       </section>
 
       <!-- Bottom Row: 7 Tableau Columns -->
@@ -129,19 +140,19 @@
 
     <!-- Quick Help & Alternating Rules Legend -->
     <footer class="footer">
-      <div class="schnaps-legend">
-        <span>🥃 <strong>Alternating Rules (Black ⇄ Green):</strong></span>
+      <div id="schnaps-legend" class="schnaps-legend">
+        <span id="legend-rules-title">🥃 <strong>Regeln: Wechselnde Farben (Schwarz ⇄ Grün):</strong></span>
         <span class="legend-group">
-          <span class="legend-item"><span class="legend-dot dot-black-glass"></span> Black Shot Glass (♣)</span>
-          <span class="legend-item"><span class="legend-dot dot-black-drop"></span> Black Drop (♠)</span>
+          <span class="legend-item"><span class="legend-dot dot-black-glass"></span> <span id="legend-black-glass">Schwarzes Schnapsglas (♣)</span></span>
+          <span class="legend-item"><span class="legend-dot dot-black-drop"></span> <span id="legend-black-drop">Schwarzer Tropfen (♠)</span></span>
         </span>
         <span class="legend-swap">⇄</span>
         <span class="legend-group">
-          <span class="legend-item"><span class="legend-dot dot-green-glass"></span> Green Shot Glass (♦)</span>
-          <span class="legend-item"><span class="legend-dot dot-green-drop"></span> Green Drop (♥)</span>
+          <span class="legend-item"><span class="legend-dot dot-green-glass"></span> <span id="legend-green-glass">Grünes Schnapsglas (♦)</span></span>
+          <span class="legend-item"><span class="legend-dot dot-green-drop"></span> <span id="legend-green-drop">Grüner Tropfen (♥)</span></span>
         </span>
         <span class="legend-sep">|</span>
-        <span>🖱️ <em>Right-click</em>, tap <strong>⚡ Sweep</strong>, or double-tap felt to auto-sweep cards to Foundations!</span>
+        <span id="legend-sweep-hint">🖱️ <em>Rechtsklick</em>, <strong>⚡ Abräumen</strong> tippen oder Spielfeld doppeltippen zum Ablegen!</span>
       </div>
     </footer>
   </div>
@@ -149,31 +160,31 @@
   <!-- Victory Modal with Name Entry -->
   <div id="win-modal" class="modal-backdrop hidden">
     <div class="modal-card">
-      <div class="modal-badge">🏆 PROST! VICTORY!</div>
-      <h2>Congratulations!</h2>
-      <p>You conquered the Schnaps Solitaire Edition!</p>
+      <div id="win-modal-badge" class="modal-badge">🏆 PROST! GEWONNEN!</div>
+      <h2 id="win-modal-title">Herzlichen Glückwunsch!</h2>
+      <p id="win-modal-desc">Du hast die Schnaps Solitaire Edition gemeistert!</p>
       
       <div class="win-stats">
-        <div><strong>Deal Type:</strong> <span id="win-deal-type">Solvable</span></div>
-        <div><strong>Game Mode:</strong> <span id="win-mode">Draw 1</span></div>
-        <div><strong>Time:</strong> <span id="win-time">00:00</span></div>
-        <div><strong>Moves:</strong> <span id="win-moves">0</span></div>
-        <div><strong>Final Score:</strong> <span id="win-score">0</span></div>
+        <div><strong id="win-label-deal">Spieltyp:</strong> <span id="win-deal-type">Lösbar</span></div>
+        <div><strong id="win-label-mode">Modus:</strong> <span id="win-mode">1 Karte</span></div>
+        <div><strong id="win-label-time">Zeit:</strong> <span id="win-time">00:00</span></div>
+        <div><strong id="win-label-moves">Züge:</strong> <span id="win-moves">0</span></div>
+        <div><strong id="win-label-score">Endstand:</strong> <span id="win-score">0</span></div>
       </div>
 
       <!-- Player Name Input for Leaderboard -->
       <div class="name-entry-box">
-        <label for="win-name-input" class="name-label">Enter your name for the Highscores:</label>
+        <label for="win-name-input" id="win-label-name" class="name-label">Gib deinen Namen für die Bestenliste ein:</label>
         <div class="name-input-row">
-          <input type="text" id="win-name-input" class="name-input" maxlength="25" placeholder="Player Name" autocomplete="name">
-          <button id="btn-save-score" class="btn btn-gold">Save Score</button>
+          <input type="text" id="win-name-input" class="name-input" maxlength="25" placeholder="Spielername" autocomplete="name">
+          <button id="btn-save-score" class="btn btn-gold">Speichern</button>
         </div>
-        <div id="win-save-msg" class="save-msg hidden">✅ Score saved to leaderboard!</div>
+        <div id="win-save-msg" class="save-msg hidden">✅ Rekord in die Bestenliste eingetragen!</div>
       </div>
 
       <div class="modal-actions">
-        <button id="btn-win-scores" class="btn btn-secondary btn-large">Leaderboard</button>
-        <button id="btn-win-replay" class="btn btn-primary btn-large">Play Again</button>
+        <button id="btn-win-scores" class="btn btn-secondary btn-large">Bestenliste</button>
+        <button id="btn-win-replay" class="btn btn-primary btn-large">Nochmal spielen</button>
       </div>
     </div>
   </div>
@@ -181,12 +192,12 @@
   <!-- High Scores Modal with Two Distinct Boards (Draw 1 & Draw 3, up to 100 each) -->
   <div id="scores-modal" class="modal-backdrop hidden">
     <div class="modal-card modal-scores-card">
-      <div class="modal-badge">HALL OF FAME</div>
-      <h2>🏆 High Scores</h2>
+      <div id="scores-modal-badge" class="modal-badge">RUHMESHALLE</div>
+      <h2 id="scores-modal-title">🏆 Bestenliste</h2>
       
       <div class="scores-tab-bar">
-        <button id="tab-draw1" class="tab-btn active">🃏 Draw 1 (Top 100)</button>
-        <button id="tab-draw3" class="tab-btn">🃏 Draw 3 (Top 100)</button>
+        <button id="tab-draw1" class="tab-btn active">🃏 1 Karte (Top 100)</button>
+        <button id="tab-draw3" class="tab-btn">🃏 3 Karten (Top 100)</button>
       </div>
 
       <div class="scores-table-container">
@@ -194,11 +205,11 @@
           <thead>
             <tr>
               <th style="width: 45px;">#</th>
-              <th>Player</th>
-              <th>Score</th>
-              <th>Time</th>
-              <th>Moves</th>
-              <th>Date</th>
+              <th id="th-player">Spieler</th>
+              <th id="th-score">Punkte</th>
+              <th id="th-time">Zeit</th>
+              <th id="th-moves">Züge</th>
+              <th id="th-date">Datum</th>
             </tr>
           </thead>
           <tbody id="scores-tbody">
@@ -208,8 +219,8 @@
       </div>
 
       <div class="modal-actions-space">
-        <button id="btn-clear-scores" class="btn btn-danger" title="Clear scores for current tab">Clear This Board</button>
-        <button id="btn-close-scores" class="btn btn-secondary">Close</button>
+        <button id="btn-clear-scores" class="btn btn-danger" title="Ergebnisse des aktuellen Tabs löschen">Diese Liste leeren</button>
+        <button id="btn-close-scores" class="btn btn-secondary">Schließen</button>
       </div>
     </div>
   </div>

@@ -1,25 +1,25 @@
 # Classic Klondike Solitaire - Schnaps Edition 🥃
 
-A responsive, standalone Klondike Solitaire browser game featuring custom Schnaps shot glass and hip flask suits, authentic pip arrangements, illustrated court cards, and guaranteed solvable deals. Built with pure vanilla HTML5, CSS3, and JavaScript.
+A responsive, standalone Klondike Solitaire browser game featuring custom Schnaps shot glass and droplet suits, authentic pip arrangements, illustrated court cards, multilingual support, and guaranteed solvable deals. Built with pure vanilla HTML5, CSS3, and JavaScript.
 
 ---
 
-## 🥃 Two Colors, Four Symbols: Shot Glasses & Hip Flasks
+## 🥃 Two Colors, Four Symbols: Shot Glasses & Drops
 
-To maximize gameplay clarity and honor traditional Solitaire alternating rules, the deck features **two distinct card colors: Black and Green**, with one **Shot Glass** and one **Hip Flask** in each color:
+To maximize gameplay clarity and honor traditional Solitaire alternating rules, the deck features **two distinct card colors: Black and Green**, with one **Shot Glass** and one **Drop** in each color:
 
 ### 🖤 Black Team:
 - ♣ **Clubs**: **Black Shot Glass** (Jet-black licorice liquor in a heavy silver/chrome-trimmed glass with specular reflections).
-- ♠ **Spades**: **Black Hip Flask** (Sleek matte-black pocket flask with stainless steel screw cap, captive hinge, and silver seal).
+- ♠ **Spades**: **Black Drop** (Dark herbal / licorice liqueur droplet with glossy highlight contour).
 
 ### 💚 Green Team:
 - ♦ **Diamonds**: **Green Shot Glass** (Vibrant emerald mint Pfeffi in an emerald-trimmed glass with rising carbonation bubbles).
-- ♥ **Hearts**: **Green Hip Flask** (Radiant emerald lacquer pocket flask with polished chrome cap and mint leaf medallion).
+- ♥ **Hearts**: **Green Drop** (Radiant emerald mint schnaps droplet with translucent specular glint).
 
 ### 🔄 The Alternating Color Rule (Black ⇄ Green):
 In Klondike, tableau cards must alternate in color. In the Schnaps Edition:
-- **Black cards (Shot Glass ♣ or Hip Flask ♠)** can only be placed onto **Green cards (Shot Glass ♦ or Hip Flask ♥)**.
-- **Green cards (Shot Glass ♦ or Hip Flask ♥)** can only be placed onto **Black cards (Shot Glass ♣ or Hip Flask ♠)**.
+- **Black cards (Shot Glass ♣ or Drop ♠)** can only be placed onto **Green cards (Shot Glass ♦ or Drop ♥)**.
+- **Green cards (Shot Glass ♦ or Drop ♥)** can only be placed onto **Black cards (Shot Glass ♣ or Drop ♠)**.
 - The corner ranks are clearly color-coded (**Black** or **Green**) so you can scan the board at a glance!
 - A handy legend is displayed at the bottom of the table felt for quick reference.
 
@@ -27,71 +27,58 @@ In Klondike, tableau cards must alternate in color. In the Schnaps Edition:
 
 ## 🎴 Card Design & Face Layout
 
-- **Rank-Only Corners**: Corner indices display **only the rank number or letter** (`A`, `2`–`10`, `J`, `Q`, `K`) in top-left and bottom-right in bold Black or Green. All corner glasses and flasks have been removed for maximum clarity and traditional playing card aesthetics.
-- **Number Cards (A, 2–10)**: Display symbols matching the **exact number of the card** (e.g. 1 centered symbol for Ace, 2 vertical for 2, 5 dice pattern for 5, up to 10 for 10) in standard playing card pip arrangements:
-  - Clubs: 1–10 Black Shot Glasses
-  - Spades: 1–10 Black Hip Flasks
-  - Diamonds: 1–10 Green Shot Glasses
-  - Hearts: 1–10 Green Hip Flasks
-- **Court / Picture Cards (J, Q, K)**: Rich vector portraits of royal characters holding up their suit's drinking vessel in a celebratory toast:
-  - **Jack (J)**: Young dashing squire/knight in a cavalier feathered beret and slashed doublet raising the vessel.
-  - **Queen (Q)**: Elegant crowned queen with pearls, flowing hair, and royal ermine robe gracefully holding the vessel.
-  - **King (K)**: Majestic bearded king with a jeweled golden crown and ermine mantle raising the vessel in a royal toast.
-  - *Clubs* court figures hold the **Black Shot Glass**.
-  - *Spades* court figures hold the **Black Hip Flask**.
-  - *Diamonds* court figures hold the **Green Shot Glass**.
-  - *Hearts* court figures hold the **Green Hip Flask**.
+- **Rank-Only Corners**: Corner indices display **only the rank number or letter** (`A`, `2`–`10`, `J`, `Q`, `K`) in top-left and bottom-right in bold Black or Green.
+- **Uniform Pip Sizing (2 to 10)**: All number cards (2 through 10) share the exact same icon dimensions, calibrated to the benchmark size of card 3. Aces (1) feature a prominent showcase symbol in the center.
+- **Court / Picture Cards (J, Q, K)**: Rich vector portraits of royal characters holding up their suit's drinking vessel in a celebratory toast, with bottom banners localized to the active language (e.g. BUBE / DAME / KÖNIG in German, JACK / QUEEN / KING in English, etc.):
+  - **Jack (J)**: Young dashing squire/knight in a cavalier feathered beret raising the vessel.
+  - **Queen (Q)**: Elegant crowned queen with pearls and royal robe gracefully holding the vessel.
+  - **King (K)**: Majestic bearded king with a jeweled golden crown raising the vessel in a royal toast.
+
+---
+
+## 🌐 Multilingual Support (i18n)
+
+- **German Standard**: German (`de`) is the default language upon first load.
+- **Instant Language Switching**: Switch on-the-fly between 6 languages from the header dropdown without restarting your game:
+  - 🇩🇪 **Deutsch** (Standard)
+  - 🇬🇧 **English**
+  - 🇪🇸 **Español**
+  - 🇷🇺 **Русский**
+  - 🇸🇪 **Svenska**
+  - 🇮🇹 **Italiano**
+- All UI elements, rules legend, scoreboards, toasts, and court card ribbons instantly reflect the chosen language.
+
+---
+
+## 🪵 Natural Oak Wood Default & Felt Styles
+
+- **Oak Wood Tabletop Standard**: Authentic natural oak tabletop texture with rich organic wood grain, knots, and warm amber tavern ambient lighting as the default surface.
+- **Additional Felts**: Switchable to **Emerald Classic**, **Royal Navy**, **Burgundy Velvet**, **Slate Charcoal**, and **Deep Violet**.
 
 ---
 
 ## 🚀 Key Features
 
-### 🖱️ Right-Click Quick Sweep (Foundation Fast-Send)
-- **Send All Eligible Cards**: Right-clicking anywhere on the board instantly sweeps all visible cards from the waste pile and tableau tops up to the Foundations.
-- **Cascade Detection**: If sending one card reveals another card underneath that can also move to a foundation, it cascades automatically!
-- **Single-Move Undo**: The entire sweep is grouped into a single undo step, so clicking **↩ Undo** restores the exact board state prior to the sweep.
+### 📱 Full Mobile & Touch Support
+- Complete responsive 7-column layout optimized for smartphones and tablets.
+- Pointer Events touch drag-and-drop with cascading substacks.
+- Quick Foundation sweep via button, right-click, or double-tapping the table felt.
+
+### 🖱️ Foundation Quick Sweep
+- Tap **⚡ Sweep**, right-click anywhere on the board, or double-tap the table felt to send all eligible cards directly to Foundations.
+- Grouped into a single undo step.
 
 ### 🏆 Player Names & Two Dedicated High Score Boards (Top 100 Each)
-- **Player Name Input**: When you win a game, enter your name/handle in the victory screen and click **Save Score** (or press Enter).
-- **Persistent Memory**: Remembers your player name across games via `localStorage`.
 - **Two Distinct Leaderboards**:
   - **🃏 Draw 1 Board** (Top 100 scores)
   - **🃏 Draw 3 Board** (Top 100 scores)
-- **Rankings**: Tracks Rank (🥇, 🥈, 🥉, 4..100), Player Name, Final Score, Elapsed Time, Move Count, and Date.
+- Persistent player names and high score tracking via `localStorage`.
 
-### 🌟 Guaranteed Solvable Mode (Rigged Deals)
-- **100% Solvable by Default**: Every new game is generated through an in-engine forward solver and verified against a curated repository of solvable seeds with dynamic suit/color permutations. Every deal has a guaranteed winning path!
-- **Mode Toggle**: Switch between **🌟 Solvable (Rigged)** and **🎲 Random** in the top bar anytime.
-- **↺ Replay Deal**: Reset the moves and timer to try the exact same layout again.
+### 🌟 Guaranteed Solvable Mode
+- Every new game is mathematically verified through an in-engine forward solver to guarantee a winnable path.
+- Toggle between **🌟 Solvable** and **🎲 Random** in the top bar.
 
-### ⚡ Auto-Finish
-- Once all face-down cards in the tableau are revealed, a glowing **⚡ Auto-Finish** button appears to smoothly cascade all remaining cards directly home to the foundations!
-
-### 💡 Smart Hints & Non-Displacing Toast
-- Clicking **💡 Hint** highlights the next playable move with a pulsating glow.
-- Toast notifications appear as a fixed floating pill at the bottom center of the screen, completely preventing any layout shifts or playing field movement.
-
-### 🎴 Custom Military Artillery Card Back Theme
-- Uses custom artillery artwork on all face-down cards, tuned with darker brightness, rich contrast, and a subtle golden inner bevel border.
-
-### 🟢 Customizable Table Felt & Surface Styles
-- Switch anytime between 6 table finishes: **Emerald Classic**, **Royal Navy**, **Burgundy Velvet**, **Slate Charcoal**, **Deep Violet**, and **🪵 Oak Wood** (authentic natural oak tabletop texture with rich organic wood grain, knots, and warm amber tavern ambient lighting).
-
-### 🃏 Draw 1 & Draw 3 Modes
-- Seamlessly toggle between Draw 1 and Draw 3 with authentic horizontal waste card fanning.
-
-### 🔊 Procedural Web Audio & Celebration
-- Real-time synthesizer sound effects:
-  - **Card Flip & Draw**: Crisp physical card slide and paper flick off the deck.
-  - **Card Movements & Tableau Stacking**: Authentic physical card movement sound (surface friction slide, crisp edge snap, and cardstock body flex thump).
-  - **Foundation Scoring**: Distinct **drink sip / gulp sound** (liquid suction draw + throat swallow gulp + refreshing glass finish).
-  - **Victory**: Multi-chord celebratory fanfare and confetti.
-- Confetti particle celebration on game completion.
-
----
-
-## 🎮 How to Play
-
-Open [`index.html`](file:///C:/Users/Admin/.gemini/antigravity/scratch/solitaire/index.html) in any modern browser:
-- Double-click `index.html` in File Explorer, or
-- Right-click `index.html` -> "Open with" -> Google Chrome / Microsoft Edge / Firefox.
+### 🔊 Procedural Web Audio
+- Card flip & sliding sounds synthesized in real time with Web Audio API.
+- Foundation scoring features a custom **drink sip / gulp sound**.
+- Fanfare and particle fireworks celebration on victory.
