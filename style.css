@@ -509,7 +509,7 @@ body.is-pointer-dragging * {
 
 /* Specific suit rank colors: Two Colors (Black & Green) */
 .card.suit-hearts {
-  color: var(--suit-green); /* Green Hip Flask */
+  color: var(--suit-green); /* Green Drop */
 }
 
 .card.suit-diamonds {
@@ -521,7 +521,7 @@ body.is-pointer-dragging * {
 }
 
 .card.suit-spades {
-  color: var(--suit-black); /* Black Hip Flask */
+  color: var(--suit-black); /* Black Drop */
 }
 
 /* Card Corners - Rank only, no corner glasses */
@@ -716,6 +716,7 @@ body.is-pointer-dragging * {
   box-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
 }
 
+.dot-black-drop,
 .dot-black-flask {
   background: #1e272c;
   border: 1.5px solid #90a4ae;
@@ -728,6 +729,7 @@ body.is-pointer-dragging * {
   box-shadow: 0 0 6px rgba(0, 230, 118, 0.6);
 }
 
+.dot-green-drop,
 .dot-green-flask {
   background: #007e33;
   border: 1.5px solid #69f0ae;

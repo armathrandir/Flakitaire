@@ -28,10 +28,10 @@
 
 // --- Constants & Config ---
 const SUITS = [
-  { name: 'hearts', title: 'Green Hip Flask', color: 'green', symbol: 'flask' },
-  { name: 'diamonds', title: 'Green Shot Glass', color: 'green', symbol: 'glass' },
   { name: 'clubs', title: 'Black Shot Glass', color: 'black', symbol: 'glass' },
-  { name: 'spades', title: 'Black Hip Flask', color: 'black', symbol: 'flask' }
+  { name: 'spades', title: 'Black Drop', color: 'black', symbol: 'drop' },
+  { name: 'diamonds', title: 'Green Shot Glass', color: 'green', symbol: 'glass' },
+  { name: 'hearts', title: 'Green Drop', color: 'green', symbol: 'drop' }
 ];
 
 const RANKS = [
@@ -84,88 +84,60 @@ function getShotGlassSVG(suitName, size = 'small') {
         </svg>
       `;
 
-    case 'spades': // 🖤 Black Hip Flask (Stainless Cap & Matte Black Body)
+    case 'spades': // 🖤 Black Drop (Dark Herbal / Licorice Liqueur Droplet)
       return `
         <svg class="${sizeClass}" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="blackFlaskGrad" x1="6" y1="8" x2="26" y2="38" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#2c2c2c"/>
-              <stop offset="0.6" stop-color="#141414"/>
-              <stop offset="1" stop-color="#050505"/>
-            </linearGradient>
-            <linearGradient id="metalGrad" x1="12" y1="2" x2="20" y2="8" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#ffffff"/>
-              <stop offset="0.5" stop-color="#cfd8dc"/>
-              <stop offset="1" stop-color="#78909c"/>
+            <linearGradient id="blackDropGrad" x1="10" y1="4" x2="22" y2="36" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#37474f"/>
+              <stop offset="0.3" stop-color="#212121"/>
+              <stop offset="0.75" stop-color="#111111"/>
+              <stop offset="1" stop-color="#020202"/>
             </linearGradient>
           </defs>
 
-          <!-- Captive Hinge Arm -->
-          <path d="M12 4 L10 5 L10 9 L13 9" fill="none" stroke="#90a4ae" stroke-width="1.2" stroke-linejoin="round"/>
-          <!-- Screw Cap with Grip Ridges -->
-          <rect x="13" y="2" width="7" height="4.5" rx="1" fill="url(#metalGrad)" stroke="#546e7a" stroke-width="0.9"/>
-          <line x1="15.5" y1="2.5" x2="15.5" y2="6" stroke="#455a64" stroke-width="0.7"/>
-          <line x1="17.5" y1="2.5" x2="17.5" y2="6" stroke="#455a64" stroke-width="0.7"/>
-          <!-- Spout Neck -->
-          <rect x="14.5" y="6.5" width="4" height="2.5" fill="#b0bec5" stroke="#78909c" stroke-width="0.7"/>
-
-          <!-- Flask Body (Ergonomic Curved Pocket Flask) -->
-          <path d="M7 13 Q7 9 13.5 9 L19.5 9 Q26 9 26 13 L27 34 Q27 38 22 38 L11 38 Q6 38 6 34 L7 13 Z" fill="url(#blackFlaskGrad)" stroke="#455a64" stroke-width="1.4" stroke-linejoin="round"/>
+          <!-- Liquid Droplet Body -->
+          <path d="M16 4 C14 8, 6.5 17.5, 6.5 26 A 9.5 9.5 0 0 0 25.5 26 C25.5 17.5, 18 8, 16 4 Z" fill="url(#blackDropGrad)" stroke="#546e7a" stroke-width="1.4" stroke-linejoin="round"/>
           
-          <!-- Polished Inset Leather/Metal Trim -->
-          <path d="M9 14 Q9 11 14 11 L19 11 Q24 11 24 14 L24.8 33 Q24.8 36 20.5 36 L12.5 36 Q8.2 36 8.2 33 Z" fill="none" stroke="#37474f" stroke-width="0.8" stroke-dasharray="2 1.5"/>
+          <!-- Inner Rim Gloss -->
+          <path d="M16 6 C14.5 9.5, 8.2 18, 8.2 25.5 A 7.8 7.8 0 0 0 23.8 25.5 C23.8 18, 17.5 9.5, 16 6 Z" fill="none" stroke="#37474f" stroke-width="0.8" opacity="0.6"/>
 
-          <!-- Center Heraldic Seal / Medallion -->
-          <circle cx="16.5" cy="23" r="3.6" fill="#1e272c" stroke="#cfd8dc" stroke-width="0.9"/>
-          <!-- Stylized Emblem in Medallion -->
-          <path d="M16.5 20.5 L17.3 22.3 L19.2 22.5 L17.8 23.8 L18.2 25.7 L16.5 24.7 L14.8 25.7 L15.2 23.8 L13.8 22.5 L15.7 22.3 Z" fill="#cfd8dc"/>
+          <!-- Specular Highlight Curve -->
+          <path d="M10.5 24 C10 18.5, 13.5 11, 15 8" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" opacity="0.85"/>
+          <circle cx="11.5" cy="27" r="1.3" fill="#ffffff" opacity="0.9"/>
 
-          <!-- Specular Reflection Highlight Curve -->
-          <path d="M8.5 13 L7.8 34" stroke="#ffffff" stroke-width="1.3" opacity="0.4" stroke-linecap="round"/>
-          <path d="M24.5 13 L25 34" stroke="#ffffff" stroke-width="0.7" opacity="0.15" stroke-linecap="round"/>
+          <!-- Secondary Soft Rim Reflection -->
+          <path d="M22.5 22 C23 25, 20.5 32, 17 33.5" stroke="rgba(255,255,255,0.25)" stroke-width="0.9" stroke-linecap="round"/>
         </svg>
       `;
 
-    case 'hearts': // 💚 Green Hip Flask (Polished Chrome Cap & Radiant Emerald Lacquer)
+    case 'hearts': // 💚 Green Drop (Mint / Emerald Schnaps Droplet)
       return `
         <svg class="${sizeClass}" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="greenFlaskGrad" x1="6" y1="8" x2="26" y2="38" gradientUnits="userSpaceOnUse">
+            <linearGradient id="greenDropGrad" x1="10" y1="4" x2="22" y2="36" gradientUnits="userSpaceOnUse">
               <stop stop-color="#00e676"/>
               <stop offset="0.4" stop-color="#00a844"/>
-              <stop offset="1" stop-color="#004d20"/>
-            </linearGradient>
-            <linearGradient id="chromeGrad" x1="12" y1="2" x2="20" y2="8" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#ffffff"/>
-              <stop offset="0.5" stop-color="#eceff1"/>
-              <stop offset="1" stop-color="#90a4ae"/>
+              <stop offset="0.85" stop-color="#006022"/>
+              <stop offset="1" stop-color="#003814"/>
             </linearGradient>
           </defs>
 
-          <!-- Captive Hinge Arm -->
-          <path d="M12 4 L10 5 L10 9 L13 9" fill="none" stroke="#78909c" stroke-width="1.2" stroke-linejoin="round"/>
-          <!-- Screw Cap with Grip Ridges -->
-          <rect x="13" y="2" width="7" height="4.5" rx="1" fill="url(#chromeGrad)" stroke="#607d8b" stroke-width="0.9"/>
-          <line x1="15.5" y1="2.5" x2="15.5" y2="6" stroke="#78909c" stroke-width="0.7"/>
-          <line x1="17.5" y1="2.5" x2="17.5" y2="6" stroke="#78909c" stroke-width="0.7"/>
-          <!-- Spout Neck -->
-          <rect x="14.5" y="6.5" width="4" height="2.5" fill="#cfd8dc" stroke="#90a4ae" stroke-width="0.7"/>
-
-          <!-- Flask Body (Emerald Lacquer) -->
-          <path d="M7 13 Q7 9 13.5 9 L19.5 9 Q26 9 26 13 L27 34 Q27 38 22 38 L11 38 Q6 38 6 34 L7 13 Z" fill="url(#greenFlaskGrad)" stroke="#004d20" stroke-width="1.4" stroke-linejoin="round"/>
+          <!-- Liquid Droplet Body -->
+          <path d="M16 4 C14 8, 6.5 17.5, 6.5 26 A 9.5 9.5 0 0 0 25.5 26 C25.5 17.5, 18 8, 16 4 Z" fill="url(#greenDropGrad)" stroke="#004d20" stroke-width="1.4" stroke-linejoin="round"/>
           
-          <!-- Inset Filigree Border -->
-          <path d="M9 14 Q9 11 14 11 L19 11 Q24 11 24 14 L24.8 33 Q24.8 36 20.5 36 L12.5 36 Q8.2 36 8.2 33 Z" fill="none" stroke="#69f0ae" stroke-width="0.8" opacity="0.75" stroke-dasharray="2 1.5"/>
+          <!-- Inner Glow Contour -->
+          <path d="M16 6 C14.5 9.5, 8.2 18, 8.2 25.5 A 7.8 7.8 0 0 0 23.8 25.5 C23.8 18, 17.5 9.5, 16 6 Z" fill="none" stroke="#69f0ae" stroke-width="0.8" opacity="0.5"/>
 
-          <!-- Center Mint Emblem / Medallion -->
-          <circle cx="16.5" cy="23" r="3.6" fill="#003816" stroke="#b9f6ca" stroke-width="0.9"/>
-          <!-- Mint Leaf / Sparkle Emblem -->
-          <path d="M16.5 20.2 Q18.5 21.8 17.5 24.5 Q16.5 25.8 16.5 25.8 Q16.5 25.8 15.5 24.5 Q14.5 21.8 16.5 20.2 Z" fill="#b9f6ca"/>
-          <circle cx="16.5" cy="23" r="1.1" fill="#ffffff"/>
+          <!-- Specular Highlight Curve -->
+          <path d="M10.5 24 C10 18.5, 13.5 11, 15 8" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" opacity="0.9"/>
+          <circle cx="11.5" cy="27" r="1.3" fill="#ffffff" opacity="0.95"/>
 
-          <!-- Specular Reflection Highlight Curve -->
-          <path d="M8.5 13 L7.8 34" stroke="#ffffff" stroke-width="1.4" opacity="0.55" stroke-linecap="round"/>
-          <path d="M24.5 13 L25 34" stroke="#ffffff" stroke-width="0.7" opacity="0.2" stroke-linecap="round"/>
+          <!-- Liquid Core Bubble -->
+          <circle cx="16" cy="27" r="2.2" fill="#b9f6ca" opacity="0.6"/>
+
+          <!-- Secondary Soft Rim Reflection -->
+          <path d="M22.5 22 C23 25, 20.5 32, 17 33.5" stroke="rgba(255,255,255,0.3)" stroke-width="0.9" stroke-linecap="round"/>
         </svg>
       `;
 
@@ -274,7 +246,7 @@ function getCourtCardSVG(rankValue, suitName) {
 
   const t = themes[suitName] || themes.hearts;
 
-  // Drinking vessel held in character's hand (Shot Glass or Hip Flask)
+  // Vessel / Item held in character's hand (Shot Glass or Drop)
   let heldGlassSVG = '';
   if (suitName === 'clubs') {
     heldGlassSVG = `
@@ -290,30 +262,21 @@ function getCourtCardSVG(rankValue, suitName) {
     `;
   } else if (suitName === 'spades') {
     heldGlassSVG = `
-      <!-- Black Hip Flask in Hand -->
-      <g transform="translate(68, 15)">
-        <path d="M10 5 L8 6 L8 9 L11 9" fill="none" stroke="#90a4ae" stroke-width="1"/>
-        <rect x="11" y="3" width="6" height="4" rx="1" fill="#cfd8dc" stroke="#546e7a" stroke-width="0.8"/>
-        <rect x="12.5" y="7" width="3" height="2" fill="#b0bec5" stroke="#78909c" stroke-width="0.7"/>
-        <path d="M5 12 Q5 9 11 9 L17 9 Q23 9 23 12 L24 29 Q24 32 20 32 L8 32 Q4 32 4 29 Z" fill="#181818" stroke="#546e7a" stroke-width="1.2" stroke-linejoin="round"/>
-        <path d="M7 13 Q7 10.5 11 10.5 L17 10.5 Q21 10.5 21 13 L21.8 28 Q21.8 30.5 18.5 30.5 L9.5 30.5 Q6.2 30.5 6.2 28 Z" fill="none" stroke="#37474f" stroke-width="0.7" stroke-dasharray="1.5 1"/>
-        <circle cx="14" cy="20" r="2.8" fill="#263238" stroke="#cfd8dc" stroke-width="0.7"/>
-        <polygon points="14,18 14.7,19.5 16.2,19.7 15,20.8 15.4,22.3 14,21.5 12.6,22.3 13,20.8 11.8,19.7 13.3,19.5" fill="#cfd8dc"/>
-        <path d="M6.5 12 L6 29" stroke="#ffffff" stroke-width="1" opacity="0.45" stroke-linecap="round"/>
+      <!-- Black Drop in Hand -->
+      <g transform="translate(71, 16)">
+        <path d="M12 4 C10.5 7, 4 14.5, 4 21 A 8 8 0 0 0 20 21 C20 14.5, 13.5 7, 12 4 Z" fill="#181818" stroke="#546e7a" stroke-width="1.2"/>
+        <path d="M7.5 19 C7 15, 10 9, 11 6.5" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" opacity="0.75"/>
+        <circle cx="8.5" cy="21.5" r="1" fill="#ffffff"/>
       </g>
     `;
   } else if (suitName === 'hearts') {
     heldGlassSVG = `
-      <!-- Green Hip Flask in Hand -->
-      <g transform="translate(68, 15)">
-        <path d="M10 5 L8 6 L8 9 L11 9" fill="none" stroke="#78909c" stroke-width="1"/>
-        <rect x="11" y="3" width="6" height="4" rx="1" fill="#eceff1" stroke="#607d8b" stroke-width="0.8"/>
-        <rect x="12.5" y="7" width="3" height="2" fill="#cfd8dc" stroke="#90a4ae" stroke-width="0.7"/>
-        <path d="M5 12 Q5 9 11 9 L17 9 Q23 9 23 12 L24 29 Q24 32 20 32 L8 32 Q4 32 4 29 Z" fill="#008f39" stroke="#004d20" stroke-width="1.2" stroke-linejoin="round"/>
-        <path d="M7 13 Q7 10.5 11 10.5 L17 10.5 Q21 10.5 21 13 L21.8 28 Q21.8 30.5 18.5 30.5 L9.5 30.5 Q6.2 30.5 6.2 28 Z" fill="none" stroke="#69f0ae" stroke-width="0.7" opacity="0.8" stroke-dasharray="1.5 1"/>
-        <circle cx="14" cy="20" r="2.8" fill="#003816" stroke="#b9f6ca" stroke-width="0.7"/>
-        <path d="M14 18 Q15.5 19.3 14.8 21.3 Q14 22.2 14 22.2 Q14 22.2 13.2 21.3 Q12.5 19.3 14 18 Z" fill="#b9f6ca"/>
-        <path d="M6.5 12 L6 29" stroke="#ffffff" stroke-width="1.1" opacity="0.55" stroke-linecap="round"/>
+      <!-- Green Drop in Hand -->
+      <g transform="translate(71, 16)">
+        <path d="M12 4 C10.5 7, 4 14.5, 4 21 A 8 8 0 0 0 20 21 C20 14.5, 13.5 7, 12 4 Z" fill="#008f39" stroke="#004d20" stroke-width="1.2"/>
+        <path d="M7.5 19 C7 15, 10 9, 11 6.5" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" opacity="0.85"/>
+        <circle cx="8.5" cy="21.5" r="1" fill="#ffffff"/>
+        <circle cx="12" cy="21" r="1.8" fill="#b9f6ca" opacity="0.5"/>
       </g>
     `;
   } else {
@@ -877,13 +840,13 @@ class SolvableDealGenerator {
   }
 
   permuteDeck(deckIndices) {
-    const swapRed = Math.random() > 0.5;
     const swapBlack = Math.random() > 0.5;
+    const swapGreen = Math.random() > 0.5;
     const swapColors = Math.random() > 0.5;
 
     let suitMap = [0, 1, 2, 3];
-    if (swapRed) [suitMap[0], suitMap[1]] = [suitMap[1], suitMap[0]];
-    if (swapBlack) [suitMap[2], suitMap[3]] = [suitMap[3], suitMap[2]];
+    if (swapBlack) [suitMap[0], suitMap[1]] = [suitMap[1], suitMap[0]];
+    if (swapGreen) [suitMap[2], suitMap[3]] = [suitMap[3], suitMap[2]];
     if (swapColors) {
       suitMap = [suitMap[2], suitMap[3], suitMap[0], suitMap[1]];
     }
@@ -907,7 +870,7 @@ class SolvableDealGenerator {
         tableau[c].push({
           suit: Math.floor(id / 13),
           rank: (id % 13) + 1,
-          color: Math.floor(id / 13) < 2 ? 'green' : 'black',
+          color: Math.floor(id / 13) < 2 ? 'black' : 'green',
           faceUp: r === c
         });
       }
@@ -919,7 +882,7 @@ class SolvableDealGenerator {
       stock.push({
         suit: Math.floor(id / 13),
         rank: (id % 13) + 1,
-        color: Math.floor(id / 13) < 2 ? 'green' : 'black',
+        color: Math.floor(id / 13) < 2 ? 'black' : 'green',
         faceUp: false
       });
     }
