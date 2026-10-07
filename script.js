@@ -181,8 +181,6 @@ const TRANSLATIONS = {
       title: '🏆 Bestenliste',
       tabDraw1: '🃏 1 Karte (Top 100)',
       tabDraw3: '🃏 3 Karten (Top 100)',
-      filterGlobal: '🌍 Global',
-      filterLocal: '💾 Lokal',
       filterAll: 'Alle',
       filterDesktop: '💻 PC',
       filterMobile: '📱 Handy',
@@ -195,11 +193,7 @@ const TRANSLATIONS = {
       thMoves: 'Züge',
       thDate: 'Datum',
       empty: 'Noch keine Rekorde erfasst. Gewinne ein Spiel, um Geschichte zu schreiben!',
-      btnClear: 'Lokale Liste leeren',
-      btnClearTitle: 'Lokale Ergebnisse des aktuellen Tabs löschen',
-      btnClose: 'Schließen',
-      clearConfirm: (mode) => `Möchtest du die lokale Bestenliste für ${mode} wirklich unwiderruflich löschen?`,
-      clearedToast: (mode) => `Lokale Bestenliste für ${mode} gelöscht.`
+      btnClose: 'Schließen'
     },
     toasts: {
       dealSolvable: '🌟 Lösbarer Modus: Mathematisch garantiert gewinnbar!',
@@ -314,8 +308,6 @@ const TRANSLATIONS = {
       title: '🏆 High Scores',
       tabDraw1: '🃏 Draw 1 (Top 100)',
       tabDraw3: '🃏 Draw 3 (Top 100)',
-      filterGlobal: '🌍 Global',
-      filterLocal: '💾 Local',
       filterAll: 'All',
       filterDesktop: '💻 PC',
       filterMobile: '📱 Mobile',
@@ -328,11 +320,7 @@ const TRANSLATIONS = {
       thMoves: 'Moves',
       thDate: 'Date',
       empty: 'No high scores recorded yet. Win a game to make history!',
-      btnClear: 'Clear Local Board',
-      btnClearTitle: 'Clear local scores for current tab',
-      btnClose: 'Close',
-      clearConfirm: (mode) => `Are you sure you want to permanently clear the local ${mode} leaderboard?`,
-      clearedToast: (mode) => `Cleared local ${mode} Leaderboard.`
+      btnClose: 'Close'
     },
     toasts: {
       dealSolvable: '🌟 Solvable Mode: Guaranteed winnable deal!',
@@ -447,8 +435,6 @@ const TRANSLATIONS = {
       title: '🏆 Récords',
       tabDraw1: '🃏 1 Carta (Top 100)',
       tabDraw3: '🃏 3 Cartas (Top 100)',
-      filterGlobal: '🌍 Global',
-      filterLocal: '💾 Local',
       filterAll: 'Todos',
       filterDesktop: '💻 PC',
       filterMobile: '📱 Móvil',
@@ -461,11 +447,7 @@ const TRANSLATIONS = {
       thMoves: 'Movim.',
       thDate: 'Fecha',
       empty: '¡Aún no hay récords registrados! Gana una partida para entrar en la historia.',
-      btnClear: 'Borrar tabla local',
-      btnClearTitle: 'Borrar los récords locales de la pestaña actual',
-      btnClose: 'Cerrar',
-      clearConfirm: (mode) => `¿Seguro que deseas borrar definitivamente la clasificación local de ${mode}?`,
-      clearedToast: (mode) => `Clasificación local de ${mode} borrada.`
+      btnClose: 'Cerrar'
     },
     toasts: {
       dealSolvable: '🌟 Modo con solución: ¡Partida ganable garantizada!',
@@ -580,8 +562,6 @@ const TRANSLATIONS = {
       title: '🏆 Рекорды',
       tabDraw1: '🃏 По 1 (Топ 100)',
       tabDraw3: '🃏 По 3 (Топ 100)',
-      filterGlobal: '🌍 Глобально',
-      filterLocal: '💾 Локально',
       filterAll: 'Все',
       filterDesktop: '💻 ПК',
       filterMobile: '📱 Мобильный',
@@ -594,11 +574,7 @@ const TRANSLATIONS = {
       thMoves: 'Ходы',
       thDate: 'Дата',
       empty: 'Пока нет рекордов. Выиграйте партию, чтобы войти в историю!',
-      btnClear: 'Очистить локальный список',
-      btnClearTitle: 'Удалить локальные рекорды в этой вкладке',
-      btnClose: 'Закрыть',
-      clearConfirm: (mode) => `Вы уверены, что хотите безвозвратно очистить локальную таблицу ${mode}?`,
-      clearedToast: (mode) => `Локальная таблица рекордов (${mode}) очищена.`
+      btnClose: 'Закрыть'
     },
     toasts: {
       dealSolvable: '🌟 Решаемый режим: расклад со 100% гарантией победы!',
@@ -713,8 +689,6 @@ const TRANSLATIONS = {
       title: '🏆 Topplista',
       tabDraw1: '🃏 1 Kort (Topp 100)',
       tabDraw3: '🃏 3 Kort (Topp 100)',
-      filterGlobal: '🌍 Global',
-      filterLocal: '💾 Lokal',
       filterAll: 'Alla',
       filterDesktop: '💻 Dator',
       filterMobile: '📱 Mobil',
@@ -727,11 +701,7 @@ const TRANSLATIONS = {
       thMoves: 'Drag',
       thDate: 'Datum',
       empty: 'Inga sparade poäng än. Vinn ett spel för att skriva historia!',
-      btnClear: 'Rensa lokal lista',
-      btnClearTitle: 'Rensa lokala poängen för denna flik',
-      btnClose: 'Stäng',
-      clearConfirm: (mode) => `Är du säker på att du vill rensa den lokala topplistan för ${mode}?`,
-      clearedToast: (mode) => `Lokala topplistan för ${mode} har rensats.`
+      btnClose: 'Stäng'
     },
     toasts: {
       dealSolvable: '🌟 Lösbart läge: Garanterat vinnbar giv!',
@@ -846,8 +816,6 @@ const TRANSLATIONS = {
       title: '🏆 Classifica',
       tabDraw1: '🃏 1 Carta (Top 100)',
       tabDraw3: '🃏 3 Carte (Top 100)',
-      filterGlobal: '🌍 Globale',
-      filterLocal: '💾 Locale',
       filterAll: 'Tutti',
       filterDesktop: '💻 PC',
       filterMobile: '📱 Cellulare',
@@ -860,11 +828,7 @@ const TRANSLATIONS = {
       thMoves: 'Mosse',
       thDate: 'Data',
       empty: 'Nessun record salvato. Vinci una partita per entrare nella storia!',
-      btnClear: 'Azzera lista locale',
-      btnClearTitle: 'Cancella i punteggi locali per questa scheda',
-      btnClose: 'Chiudi',
-      clearConfirm: (mode) => `Sei sicuro di voler azzerare definitivamente la classifica locale di ${mode}?`,
-      clearedToast: (mode) => `Classifica locale per ${mode} azzerata.`
+      btnClose: 'Chiudi'
     },
     toasts: {
       dealSolvable: '🌟 Modalità risolvibile: Partita garantita al 100%!',
@@ -1899,7 +1863,6 @@ class SolitaireGame {
     this.lastCardClick = null;
     this.justFinishedDrag = false;
     this.currentScoreTab = this.drawMode === 3 ? 'draw3' : 'draw1';
-    this.currentScoreScope = 'global';
     this.currentDeviceFilter = 'all';
     this.globalScoresCache = { draw1: null, draw3: null };
     this.isLoadingScores = false;
@@ -1969,11 +1932,8 @@ class SolitaireGame {
       scoresModal: document.getElementById('scores-modal'),
       scoresTbody: document.getElementById('scores-tbody'),
       btnCloseScores: document.getElementById('btn-close-scores'),
-      btnClearScores: document.getElementById('btn-clear-scores'),
       tabDraw1: document.getElementById('tab-draw1'),
       tabDraw3: document.getElementById('tab-draw3'),
-      filterScopeGlobal: document.getElementById('filter-scope-global'),
-      filterScopeLocal: document.getElementById('filter-scope-local'),
       filterDeviceAll: document.getElementById('filter-device-all'),
       filterDeviceDesktop: document.getElementById('filter-device-desktop'),
       filterDeviceMobile: document.getElementById('filter-device-mobile'),
@@ -2107,8 +2067,6 @@ class SolitaireGame {
     setTxt('scores-modal-title', t.scoresModal.title);
     setTxt('tab-draw1', t.scoresModal.tabDraw1);
     setTxt('tab-draw3', t.scoresModal.tabDraw3);
-    setTxt('filter-scope-global', t.scoresModal.filterGlobal);
-    setTxt('filter-scope-local', t.scoresModal.filterLocal);
     setTxt('filter-device-all', t.scoresModal.filterAll);
     setTxt('filter-device-desktop', t.scoresModal.filterDesktop);
     setTxt('filter-device-mobile', t.scoresModal.filterMobile);
@@ -2118,10 +2076,6 @@ class SolitaireGame {
     setTxt('th-time', t.scoresModal.thTime);
     setTxt('th-moves', t.scoresModal.thMoves);
     setTxt('th-date', t.scoresModal.thDate);
-    if (this.dom.btnClearScores) {
-      this.dom.btnClearScores.textContent = t.scoresModal.btnClear;
-      this.dom.btnClearScores.title = t.scoresModal.btnClearTitle;
-    }
     setTxt('btn-close-scores', t.scoresModal.btnClose);
   }
 
@@ -2251,12 +2205,9 @@ class SolitaireGame {
     // High Scores Modal Controls
     this.dom.btnScores.addEventListener('click', () => this.openHighScores(this.drawMode === 3 ? 'draw3' : 'draw1'));
     this.dom.btnCloseScores.addEventListener('click', () => this.dom.scoresModal.classList.add('hidden'));
-    this.dom.btnClearScores.addEventListener('click', () => this.clearCurrentBoardScores());
 
     this.dom.tabDraw1.addEventListener('click', () => this.switchScoreTab('draw1'));
     this.dom.tabDraw3.addEventListener('click', () => this.switchScoreTab('draw3'));
-    if (this.dom.filterScopeGlobal) this.dom.filterScopeGlobal.addEventListener('click', () => this.switchScoreScope('global'));
-    if (this.dom.filterScopeLocal) this.dom.filterScopeLocal.addEventListener('click', () => this.switchScoreScope('local'));
     if (this.dom.filterDeviceAll) this.dom.filterDeviceAll.addEventListener('click', () => this.switchDeviceFilter('all'));
     if (this.dom.filterDeviceDesktop) this.dom.filterDeviceDesktop.addEventListener('click', () => this.switchDeviceFilter('desktop'));
     if (this.dom.filterDeviceMobile) this.dom.filterDeviceMobile.addEventListener('click', () => this.switchDeviceFilter('mobile'));
@@ -3331,16 +3282,6 @@ class SolitaireGame {
     this.loadAndRenderScores();
   }
 
-  switchScoreScope(scope) {
-    this.currentScoreScope = scope;
-    if (this.dom.filterScopeGlobal) this.dom.filterScopeGlobal.classList.toggle('active', scope === 'global');
-    if (this.dom.filterScopeLocal) this.dom.filterScopeLocal.classList.toggle('active', scope === 'local');
-    if (this.dom.btnClearScores) {
-      this.dom.btnClearScores.style.display = scope === 'local' ? 'inline-flex' : 'none';
-    }
-    this.loadAndRenderScores();
-  }
-
   switchDeviceFilter(device) {
     this.currentDeviceFilter = device;
     if (this.dom.filterDeviceAll) this.dom.filterDeviceAll.classList.toggle('active', device === 'all');
@@ -3358,27 +3299,26 @@ class SolitaireGame {
   async loadAndRenderScores(isManualRefresh = false) {
     const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
 
-    if (this.currentScoreScope === 'global') {
-      if (!this.globalScoresCache[this.currentScoreTab] || isManualRefresh) {
-        this.isLoadingScores = true;
-        if (this.dom.btnRefreshScores) this.dom.btnRefreshScores.classList.add('is-spinning');
-        this.dom.scoresTbody.innerHTML = `
-          <tr>
-            <td colspan="6" class="loading-scores-msg">⏳ ${t.scoresModal.loading || 'Loading...'}</td>
-          </tr>
-        `;
+    if (!this.globalScoresCache[this.currentScoreTab] || isManualRefresh) {
+      this.isLoadingScores = true;
+      if (this.dom.btnRefreshScores) this.dom.btnRefreshScores.classList.add('is-spinning');
+      this.dom.scoresTbody.innerHTML = `
+        <tr>
+          <td colspan="6" class="loading-scores-msg">⏳ ${t.scoresModal.loading || 'Loading...'}</td>
+        </tr>
+      `;
 
-        const globalList = await this.fetchGlobalScores(this.currentScoreTab);
-        if (this.dom.btnRefreshScores) this.dom.btnRefreshScores.classList.remove('is-spinning');
-        this.isLoadingScores = false;
+      const globalList = await this.fetchGlobalScores(this.currentScoreTab);
+      if (this.dom.btnRefreshScores) this.dom.btnRefreshScores.classList.remove('is-spinning');
+      this.isLoadingScores = false;
 
-        if (globalList !== null) {
-          this.globalScoresCache[this.currentScoreTab] = globalList;
-        } else {
-          // If fetch failed, notify and fallback to local
-          this.showToast(t.scoresModal.offlineNotice || 'Offline');
-          this.switchScoreScope('local');
-          return;
+      if (globalList !== null) {
+        this.globalScoresCache[this.currentScoreTab] = globalList;
+      } else {
+        // If fetch failed (offline or network error), notify and use local cache as fallback
+        this.showToast(t.scoresModal.offlineNotice || 'Offline');
+        if (!this.globalScoresCache[this.currentScoreTab]) {
+          this.globalScoresCache[this.currentScoreTab] = this.getLocalHighScoresForMode(this.currentScoreTab);
         }
       }
     }
@@ -3388,13 +3328,7 @@ class SolitaireGame {
 
   renderHighScoresTable() {
     const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
-    let scores = [];
-
-    if (this.currentScoreScope === 'global') {
-      scores = this.globalScoresCache[this.currentScoreTab] || [];
-    } else {
-      scores = this.getLocalHighScoresForMode(this.currentScoreTab);
-    }
+    let scores = this.globalScoresCache[this.currentScoreTab] || this.getLocalHighScoresForMode(this.currentScoreTab) || [];
 
     // Apply device filter
     let filtered = scores;
@@ -3432,17 +3366,6 @@ class SolitaireGame {
       `;
       this.dom.scoresTbody.appendChild(tr);
     });
-  }
-
-  clearCurrentBoardScores() {
-    const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
-    const boardTitle = this.currentScoreTab === 'draw3' ? t.winModal.modeDraw3 : t.winModal.modeDraw1;
-    if (confirm(t.scoresModal.clearConfirm(boardTitle))) {
-      const key = this.getStorageKeyForMode(this.currentScoreTab);
-      localStorage.removeItem(key);
-      this.renderHighScoresTable();
-      this.showToast(t.scoresModal.clearedToast(boardTitle));
-    }
   }
 
   // --- Rendering UI ---
