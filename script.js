@@ -57,7 +57,8 @@ const STORAGE_KEYS = {
   FELT_THEME: 'solitaire_felt_theme',
   DRAW_MODE: 'solitaire_draw_mode',
   DEAL_TYPE: 'solitaire_deal_type',
-  LANGUAGE: 'solitaire_lang_v2'
+  LANGUAGE: 'solitaire_lang_v2',
+  MUSIC_ENABLED: 'solitaire_music_v1'
 };
 
 // --- Firebase Realtime Database for Global High Scores ---
@@ -125,7 +126,10 @@ const TRANSLATIONS = {
     btnScoresTitle: 'Bestenliste anzeigen',
     btnSoundOn: '🔊 Ton',
     btnSoundOff: '🔇 Stumm',
-    btnSoundTitle: 'Audio ein-/ausschalten',
+    btnSoundTitle: 'Soundeffekte ein-/ausschalten',
+    btnMusicOn: '🎵 Musik',
+    btnMusicOff: '🔇 Musik',
+    btnMusicTitle: 'Hintergrundmusik ein-/ausschalten (Irischer Folk)',
     btnNew: 'Neues Spiel',
     btnNewTitle: 'Ein neues Spiel beginnen',
     stockTitle: 'Klicken zum Ziehen',
@@ -252,7 +256,10 @@ const TRANSLATIONS = {
     btnScoresTitle: 'View High Scores leaderboards',
     btnSoundOn: '🔊 Sound',
     btnSoundOff: '🔇 Muted',
-    btnSoundTitle: 'Toggle audio',
+    btnSoundTitle: 'Toggle sound effects',
+    btnMusicOn: '🎵 Music',
+    btnMusicOff: '🔇 Music',
+    btnMusicTitle: 'Toggle background music (Irish Folk)',
     btnNew: 'New Game',
     btnNewTitle: 'Start a fresh game',
     stockTitle: 'Click to draw cards',
@@ -379,7 +386,10 @@ const TRANSLATIONS = {
     btnScoresTitle: 'Ver tabla de récords',
     btnSoundOn: '🔊 Sonido',
     btnSoundOff: '🔇 Silencio',
-    btnSoundTitle: 'Activar o desactivar sonido',
+    btnSoundTitle: 'Activar o desactivar efectos de sonido',
+    btnMusicOn: '🎵 Música',
+    btnMusicOff: '🔇 Música',
+    btnMusicTitle: 'Activar o desactivar música de fondo (Irish Folk)',
     btnNew: 'Nueva partida',
     btnNewTitle: 'Iniciar una nueva partida',
     stockTitle: 'Clic para robar cartas',
@@ -506,7 +516,10 @@ const TRANSLATIONS = {
     btnScoresTitle: 'Посмотреть таблицу рекордов',
     btnSoundOn: '🔊 Звук',
     btnSoundOff: '🔇 Без звука',
-    btnSoundTitle: 'Включить / выключить звук',
+    btnSoundTitle: 'Включить / выключить звуковые эффекты',
+    btnMusicOn: '🎵 Музыка',
+    btnMusicOff: '🔇 Музыка',
+    btnMusicTitle: 'Включить / выключить музыку (Irish Folk)',
     btnNew: 'Новая игра',
     btnNewTitle: 'Начать новую партию',
     stockTitle: 'Нажмите, чтобы взять карту',
@@ -633,7 +646,10 @@ const TRANSLATIONS = {
     btnScoresTitle: 'Visa poängtopplista',
     btnSoundOn: '🔊 Ljud',
     btnSoundOff: '🔇 Ljud av',
-    btnSoundTitle: 'Slå på/av ljud',
+    btnSoundTitle: 'Slå på/av ljudeffekter',
+    btnMusicOn: '🎵 Musik',
+    btnMusicOff: '🔇 Musik',
+    btnMusicTitle: 'Slå på/av bakgrundsmusik (Irländsk folk)',
     btnNew: 'Nytt spel',
     btnNewTitle: 'Starta en ny omgång',
     stockTitle: 'Klicka för att dra kort',
@@ -760,7 +776,10 @@ const TRANSLATIONS = {
     btnScoresTitle: 'Visualizza la classifica dei record',
     btnSoundOn: '🔊 Audio',
     btnSoundOff: '🔇 Muto',
-    btnSoundTitle: 'Attiva/disattiva audio',
+    btnSoundTitle: 'Attiva/disattiva effetti audio',
+    btnMusicOn: '🎵 Musica',
+    btnMusicOff: '🔇 Musica',
+    btnMusicTitle: 'Attiva/disattiva musica di sottofondo (Folk irlandese)',
     btnNew: 'Nuova partita',
     btnNewTitle: 'Inizia una nuova partita',
     stockTitle: 'Clicca per pescare carte',
@@ -1261,21 +1280,524 @@ function getCourtCardSVG(rankValue, suitName, lang = 'de') {
   `;
 }
 
+// --- Traditional Irish Folk Background Music Synthesizer (Web Audio API) ---
+class IrishFolkMusic {
+  constructor(ctx) {
+    this.ctx = ctx;
+    this.enabled = true;
+    this.isPlaying = false;
+    this.tempo = 110; // BPM (6/8 jig rhythm)
+    this.eighthSec = (60 / this.tempo) / 3; // ~0.1818s per eighth note
+    this.stepIndex = 0; // Current eighth note in the 192-step loop (32 bars * 6)
+    this.nextStepTime = 0;
+    this.timerId = null;
+    this.cycleCount = 0;
+
+    // Master Gain for Music - subtle tavern ambiance ("dezent", 0.055)
+    this.masterGain = this.ctx.createGain();
+    this.masterGain.gain.setValueAtTime(0.055, this.ctx.currentTime);
+    this.masterGain.connect(this.ctx.destination);
+
+    // Precomputed pink noise buffer for whistle breath chiff and bodhrán brush
+    this.noiseBuffer = this.createNoiseBuffer();
+
+    // 32-Bar Traditional Irish Folk Melody & Chords (AABB & CD structure)
+    this.noteFreqs = {
+      'D2': 73.42, 'A2': 110.00, 'B2': 123.47,
+      'D3': 146.83, 'E3': 164.81, 'F#3': 185.00, 'G3': 196.00, 'A3': 220.00, 'B3': 246.94, 'C#4': 277.18,
+      'D4': 293.66, 'E4': 329.63, 'F#4': 369.99, 'G4': 392.00, 'A4': 440.00, 'B4': 493.88, 'C#5': 554.37,
+      'D5': 587.33, 'E5': 659.25, 'F#5': 739.99, 'G5': 783.99, 'A5': 880.00, 'B5': 987.77, 'C#6': 1108.73,
+      'D6': 1174.66, 'E6': 1318.51, 'F#6': 1479.98, 'G6': 1567.98, 'A6': 1760.00, 'B6': 1975.53
+    };
+
+    this.melody = this.buildMelody();
+    this.chords = this.buildChords();
+  }
+
+  createNoiseBuffer() {
+    const size = Math.floor(this.ctx.sampleRate * 0.4);
+    const buf = this.ctx.createBuffer(1, size, this.ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    let b0 = 0, b1 = 0, b2 = 0;
+    for (let i = 0; i < size; i++) {
+      const white = Math.random() * 2 - 1;
+      b0 = 0.99886 * b0 + white * 0.0555179;
+      b1 = 0.99332 * b1 + white * 0.0750759;
+      b2 = 0.96900 * b2 + white * 0.1538520;
+      data[i] = (b0 + b1 + b2 + white * 0.5362) * 0.11;
+    }
+    return buf;
+  }
+
+  buildMelody() {
+    const raw = [
+      // Part A - Dublin Tavern Jig (Bars 1-8)
+      ['D5', 1], ['F#5', 1], ['A5', 1], ['B5', 1], ['A5', 1], ['F#5', 1],
+      ['G5', 1], ['A5', 1], ['B5', 1], ['D6', 2], ['B5', 1],
+      ['F#5', 1], ['G5', 1], ['A5', 1], ['D5', 1], ['C#5', 1], ['D5', 1],
+      ['E5', 1], ['F#5', 1], ['G5', 1], ['A5', 2], ['G5', 1],
+      ['D5', 1], ['F#5', 1], ['A5', 1], ['B5', 1], ['A5', 1], ['F#5', 1],
+      ['G5', 1], ['A5', 1], ['B5', 1], ['D6', 1], ['E6', 1], ['D6', 1],
+      ['C#6', 1], ['D6', 1], ['E6', 1], ['A5', 1], ['B5', 1], ['C#6', 1],
+      ['D6', 3], ['D6', 3],
+
+      // Part B - High Festival Jig (Bars 9-16)
+      ['F#6', 1], ['E6', 1], ['D6', 1], ['F#6', 1], ['E6', 1], ['D6', 1],
+      ['B5', 1], ['D6', 1], ['G6', 2], ['F#6', 1], ['G6', 1],
+      ['A6', 1], ['G6', 1], ['F#6', 1], ['E6', 1], ['D6', 1], ['C#6', 1],
+      ['D6', 1], ['F#6', 1], ['A6', 1], ['F#6', 1], ['E6', 1], ['D6', 1],
+      ['B6', 1], ['A6', 1], ['G6', 1], ['F#6', 1], ['E6', 1], ['D6', 1],
+      ['E6', 1], ['D6', 1], ['B5', 1], ['A5', 1], ['B5', 1], ['D6', 1],
+      ['E6', 1], ['F#6', 1], ['E6', 1], ['C#6', 1], ['B5', 1], ['C#6', 1],
+      ['D6', 3], ['D6', 3],
+
+      // Part C - Connemara Harp Air / B Minor (Bars 17-24)
+      ['B5', 1], ['C#6', 1], ['D6', 2], ['E6', 1], ['D6', 1],
+      ['C#6', 1], ['B5', 1], ['G5', 1], ['B5', 2], ['D6', 1],
+      ['A5', 1], ['D6', 1], ['F#6', 1], ['E6', 1], ['D6', 1], ['B5', 1],
+      ['C#6', 1], ['E6', 1], ['A6', 1], ['G6', 1], ['F#6', 1], ['E6', 1],
+      ['F#6', 1], ['D6', 1], ['B5', 1], ['F#5', 1], ['B5', 1], ['D6', 1],
+      ['G5', 1], ['B5', 1], ['D6', 1], ['G6', 1], ['F#6', 1], ['D6', 1],
+      ['E6', 1], ['D6', 1], ['C#6', 1], ['A5', 1], ['C#6', 1], ['E6', 1],
+      ['D6', 3], ['D6', 3],
+
+      // Part D - Lively Climax / Reel (Bars 25-32)
+      ['D6', 1], ['G6', 1], ['B6', 1], ['A6', 1], ['G6', 1], ['F#6', 1],
+      ['E6', 1], ['F#6', 1], ['D6', 1], ['A5', 1], ['D6', 1], ['F#6', 1],
+      ['G5', 1], ['B5', 1], ['E6', 1], ['D6', 1], ['C#6', 1], ['B5', 1],
+      ['A5', 1], ['C#6', 1], ['E6', 1], ['G6', 1], ['F#6', 1], ['E6', 1],
+      ['F#6', 1], ['A6', 1], ['D6', 1], ['C#6', 1], ['B5', 1], ['A5', 1],
+      ['B5', 1], ['D6', 1], ['B5', 1], ['A5', 1], ['G5', 1], ['F#5', 1],
+      ['E5', 1], ['F#5', 1], ['G5', 1], ['A5', 1], ['C#6', 1], ['E6', 1],
+      ['D6', 3], ['D6', 3]
+    ];
+
+    const expanded = [];
+    for (const [note, len] of raw) {
+      expanded.push({ note, dur: len, isOnset: true });
+      for (let i = 1; i < len; i++) {
+        expanded.push({ note, dur: 0, isOnset: false });
+      }
+    }
+    return expanded;
+  }
+
+  buildChords() {
+    return [
+      // Part A (1-8)
+      { arpeggio: ['D3', 'A3', 'D4', 'F#4', 'A4', 'F#4'] },
+      { arpeggio: ['G3', 'B3', 'D4', 'G4', 'B4', 'G4'] },
+      { arpeggio: ['D3', 'A3', 'D4', 'F#4', 'A4', 'F#4'] },
+      { arpeggio: ['A3', 'C#4', 'E4', 'A4', 'E4', 'C#4'] },
+      { arpeggio: ['D3', 'A3', 'D4', 'F#4', 'A4', 'F#4'] },
+      { arpeggio: ['G3', 'B3', 'D4', 'G4', 'B4', 'G4'] },
+      { arpeggio: ['A3', 'C#4', 'E4', 'G4', 'E4', 'C#4'] },
+      { arpeggio: ['D3', 'A3', 'D4', 'F#4', 'A4', 'D4'] },
+      // Part B (9-16)
+      { arpeggio: ['D3', 'A3', 'D4', 'F#4', 'A4', 'F#4'] },
+      { arpeggio: ['G3', 'B3', 'D4', 'G4', 'B4', 'G4'] },
+      { arpeggio: ['A3', 'C#4', 'E4', 'A4', 'E4', 'C#4'] },
+      { arpeggio: ['D3', 'A3', 'D4', 'F#4', 'A4', 'F#4'] },
+      { arpeggio: ['G3', 'B3', 'D4', 'B4', 'D4', 'B3'] },
+      { arpeggio: ['D3', 'A3', 'D4', 'F#4', 'A4', 'F#4'] },
+      { arpeggio: ['A3', 'C#4', 'E4', 'G4', 'E4', 'C#4'] },
+      { arpeggio: ['D3', 'A3', 'D4', 'F#4', 'A4', 'D4'] },
+      // Part C (17-24)
+      { arpeggio: ['B2', 'F#3', 'B3', 'D4', 'F#4', 'D4'] },
+      { arpeggio: ['G3', 'B3', 'D4', 'G4', 'B4', 'G4'] },
+      { arpeggio: ['D3', 'A3', 'D4', 'F#4', 'A4', 'F#4'] },
+      { arpeggio: ['A3', 'C#4', 'E4', 'A4', 'E4', 'C#4'] },
+      { arpeggio: ['B2', 'F#3', 'B3', 'D4', 'F#4', 'D4'] },
+      { arpeggio: ['G3', 'B3', 'D4', 'G4', 'B4', 'G4'] },
+      { arpeggio: ['A3', 'C#4', 'E4', 'A4', 'E4', 'C#4'] },
+      { arpeggio: ['D3', 'A3', 'D4', 'F#4', 'A4', 'D4'] },
+      // Part D (25-32)
+      { arpeggio: ['G3', 'B3', 'D4', 'G4', 'B4', 'G4'] },
+      { arpeggio: ['D3', 'A3', 'D4', 'F#4', 'A4', 'F#4'] },
+      { arpeggio: ['E3', 'B3', 'E4', 'G4', 'B4', 'G4'] },
+      { arpeggio: ['A3', 'C#4', 'E4', 'A4', 'E4', 'C#4'] },
+      { arpeggio: ['D3', 'A3', 'D4', 'F#4', 'A4', 'F#4'] },
+      { arpeggio: ['G3', 'B3', 'D4', 'B4', 'D4', 'B3'] },
+      { arpeggio: ['A3', 'C#4', 'E4', 'G4', 'E4', 'C#4'] },
+      { arpeggio: ['D3', 'A3', 'D4', 'F#4', 'A4', 'D4'] }
+    ];
+  }
+
+  start() {
+    if (this.isPlaying || !this.enabled) return;
+    if (this.ctx.state === 'suspended') {
+      this.ctx.resume();
+    }
+    this.isPlaying = true;
+    this.nextStepTime = this.ctx.currentTime + 0.05;
+    this.masterGain.gain.setValueAtTime(0.001, this.ctx.currentTime);
+    this.masterGain.gain.linearRampToValueAtTime(0.055, this.ctx.currentTime + 0.8);
+
+    if (this.timerId) clearInterval(this.timerId);
+    this.timerId = setInterval(() => this.schedule(), 35);
+  }
+
+  stop() {
+    if (!this.isPlaying) return;
+    this.isPlaying = false;
+    if (this.masterGain) {
+      const now = this.ctx.currentTime;
+      this.masterGain.gain.setValueAtTime(this.masterGain.gain.value, now);
+      this.masterGain.gain.linearRampToValueAtTime(0.0001, now + 0.5);
+    }
+    setTimeout(() => {
+      if (!this.isPlaying && this.timerId) {
+        clearInterval(this.timerId);
+        this.timerId = null;
+      }
+    }, 550);
+  }
+
+  toggle() {
+    if (this.isPlaying) {
+      this.enabled = false;
+      this.stop();
+      return false;
+    } else {
+      this.enabled = true;
+      this.start();
+      return true;
+    }
+  }
+
+  duck(targetGain = 0.015, duration = 2.5) {
+    if (!this.isPlaying || !this.masterGain) return;
+    const now = this.ctx.currentTime;
+    this.masterGain.gain.cancelScheduledValues(now);
+    this.masterGain.gain.setValueAtTime(this.masterGain.gain.value, now);
+    this.masterGain.gain.linearRampToValueAtTime(targetGain, now + 0.25);
+    this.masterGain.gain.setValueAtTime(targetGain, now + duration - 0.4);
+    this.masterGain.gain.linearRampToValueAtTime(0.055, now + duration);
+  }
+
+  schedule() {
+    if (!this.isPlaying) return;
+    while (this.nextStepTime < this.ctx.currentTime + 0.18) {
+      this.scheduleStep(this.stepIndex, this.nextStepTime);
+      this.nextStepTime += this.eighthSec;
+      this.stepIndex = (this.stepIndex + 1) % 192;
+      if (this.stepIndex === 0) {
+        this.cycleCount++;
+      }
+    }
+  }
+
+  scheduleStep(step, time) {
+    const barIndex = Math.floor(step / 6);
+    const eighthInBar = step % 6;
+
+    // 1. Warm Acoustic Drone on downbeat of each bar
+    if (eighthInBar === 0) {
+      this.playDrone(time, this.eighthSec * 6 + 0.08);
+    }
+
+    // 2. Celtic Plucked Strings (Celtic Harp / Acoustic Guitar fingerpicking)
+    const chord = this.chords[barIndex];
+    if (chord && chord.arpeggio) {
+      const isBass = eighthInBar === 0;
+      const noteName = chord.arpeggio[eighthInBar];
+      const freq = this.noteFreqs[noteName];
+      if (freq) {
+        this.playPluckedString(time, freq, isBass);
+      }
+    }
+
+    // 3. Bodhran (Traditional Irish Drum)
+    const isQuietSection = (barIndex >= 16 && barIndex < 24);
+    if (!isQuietSection) {
+      if (eighthInBar === 0) {
+        this.playBodhran(time, 'primary');
+      } else if (eighthInBar === 3) {
+        this.playBodhran(time, 'secondary');
+      } else if (eighthInBar === 2 || eighthInBar === 5) {
+        this.playBodhran(time, 'brush');
+      }
+    }
+
+    // 4. Irish Tin Whistle Lead Melody
+    const melStep = this.melody[step];
+    if (melStep && melStep.isOnset) {
+      const freq = this.noteFreqs[melStep.note];
+      const durSec = melStep.dur * this.eighthSec;
+      const hasCut = melStep.dur >= 2 && (step % 4 === 0 || Math.random() < 0.28);
+      this.playWhistle(time, freq, durSec, hasCut);
+    }
+  }
+
+  playWhistle(time, freq, durSec, hasCut = false) {
+    if (!freq || durSec <= 0) return;
+    let actualTime = time;
+    let actualDur = durSec;
+    if (hasCut && durSec >= this.eighthSec * 2) {
+      const cutFreq = freq * 1.122;
+      this.synthesizeWhistleTone(actualTime, cutFreq, 0.025, 0.035, false);
+      actualTime += 0.025;
+      actualDur -= 0.025;
+    }
+    this.synthesizeWhistleTone(actualTime, freq, actualDur, 0.048, true);
+  }
+
+  synthesizeWhistleTone(time, freq, dur, peakVol, addChiff) {
+    const osc = this.ctx.createOscillator();
+    const harm = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    const filter = this.ctx.createBiquadFilter();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, time);
+
+    harm.type = 'triangle';
+    harm.frequency.setValueAtTime(freq * 2, time);
+
+    const harmGain = this.ctx.createGain();
+    harmGain.gain.setValueAtTime(0.2, time);
+    harm.connect(harmGain);
+    harmGain.connect(filter);
+
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(Math.min(3200, Math.max(1200, freq * 1.4)), time);
+    filter.Q.setValueAtTime(1.8, time);
+
+    if (dur >= this.eighthSec * 1.5) {
+      const lfo = this.ctx.createOscillator();
+      const lfoGain = this.ctx.createGain();
+      lfo.frequency.setValueAtTime(5.3, time);
+      lfoGain.gain.setValueAtTime(0, time);
+      lfoGain.gain.setValueAtTime(0, time + 0.1);
+      lfoGain.linearRampToValueAtTime(3.6, time + 0.22);
+      lfo.connect(lfoGain);
+      lfoGain.connect(osc.frequency);
+      lfo.start(time);
+      lfo.stop(time + dur);
+    }
+
+    if (addChiff && this.noiseBuffer) {
+      const noiseSrc = this.ctx.createBufferSource();
+      noiseSrc.buffer = this.noiseBuffer;
+      const nFilter = this.ctx.createBiquadFilter();
+      nFilter.type = 'bandpass';
+      nFilter.frequency.setValueAtTime(2600, time);
+      nFilter.Q.setValueAtTime(2.2, time);
+      const nGain = this.ctx.createGain();
+      nGain.gain.setValueAtTime(0.012, time);
+      nGain.exponentialRampToValueAtTime(0.0001, time + 0.016);
+      noiseSrc.connect(nFilter);
+      nFilter.connect(nGain);
+      nGain.connect(this.masterGain);
+      noiseSrc.start(time);
+      noiseSrc.stop(time + 0.018);
+    }
+
+    const attack = 0.022;
+    const release = 0.04;
+    gain.gain.setValueAtTime(0.0001, time);
+    gain.linearRampToValueAtTime(peakVol, time + attack);
+    gain.gain.setValueAtTime(peakVol * 0.88, time + Math.max(attack, dur - release));
+    gain.linearRampToValueAtTime(0.0001, time + dur);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.masterGain);
+
+    osc.start(time);
+    harm.start(time);
+    osc.stop(time + dur + 0.05);
+    harm.stop(time + dur + 0.05);
+  }
+
+  playPluckedString(time, freq, isBass = false) {
+    if (!freq) return;
+    const bodyOsc = this.ctx.createOscillator();
+    const wireOsc = this.ctx.createOscillator();
+    const filter = this.ctx.createBiquadFilter();
+    const gain = this.ctx.createGain();
+
+    bodyOsc.type = 'triangle';
+    bodyOsc.frequency.setValueAtTime(freq, time);
+
+    wireOsc.type = 'sawtooth';
+    wireOsc.frequency.setValueAtTime(freq, time);
+
+    const wireGain = this.ctx.createGain();
+    wireGain.gain.setValueAtTime(isBass ? 0.35 : 0.22, time);
+    wireOsc.connect(wireGain);
+
+    filter.type = 'lowpass';
+    filter.Q.setValueAtTime(2.4, time);
+    filter.frequency.setValueAtTime(Math.min(5000, freq * 5.2), time);
+    filter.frequency.exponentialRampToValueAtTime(Math.max(120, freq * 1.1), time + (isBass ? 0.45 : 0.22));
+
+    const peakVol = isBass ? 0.046 : 0.035;
+    const decayTime = isBass ? 0.85 : 0.55;
+
+    gain.gain.setValueAtTime(0.0001, time);
+    gain.linearRampToValueAtTime(peakVol, time + 0.005);
+    gain.exponentialRampToValueAtTime(0.0001, time + decayTime);
+
+    bodyOsc.connect(filter);
+    wireGain.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.masterGain);
+
+    bodyOsc.start(time);
+    wireOsc.start(time);
+    bodyOsc.stop(time + decayTime + 0.05);
+    wireOsc.stop(time + decayTime + 0.05);
+  }
+
+  playBodhran(time, type) {
+    if (type === 'primary') {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      const filter = this.ctx.createBiquadFilter();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(78, time);
+      osc.frequency.exponentialRampToValueAtTime(46, time + 0.075);
+
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(170, time);
+      filter.Q.setValueAtTime(1.8, time);
+
+      gain.gain.setValueAtTime(0.032, time);
+      gain.exponentialRampToValueAtTime(0.0001, time + 0.16);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(this.masterGain);
+
+      osc.start(time);
+      osc.stop(time + 0.18);
+    } else if (type === 'secondary') {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(92, time);
+      osc.frequency.exponentialRampToValueAtTime(54, time + 0.055);
+
+      gain.gain.setValueAtTime(0.022, time);
+      gain.exponentialRampToValueAtTime(0.0001, time + 0.12);
+
+      osc.connect(gain);
+      gain.connect(this.masterGain);
+
+      osc.start(time);
+      osc.stop(time + 0.13);
+    } else if (type === 'brush' && this.noiseBuffer) {
+      const noiseSrc = this.ctx.createBufferSource();
+      noiseSrc.buffer = this.noiseBuffer;
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(1200, time);
+      filter.Q.setValueAtTime(2.0, time);
+
+      const gain = this.ctx.createGain();
+      gain.gain.setValueAtTime(0.005, time);
+      gain.exponentialRampToValueAtTime(0.0001, time + 0.025);
+
+      noiseSrc.connect(filter);
+      filter.connect(gain);
+      gain.connect(this.masterGain);
+
+      noiseSrc.start(time);
+      noiseSrc.stop(time + 0.03);
+    }
+  }
+
+  playDrone(time, dur) {
+    const d1 = this.ctx.createOscillator();
+    const a1 = this.ctx.createOscillator();
+    const d2 = this.ctx.createOscillator();
+    const filter = this.ctx.createBiquadFilter();
+    const gain = this.ctx.createGain();
+
+    d1.type = 'triangle';
+    d1.frequency.setValueAtTime(this.noteFreqs['D2'], time);
+
+    a1.type = 'triangle';
+    a1.frequency.setValueAtTime(this.noteFreqs['A2'], time);
+
+    d2.type = 'sine';
+    d2.frequency.setValueAtTime(this.noteFreqs['D3'], time);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(260, time);
+
+    gain.gain.setValueAtTime(0.012, time);
+    gain.gain.setValueAtTime(0.012, time + dur - 0.05);
+    gain.linearRampToValueAtTime(0.0001, time + dur);
+
+    d1.connect(filter);
+    a1.connect(filter);
+    d2.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.masterGain);
+
+    d1.start(time);
+    a1.start(time);
+    d2.start(time);
+    d1.stop(time + dur);
+    a1.stop(time + dur);
+    d2.stop(time + dur);
+  }
+}
+
 // --- Web Audio Synthesizer ---
 class SoundManager {
   constructor() {
     this.enabled = true;
     this.ctx = null;
+    this.music = null;
+    this.musicEnabled = localStorage.getItem(STORAGE_KEYS.MUSIC_ENABLED) !== 'false';
   }
 
   init() {
     if (!this.ctx) {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (AudioCtx) this.ctx = new AudioCtx();
+      if (AudioCtx) {
+        this.ctx = new AudioCtx();
+        this.music = new IrishFolkMusic(this.ctx);
+        this.music.enabled = this.musicEnabled;
+      }
     }
     if (this.ctx && this.ctx.state === 'suspended') {
       this.ctx.resume();
     }
+  }
+
+  startMusic() {
+    this.init();
+    if (this.music && this.musicEnabled && !this.music.isPlaying) {
+      this.music.start();
+    }
+  }
+
+  stopMusic() {
+    if (this.music) {
+      this.music.stop();
+    }
+  }
+
+  toggleMusic() {
+    this.init();
+    if (this.music) {
+      this.musicEnabled = this.music.toggle();
+      localStorage.setItem(STORAGE_KEYS.MUSIC_ENABLED, this.musicEnabled ? 'true' : 'false');
+      return this.musicEnabled;
+    }
+    this.musicEnabled = !this.musicEnabled;
+    localStorage.setItem(STORAGE_KEYS.MUSIC_ENABLED, this.musicEnabled ? 'true' : 'false');
+    return this.musicEnabled;
+  }
+
+  isMusicEnabled() {
+    return this.musicEnabled;
   }
 
   // Sound of drawing / flipping a card from the deck: Crisp paper flick & slide
@@ -1500,6 +2022,9 @@ class SoundManager {
     if (!this.enabled) return;
     this.init();
     if (!this.ctx) return;
+    if (this.music) {
+      this.music.duck(0.015, 3.2);
+    }
     const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99];
     notes.forEach((freq, idx) => {
       setTimeout(() => {
@@ -1917,6 +2442,7 @@ class SolitaireGame {
       btnUndo: document.getElementById('btn-undo'),
       btnHint: document.getElementById('btn-hint'),
       btnSound: document.getElementById('btn-sound'),
+      btnMusic: document.getElementById('btn-music'),
       btnScores: document.getElementById('btn-scores'),
       winModal: document.getElementById('win-modal'),
       btnWinReplay: document.getElementById('btn-win-replay'),
@@ -2025,6 +2551,11 @@ class SolitaireGame {
       this.dom.btnSound.textContent = this.sound.enabled ? t.btnSoundOn : t.btnSoundOff;
       this.dom.btnSound.title = t.btnSoundTitle;
     }
+    if (this.dom.btnMusic) {
+      const isMusicActive = this.sound.isMusicEnabled();
+      this.dom.btnMusic.textContent = isMusicActive ? t.btnMusicOn : t.btnMusicOff;
+      this.dom.btnMusic.title = t.btnMusicTitle;
+    }
     if (this.dom.btnNew) {
       this.dom.btnNew.textContent = t.btnNew;
       this.dom.btnNew.title = t.btnNewTitle;
@@ -2125,6 +2656,26 @@ class SolitaireGame {
       const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
       this.dom.btnSound.textContent = this.sound.enabled ? t.btnSoundOn : t.btnSoundOff;
     });
+
+    if (this.dom.btnMusic) {
+      this.dom.btnMusic.addEventListener('click', () => {
+        const isMusicActive = this.sound.toggleMusic();
+        const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
+        this.dom.btnMusic.textContent = isMusicActive ? t.btnMusicOn : t.btnMusicOff;
+      });
+    }
+
+    // First user gesture listener to unlock Web Audio & start background music if enabled
+    const unlockAudioAndStartMusic = () => {
+      this.sound.init();
+      if (this.sound.musicEnabled) {
+        this.sound.startMusic();
+      }
+      window.removeEventListener('pointerdown', unlockAudioAndStartMusic);
+      window.removeEventListener('keydown', unlockAudioAndStartMusic);
+    };
+    window.addEventListener('pointerdown', unlockAudioAndStartMusic, { passive: true });
+    window.addEventListener('keydown', unlockAudioAndStartMusic, { passive: true });
 
     if (this.dom.selectLanguage) {
       this.dom.selectLanguage.addEventListener('change', (e) => {
