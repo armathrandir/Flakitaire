@@ -200,6 +200,19 @@
         <button id="tab-draw3" class="tab-btn">🃏 3 Karten (Top 100)</button>
       </div>
 
+      <div class="scores-filter-bar">
+        <div class="filter-group scope-group">
+          <button id="filter-scope-global" class="filter-btn active" title="Weltweite Bestenliste">🌍 Global</button>
+          <button id="filter-scope-local" class="filter-btn" title="Auf diesem Gerät gespeicherte Rekorde">💾 Lokal</button>
+        </div>
+        <div class="filter-group device-group">
+          <button id="filter-device-all" class="filter-btn active" title="Alle Geräte">Alle</button>
+          <button id="filter-device-desktop" class="filter-btn" title="Nur PC / Desktop">💻 PC</button>
+          <button id="filter-device-mobile" class="filter-btn" title="Nur Smartphone / Tablet">📱 Handy</button>
+        </div>
+        <button id="btn-refresh-scores" class="filter-btn refresh-btn" title="Aktualisieren">🔄</button>
+      </div>
+
       <div class="scores-table-container">
         <table class="scores-table">
           <thead>
@@ -219,7 +232,7 @@
       </div>
 
       <div class="modal-actions-space">
-        <button id="btn-clear-scores" class="btn btn-danger" title="Ergebnisse des aktuellen Tabs löschen">Diese Liste leeren</button>
+        <button id="btn-clear-scores" class="btn btn-danger" title="Lokale Ergebnisse des aktuellen Tabs löschen">Lokale Liste leeren</button>
         <button id="btn-close-scores" class="btn btn-secondary">Schließen</button>
       </div>
     </div>

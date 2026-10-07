@@ -60,6 +60,30 @@ const STORAGE_KEYS = {
   LANGUAGE: 'solitaire_lang_v2'
 };
 
+// --- Firebase Realtime Database for Global High Scores ---
+const FIREBASE_DATABASE_URL = 'https://flakitaire-4556d-default-rtdb.europe-west1.firebasedatabase.app';
+
+function getDeviceType() {
+  const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+  const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(navigator.userAgent);
+  const isSmallScreen = window.innerWidth <= 768;
+  return (isMobileUA || (isTouch && isSmallScreen)) ? 'mobile' : 'desktop';
+}
+
+function escapeHtml(str) {
+  if (typeof str !== 'string') return '';
+  return str.replace(/[&<>"']/g, function(m) {
+    switch (m) {
+      case '&': return '&amp;';
+      case '<': return '&lt;';
+      case '>': return '&gt;';
+      case '"': return '&quot;';
+      case "'": return '&#039;';
+      default: return m;
+    }
+  });
+}
+
 // --- Comprehensive Multilingual Localization Dictionary ---
 const TRANSLATIONS = {
   de: {
@@ -143,7 +167,8 @@ const TRANSLATIONS = {
       labelName: 'Gib deinen Namen für die Bestenliste ein:',
       namePlaceholder: 'Spielername',
       btnSaveScore: 'Speichern',
-      saveSuccess: '✅ Rekord in die Bestenliste eingetragen!',
+      saveSuccess: '✅ Rekord weltweit eingetragen!',
+      saveSuccessLocal: '✅ Rekord lokal gespeichert!',
       btnScores: 'Bestenliste',
       btnReplay: 'Nochmal spielen',
       dealSolvable: 'Lösbar',
@@ -156,17 +181,25 @@ const TRANSLATIONS = {
       title: '🏆 Bestenliste',
       tabDraw1: '🃏 1 Karte (Top 100)',
       tabDraw3: '🃏 3 Karten (Top 100)',
+      filterGlobal: '🌍 Global',
+      filterLocal: '💾 Lokal',
+      filterAll: 'Alle',
+      filterDesktop: '💻 PC',
+      filterMobile: '📱 Handy',
+      loading: 'Bestenliste wird geladen...',
+      refreshTitle: 'Aktualisieren',
+      offlineNotice: 'Offline - Lokale Rekorde werden angezeigt.',
       thPlayer: 'Spieler',
       thScore: 'Punkte',
       thTime: 'Zeit',
       thMoves: 'Züge',
       thDate: 'Datum',
       empty: 'Noch keine Rekorde erfasst. Gewinne ein Spiel, um Geschichte zu schreiben!',
-      btnClear: 'Diese Liste leeren',
-      btnClearTitle: 'Ergebnisse des aktuellen Tabs löschen',
+      btnClear: 'Lokale Liste leeren',
+      btnClearTitle: 'Lokale Ergebnisse des aktuellen Tabs löschen',
       btnClose: 'Schließen',
-      clearConfirm: (mode) => `Möchtest du die Bestenliste für ${mode} wirklich unwiderruflich löschen?`,
-      clearedToast: (mode) => `Bestenliste für ${mode} gelöscht.`
+      clearConfirm: (mode) => `Möchtest du die lokale Bestenliste für ${mode} wirklich unwiderruflich löschen?`,
+      clearedToast: (mode) => `Lokale Bestenliste für ${mode} gelöscht.`
     },
     toasts: {
       dealSolvable: '🌟 Lösbarer Modus: Mathematisch garantiert gewinnbar!',
@@ -267,7 +300,8 @@ const TRANSLATIONS = {
       labelName: 'Enter your name for the Highscores:',
       namePlaceholder: 'Player Name',
       btnSaveScore: 'Save Score',
-      saveSuccess: '✅ Score saved to leaderboard!',
+      saveSuccess: '✅ Score saved to global leaderboard!',
+      saveSuccessLocal: '✅ Score saved locally!',
       btnScores: 'Leaderboard',
       btnReplay: 'Play Again',
       dealSolvable: 'Solvable',
@@ -280,17 +314,25 @@ const TRANSLATIONS = {
       title: '🏆 High Scores',
       tabDraw1: '🃏 Draw 1 (Top 100)',
       tabDraw3: '🃏 Draw 3 (Top 100)',
+      filterGlobal: '🌍 Global',
+      filterLocal: '💾 Local',
+      filterAll: 'All',
+      filterDesktop: '💻 PC',
+      filterMobile: '📱 Mobile',
+      loading: 'Loading high scores...',
+      refreshTitle: 'Refresh',
+      offlineNotice: 'Offline - Showing local scores.',
       thPlayer: 'Player',
       thScore: 'Score',
       thTime: 'Time',
       thMoves: 'Moves',
       thDate: 'Date',
       empty: 'No high scores recorded yet. Win a game to make history!',
-      btnClear: 'Clear This Board',
-      btnClearTitle: 'Clear scores for current tab',
+      btnClear: 'Clear Local Board',
+      btnClearTitle: 'Clear local scores for current tab',
       btnClose: 'Close',
-      clearConfirm: (mode) => `Are you sure you want to permanently clear the ${mode} leaderboard?`,
-      clearedToast: (mode) => `Cleared ${mode} Leaderboard.`
+      clearConfirm: (mode) => `Are you sure you want to permanently clear the local ${mode} leaderboard?`,
+      clearedToast: (mode) => `Cleared local ${mode} Leaderboard.`
     },
     toasts: {
       dealSolvable: '🌟 Solvable Mode: Guaranteed winnable deal!',
@@ -391,7 +433,8 @@ const TRANSLATIONS = {
       labelName: 'Introduce tu nombre para la clasificación:',
       namePlaceholder: 'Nombre de jugador',
       btnSaveScore: 'Guardar',
-      saveSuccess: '✅ ¡Puntuación guardada en la tabla!',
+      saveSuccess: '✅ ¡Puntuación guardada globalmente!',
+      saveSuccessLocal: '✅ ¡Puntuación guardada localmente!',
       btnScores: 'Clasificación',
       btnReplay: 'Jugar de nuevo',
       dealSolvable: 'Con solución',
@@ -404,17 +447,25 @@ const TRANSLATIONS = {
       title: '🏆 Récords',
       tabDraw1: '🃏 1 Carta (Top 100)',
       tabDraw3: '🃏 3 Cartas (Top 100)',
+      filterGlobal: '🌍 Global',
+      filterLocal: '💾 Local',
+      filterAll: 'Todos',
+      filterDesktop: '💻 PC',
+      filterMobile: '📱 Móvil',
+      loading: 'Cargando mejores puntuaciones...',
+      refreshTitle: 'Actualizar',
+      offlineNotice: 'Sin conexión - Mostrando récords locales.',
       thPlayer: 'Jugador',
       thScore: 'Puntos',
       thTime: 'Tiempo',
       thMoves: 'Movim.',
       thDate: 'Fecha',
       empty: '¡Aún no hay récords registrados! Gana una partida para entrar en la historia.',
-      btnClear: 'Borrar esta tabla',
-      btnClearTitle: 'Borrar los récords de la pestaña actual',
+      btnClear: 'Borrar tabla local',
+      btnClearTitle: 'Borrar los récords locales de la pestaña actual',
       btnClose: 'Cerrar',
-      clearConfirm: (mode) => `¿Seguro que deseas borrar definitivamente la clasificación de ${mode}?`,
-      clearedToast: (mode) => `Clasificación de ${mode} borrada.`
+      clearConfirm: (mode) => `¿Seguro que deseas borrar definitivamente la clasificación local de ${mode}?`,
+      clearedToast: (mode) => `Clasificación local de ${mode} borrada.`
     },
     toasts: {
       dealSolvable: '🌟 Modo con solución: ¡Partida ganable garantizada!',
@@ -515,7 +566,8 @@ const TRANSLATIONS = {
       labelName: 'Введите имя для таблицы рекордов:',
       namePlaceholder: 'Имя игрока',
       btnSaveScore: 'Сохранить',
-      saveSuccess: '✅ Результат успешно сохранён в таблице!',
+      saveSuccess: '✅ Результат сохранён в мировой таблице!',
+      saveSuccessLocal: '✅ Результат сохранён локально!',
       btnScores: 'Рекорды',
       btnReplay: 'Сыграть ещё',
       dealSolvable: 'Решаемый',
@@ -528,17 +580,25 @@ const TRANSLATIONS = {
       title: '🏆 Рекорды',
       tabDraw1: '🃏 По 1 (Топ 100)',
       tabDraw3: '🃏 По 3 (Топ 100)',
+      filterGlobal: '🌍 Глобально',
+      filterLocal: '💾 Локально',
+      filterAll: 'Все',
+      filterDesktop: '💻 ПК',
+      filterMobile: '📱 Мобильный',
+      loading: 'Загрузка рекордов...',
+      refreshTitle: 'Обновить',
+      offlineNotice: 'Офлайн — показаны локальные рекорды.',
       thPlayer: 'Игрок',
       thScore: 'Счёт',
       thTime: 'Время',
       thMoves: 'Ходы',
       thDate: 'Дата',
       empty: 'Пока нет рекордов. Выиграйте партию, чтобы войти в историю!',
-      btnClear: 'Очистить список',
-      btnClearTitle: 'Удалить рекорды в этой вкладке',
+      btnClear: 'Очистить локальный список',
+      btnClearTitle: 'Удалить локальные рекорды в этой вкладке',
       btnClose: 'Закрыть',
-      clearConfirm: (mode) => `Вы уверены, что хотите безвозвратно очистить таблицу ${mode}?`,
-      clearedToast: (mode) => `Таблица рекордов (${mode}) очищена.`
+      clearConfirm: (mode) => `Вы уверены, что хотите безвозвратно очистить локальную таблицу ${mode}?`,
+      clearedToast: (mode) => `Локальная таблица рекордов (${mode}) очищена.`
     },
     toasts: {
       dealSolvable: '🌟 Решаемый режим: расклад со 100% гарантией победы!',
@@ -639,7 +699,8 @@ const TRANSLATIONS = {
       labelName: 'Ange ditt namn för topplistan:',
       namePlaceholder: 'Spelarnamn',
       btnSaveScore: 'Spara resultat',
-      saveSuccess: '✅ Resultatet sparades i topplistan!',
+      saveSuccess: '✅ Sparat på global topplista!',
+      saveSuccessLocal: '✅ Sparat lokalt!',
       btnScores: 'Topplista',
       btnReplay: 'Spela igen',
       dealSolvable: 'Lösbar',
@@ -652,17 +713,25 @@ const TRANSLATIONS = {
       title: '🏆 Topplista',
       tabDraw1: '🃏 1 Kort (Topp 100)',
       tabDraw3: '🃏 3 Kort (Topp 100)',
+      filterGlobal: '🌍 Global',
+      filterLocal: '💾 Lokal',
+      filterAll: 'Alla',
+      filterDesktop: '💻 Dator',
+      filterMobile: '📱 Mobil',
+      loading: 'Laddar topplista...',
+      refreshTitle: 'Uppdatera',
+      offlineNotice: 'Offline - Visar lokala resultat.',
       thPlayer: 'Spelare',
       thScore: 'Poäng',
       thTime: 'Tid',
       thMoves: 'Drag',
       thDate: 'Datum',
       empty: 'Inga sparade poäng än. Vinn ett spel för att skriva historia!',
-      btnClear: 'Rensa denna lista',
-      btnClearTitle: 'Rensa poängen för denna flik',
+      btnClear: 'Rensa lokal lista',
+      btnClearTitle: 'Rensa lokala poängen för denna flik',
       btnClose: 'Stäng',
-      clearConfirm: (mode) => `Är du säker på att du vill rensa topplistan för ${mode}?`,
-      clearedToast: (mode) => `Topplistan för ${mode} har rensats.`
+      clearConfirm: (mode) => `Är du säker på att du vill rensa den lokala topplistan för ${mode}?`,
+      clearedToast: (mode) => `Lokala topplistan för ${mode} har rensats.`
     },
     toasts: {
       dealSolvable: '🌟 Lösbart läge: Garanterat vinnbar giv!',
@@ -763,7 +832,8 @@ const TRANSLATIONS = {
       labelName: 'Inserisci il tuo nome per la classifica:',
       namePlaceholder: 'Nome giocatore',
       btnSaveScore: 'Salva record',
-      saveSuccess: '✅ Record salvato in classifica!',
+      saveSuccess: '✅ Salvato nella classifica globale!',
+      saveSuccessLocal: '✅ Salvato localmente!',
       btnScores: 'Classifica',
       btnReplay: 'Gioca ancora',
       dealSolvable: 'Risolvibile',
@@ -776,17 +846,25 @@ const TRANSLATIONS = {
       title: '🏆 Classifica',
       tabDraw1: '🃏 1 Carta (Top 100)',
       tabDraw3: '🃏 3 Carte (Top 100)',
+      filterGlobal: '🌍 Globale',
+      filterLocal: '💾 Locale',
+      filterAll: 'Tutti',
+      filterDesktop: '💻 PC',
+      filterMobile: '📱 Cellulare',
+      loading: 'Caricamento classifica...',
+      refreshTitle: 'Aggiorna',
+      offlineNotice: 'Offline - Mostra record locali.',
       thPlayer: 'Giocatore',
       thScore: 'Punti',
       thTime: 'Tempo',
       thMoves: 'Mosse',
       thDate: 'Data',
       empty: 'Nessun record salvato. Vinci una partita per entrare nella storia!',
-      btnClear: 'Azzera lista',
-      btnClearTitle: 'Cancella i punteggi per questa scheda',
+      btnClear: 'Azzera lista locale',
+      btnClearTitle: 'Cancella i punteggi locali per questa scheda',
       btnClose: 'Chiudi',
-      clearConfirm: (mode) => `Sei sicuro di voler azzerare definitivamente la classifica di ${mode}?`,
-      clearedToast: (mode) => `Classifica per ${mode} azzerata.`
+      clearConfirm: (mode) => `Sei sicuro di voler azzerare definitivamente la classifica locale di ${mode}?`,
+      clearedToast: (mode) => `Classifica locale per ${mode} azzerata.`
     },
     toasts: {
       dealSolvable: '🌟 Modalità risolvibile: Partita garantita al 100%!',
@@ -1821,6 +1899,10 @@ class SolitaireGame {
     this.lastCardClick = null;
     this.justFinishedDrag = false;
     this.currentScoreTab = this.drawMode === 3 ? 'draw3' : 'draw1';
+    this.currentScoreScope = 'global';
+    this.currentDeviceFilter = 'all';
+    this.globalScoresCache = { draw1: null, draw3: null };
+    this.isLoadingScores = false;
 
     this.pendingWinRecord = null;
     this.hasSavedCurrentWin = false;
@@ -1889,7 +1971,13 @@ class SolitaireGame {
       btnCloseScores: document.getElementById('btn-close-scores'),
       btnClearScores: document.getElementById('btn-clear-scores'),
       tabDraw1: document.getElementById('tab-draw1'),
-      tabDraw3: document.getElementById('tab-draw3')
+      tabDraw3: document.getElementById('tab-draw3'),
+      filterScopeGlobal: document.getElementById('filter-scope-global'),
+      filterScopeLocal: document.getElementById('filter-scope-local'),
+      filterDeviceAll: document.getElementById('filter-device-all'),
+      filterDeviceDesktop: document.getElementById('filter-device-desktop'),
+      filterDeviceMobile: document.getElementById('filter-device-mobile'),
+      btnRefreshScores: document.getElementById('btn-refresh-scores')
     };
 
     this.dom.selectDraw.value = this.drawMode.toString();
@@ -2019,6 +2107,12 @@ class SolitaireGame {
     setTxt('scores-modal-title', t.scoresModal.title);
     setTxt('tab-draw1', t.scoresModal.tabDraw1);
     setTxt('tab-draw3', t.scoresModal.tabDraw3);
+    setTxt('filter-scope-global', t.scoresModal.filterGlobal);
+    setTxt('filter-scope-local', t.scoresModal.filterLocal);
+    setTxt('filter-device-all', t.scoresModal.filterAll);
+    setTxt('filter-device-desktop', t.scoresModal.filterDesktop);
+    setTxt('filter-device-mobile', t.scoresModal.filterMobile);
+    if (this.dom.btnRefreshScores) this.dom.btnRefreshScores.title = t.scoresModal.refreshTitle;
     setTxt('th-player', t.scoresModal.thPlayer);
     setTxt('th-score', t.scoresModal.thScore);
     setTxt('th-time', t.scoresModal.thTime);
@@ -2161,6 +2255,12 @@ class SolitaireGame {
 
     this.dom.tabDraw1.addEventListener('click', () => this.switchScoreTab('draw1'));
     this.dom.tabDraw3.addEventListener('click', () => this.switchScoreTab('draw3'));
+    if (this.dom.filterScopeGlobal) this.dom.filterScopeGlobal.addEventListener('click', () => this.switchScoreScope('global'));
+    if (this.dom.filterScopeLocal) this.dom.filterScopeLocal.addEventListener('click', () => this.switchScoreScope('local'));
+    if (this.dom.filterDeviceAll) this.dom.filterDeviceAll.addEventListener('click', () => this.switchDeviceFilter('all'));
+    if (this.dom.filterDeviceDesktop) this.dom.filterDeviceDesktop.addEventListener('click', () => this.switchDeviceFilter('desktop'));
+    if (this.dom.filterDeviceMobile) this.dom.filterDeviceMobile.addEventListener('click', () => this.switchDeviceFilter('mobile'));
+    if (this.dom.btnRefreshScores) this.dom.btnRefreshScores.addEventListener('click', () => this.refreshScores());
 
     // --- Right-Click Feature: Sweep all possible visible cards to Foundations! ---
     window.addEventListener('contextmenu', (e) => {
@@ -3115,7 +3215,7 @@ class SolitaireGame {
     }
   }
 
-  commitPlayerScore() {
+  async commitPlayerScore() {
     if (!this.pendingWinRecord || this.hasSavedCurrentWin) return;
 
     let playerName = this.dom.winNameInput.value.trim();
@@ -3125,25 +3225,43 @@ class SolitaireGame {
 
     localStorage.setItem(STORAGE_KEYS.PLAYER_NAME, playerName);
 
-    this.recordHighScore({
+    const record = {
       ...this.pendingWinRecord,
-      name: playerName
-    });
+      name: playerName,
+      device: getDeviceType(),
+      timestamp: Date.now()
+    };
 
+    // 1. Record in local device storage
+    this.recordLocalHighScore(record);
+
+    // 2. Submit to global Firebase Realtime Database
     this.hasSavedCurrentWin = true;
+    this.dom.btnSaveScore.disabled = true;
+    this.dom.btnSaveScore.textContent = '...';
+
+    const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
+    try {
+      await this.submitGlobalScore(record, record.mode);
+      this.globalScoresCache[record.mode] = null; // Invalidate cache
+      this.dom.winSaveMsg.textContent = t.winModal.saveSuccess;
+    } catch (err) {
+      console.warn('Firebase submission failed, saved locally:', err);
+      this.dom.winSaveMsg.textContent = t.winModal.saveSuccessLocal || t.winModal.saveSuccess;
+    }
+
     this.dom.winSaveMsg.classList.remove('hidden');
     this.dom.btnSaveScore.textContent = '✓';
-    this.dom.btnSaveScore.disabled = true;
   }
 
-  // --- Two Distinct High Score Boards (Draw 1 & Draw 3, up to 100 entries each) ---
+  // --- Two Distinct High Score Boards (Draw 1 & Draw 3) with Global & Local Sync ---
   getStorageKeyForMode(mode) {
     return mode === 'Draw 3' || mode === 'draw3' || mode === 3 || (typeof mode === 'string' && mode.includes('3'))
       ? STORAGE_KEYS.HIGH_SCORES_DRAW3
       : STORAGE_KEYS.HIGH_SCORES_DRAW1;
   }
 
-  getHighScoresForMode(mode) {
+  getLocalHighScoresForMode(mode) {
     const key = this.getStorageKeyForMode(mode);
     try {
       const data = localStorage.getItem(key);
@@ -3153,9 +3271,9 @@ class SolitaireGame {
     }
   }
 
-  recordHighScore(record) {
+  recordLocalHighScore(record) {
     const key = this.getStorageKeyForMode(record.mode);
-    let scores = this.getHighScoresForMode(record.mode);
+    let scores = this.getLocalHighScoresForMode(record.mode);
     scores.push(record);
 
     scores.sort((a, b) => b.score - a.score || a.timeSeconds - b.timeSeconds || a.moves - b.moves);
@@ -3164,25 +3282,128 @@ class SolitaireGame {
     localStorage.setItem(key, JSON.stringify(top100));
   }
 
+  async submitGlobalScore(record, mode) {
+    const modeKey = (mode === 'Draw 3' || mode === 'draw3' || mode === 3 || (typeof mode === 'string' && mode.includes('3')))
+      ? 'draw3'
+      : 'draw1';
+    const url = `${FIREBASE_DATABASE_URL}/scores/${modeKey}.json`;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(record)
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return true;
+  }
+
+  async fetchGlobalScores(mode) {
+    const modeKey = (mode === 'Draw 3' || mode === 'draw3' || mode === 3 || (typeof mode === 'string' && mode.includes('3')))
+      ? 'draw3'
+      : 'draw1';
+    const url = `${FIREBASE_DATABASE_URL}/scores/${modeKey}.json`;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      if (!data) return [];
+      const list = Object.keys(data).map(k => ({ id: k, ...data[k] }));
+      list.sort((a, b) => b.score - a.score || a.timeSeconds - b.timeSeconds || a.moves - b.moves);
+      return list.slice(0, 100);
+    } catch (err) {
+      console.warn('Could not load global scores:', err);
+      return null;
+    }
+  }
+
   openHighScores(targetMode = null) {
     const mode = targetMode || (this.drawMode === 3 ? 'draw3' : 'draw1');
-    this.switchScoreTab(mode);
+    this.currentScoreTab = mode;
+    this.dom.tabDraw1.classList.toggle('active', mode === 'draw1');
+    this.dom.tabDraw3.classList.toggle('active', mode === 'draw3');
     this.dom.scoresModal.classList.remove('hidden');
+    this.loadAndRenderScores();
   }
 
   switchScoreTab(tab) {
     this.currentScoreTab = tab;
     this.dom.tabDraw1.classList.toggle('active', tab === 'draw1');
     this.dom.tabDraw3.classList.toggle('active', tab === 'draw3');
+    this.loadAndRenderScores();
+  }
+
+  switchScoreScope(scope) {
+    this.currentScoreScope = scope;
+    if (this.dom.filterScopeGlobal) this.dom.filterScopeGlobal.classList.toggle('active', scope === 'global');
+    if (this.dom.filterScopeLocal) this.dom.filterScopeLocal.classList.toggle('active', scope === 'local');
+    if (this.dom.btnClearScores) {
+      this.dom.btnClearScores.style.display = scope === 'local' ? 'inline-flex' : 'none';
+    }
+    this.loadAndRenderScores();
+  }
+
+  switchDeviceFilter(device) {
+    this.currentDeviceFilter = device;
+    if (this.dom.filterDeviceAll) this.dom.filterDeviceAll.classList.toggle('active', device === 'all');
+    if (this.dom.filterDeviceDesktop) this.dom.filterDeviceDesktop.classList.toggle('active', device === 'desktop');
+    if (this.dom.filterDeviceMobile) this.dom.filterDeviceMobile.classList.toggle('active', device === 'mobile');
+    this.renderHighScoresTable();
+  }
+
+  async refreshScores() {
+    if (this.isLoadingScores) return;
+    this.globalScoresCache[this.currentScoreTab] = null;
+    await this.loadAndRenderScores(true);
+  }
+
+  async loadAndRenderScores(isManualRefresh = false) {
+    const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
+
+    if (this.currentScoreScope === 'global') {
+      if (!this.globalScoresCache[this.currentScoreTab] || isManualRefresh) {
+        this.isLoadingScores = true;
+        if (this.dom.btnRefreshScores) this.dom.btnRefreshScores.classList.add('is-spinning');
+        this.dom.scoresTbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="loading-scores-msg">⏳ ${t.scoresModal.loading || 'Loading...'}</td>
+          </tr>
+        `;
+
+        const globalList = await this.fetchGlobalScores(this.currentScoreTab);
+        if (this.dom.btnRefreshScores) this.dom.btnRefreshScores.classList.remove('is-spinning');
+        this.isLoadingScores = false;
+
+        if (globalList !== null) {
+          this.globalScoresCache[this.currentScoreTab] = globalList;
+        } else {
+          // If fetch failed, notify and fallback to local
+          this.showToast(t.scoresModal.offlineNotice || 'Offline');
+          this.switchScoreScope('local');
+          return;
+        }
+      }
+    }
+
     this.renderHighScoresTable();
   }
 
   renderHighScoresTable() {
     const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
-    const scores = this.getHighScoresForMode(this.currentScoreTab);
+    let scores = [];
+
+    if (this.currentScoreScope === 'global') {
+      scores = this.globalScoresCache[this.currentScoreTab] || [];
+    } else {
+      scores = this.getLocalHighScoresForMode(this.currentScoreTab);
+    }
+
+    // Apply device filter
+    let filtered = scores;
+    if (this.currentDeviceFilter !== 'all') {
+      filtered = scores.filter(s => (s.device || 'desktop') === this.currentDeviceFilter);
+    }
 
     this.dom.scoresTbody.innerHTML = '';
-    if (scores.length === 0) {
+    if (filtered.length === 0) {
       this.dom.scoresTbody.innerHTML = `
         <tr>
           <td colspan="6" class="no-scores-msg">${t.scoresModal.empty}</td>
@@ -3191,12 +3412,19 @@ class SolitaireGame {
       return;
     }
 
-    scores.forEach((s, idx) => {
+    filtered.forEach((s, idx) => {
       const tr = document.createElement('tr');
       const rankBadge = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : (idx + 1).toString();
+      const isMobile = s.device === 'mobile';
+      const deviceIcon = isMobile ? '📱' : '💻';
+      const deviceTitle = isMobile ? (t.scoresModal.filterMobile || 'Mobile') : (t.scoresModal.filterDesktop || 'PC');
+
       tr.innerHTML = `
         <td><strong>${rankBadge}</strong></td>
-        <td class="player-name-cell" title="${s.name || 'Player'}">${s.name || 'Player'}</td>
+        <td class="player-name-cell" title="${escapeHtml(s.name || 'Player')}">
+          <span class="player-device-badge" title="${deviceTitle}">${deviceIcon}</span>
+          <span class="player-name-text">${escapeHtml(s.name || 'Player')}</span>
+        </td>
         <td><strong>${s.score}</strong></td>
         <td>${s.timeFormatted}</td>
         <td>${s.moves}</td>

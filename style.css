@@ -979,6 +979,83 @@ body.is-pointer-dragging * {
   box-shadow: 0 0 10px var(--accent-gold-glow);
 }
 
+/* Scores Filter Bar & Sub-Filters */
+.scores-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 0 0 10px;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.28);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.filter-group {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.filter-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ccc;
+  padding: 5px 11px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.filter-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.filter-btn.active {
+  background: var(--accent-gold);
+  color: #111;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 8px var(--accent-gold-glow);
+  font-weight: 700;
+}
+
+.refresh-btn {
+  padding: 5px 9px;
+  font-size: 0.85rem;
+  margin-left: auto;
+}
+
+.refresh-btn.is-spinning {
+  animation: spin 0.8s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.player-device-badge {
+  display: inline-block;
+  font-size: 0.85rem;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.loading-scores-msg {
+  text-align: center;
+  padding: 30px;
+  color: var(--accent-gold);
+  font-weight: 600;
+}
+
 .scores-table-container {
   max-height: 290px;
   overflow-y: auto;
@@ -1269,5 +1346,20 @@ body.is-pointer-dragging * {
 
   .legend-sep {
     display: none;
+  }
+
+  .scores-filter-bar {
+    justify-content: center;
+    gap: 6px;
+    padding: 6px 4px;
+  }
+
+  .filter-btn {
+    padding: 4px 7px;
+    font-size: 0.72rem;
+  }
+
+  .refresh-btn {
+    margin-left: 0;
   }
 }
