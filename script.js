@@ -1373,13 +1373,47 @@ class IrishFolkMusicPlayer {
   }
 }
 
-// --- Web Audio Synthesizer for Card SFX & Music Orchestration ---
+// --- Sound Manager with Real Studio Foley Audio Assets ---
+// Audio Assets:
+// - Card Flip / Draw & Card Place: Kenney Casino Audio (CC0)
+// - Foundation Shot Glass Clink: Kenney Impact & Interface Sounds (CC0)
+// - Sweep Card Move: Kenney Casino Audio (CC0)
+// - Victory Fanfare: CynicMusic Heavy Concept B Fanfare (CC0)
 class SoundManager {
   constructor() {
     this.enabled = true;
     this.ctx = null;
     this.music = null;
     this.musicEnabled = localStorage.getItem(STORAGE_KEYS.MUSIC_ENABLED) !== 'false';
+    this.audioBuffers = {};
+    this.audioElements = {};
+    this.isPreloaded = false;
+
+    this.soundPaths = {
+      flip: [
+        'sounds/card-flip-1.ogg',
+        'sounds/card-flip-2.ogg',
+        'sounds/card-flip-3.ogg',
+        'sounds/card-flip-4.ogg'
+      ],
+      place: [
+        'sounds/card-place-1.ogg',
+        'sounds/card-place-2.ogg',
+        'sounds/card-place-3.ogg',
+        'sounds/card-place-4.ogg'
+      ],
+      foundation: [
+        'sounds/foundation-1.ogg',
+        'sounds/foundation-2.ogg',
+        'sounds/foundation-3.ogg'
+      ],
+      sweep: [
+        'sounds/card-shove.ogg'
+      ],
+      victory: [
+        'sounds/victory.mp3'
+      ]
+    };
   }
 
   init() {
@@ -1395,6 +1429,38 @@ class SoundManager {
     if (!this.music) {
       this.music = new IrishFolkMusicPlayer();
     }
+    this.preloadSounds();
+  }
+
+  preloadSounds() {
+    if (this.isPreloaded) return;
+    this.isPreloaded = true;
+
+    // Preload both Web Audio API buffers (for zero-latency multi-playback)
+    // and HTML5 Audio elements as an instant fallback
+    const allPaths = Object.values(this.soundPaths).flat();
+    allPaths.forEach(path => {
+      // 1. HTML5 audio element cache
+      try {
+        const audio = new Audio();
+        audio.preload = 'auto';
+        audio.src = path;
+        this.audioElements[path] = audio;
+      } catch (e) {}
+
+      // 2. Web Audio decoded buffer cache
+      if (this.ctx && window.fetch) {
+        fetch(path)
+          .then(res => res.arrayBuffer())
+          .then(ab => this.ctx.decodeAudioData(ab))
+          .then(decoded => {
+            this.audioBuffers[path] = decoded;
+          })
+          .catch(() => {
+            // Audio elements will serve as fallback
+          });
+      }
+    });
   }
 
   startMusic() {
@@ -1432,246 +1498,75 @@ class SoundManager {
     return !!(this.music && this.music.isPlaying);
   }
 
-  // Sound of drawing / flipping a card from the deck: Crisp paper flick & slide
+  // Generic sound player that tries Web Audio buffer first, falling back to HTML5 Audio
+  playSound(category, volume = 0.6, pitchVariation = 0.04) {
+    if (!this.enabled) return;
+    this.init();
+
+    const list = this.soundPaths[category];
+    if (!list || list.length === 0) return;
+    const path = list[Math.floor(Math.random() * list.length)];
+
+    // Primary: Web Audio API BufferSource (zero-latency, overlapping, pitch-varied)
+    const buf = this.audioBuffers[path];
+    if (buf && this.ctx && this.ctx.state !== 'closed') {
+      if (this.ctx.state === 'suspended') {
+        this.ctx.resume().catch(() => {});
+      }
+      try {
+        const source = this.ctx.createBufferSource();
+        source.buffer = buf;
+        if (pitchVariation > 0) {
+          source.playbackRate.value = 1.0 + (Math.random() * 2 - 1) * pitchVariation;
+        }
+        const gainNode = this.ctx.createGain();
+        gainNode.gain.setValueAtTime(volume, this.ctx.currentTime);
+        source.connect(gainNode);
+        gainNode.connect(this.ctx.destination);
+        source.start();
+        return;
+      } catch (e) {
+        // Fallback below
+      }
+    }
+
+    // Secondary: HTML5 Audio clone fallback
+    try {
+      const audioEl = this.audioElements[path] ? this.audioElements[path].cloneNode() : new Audio(path);
+      audioEl.volume = Math.min(1.0, Math.max(0.0, volume));
+      audioEl.play().catch(() => {});
+    } catch (e) {}
+  }
+
+  // Real card flip / draw sound
   playFlip() {
-    if (!this.enabled) return;
-    this.init();
-    if (!this.ctx) return;
-
-    const t = this.ctx.currentTime;
-    const sampleRate = this.ctx.sampleRate;
-
-    // 1. Friction swipe off the deck
-    const dur = 0.045;
-    const bufSize = Math.max(1, Math.floor(sampleRate * dur));
-    const buffer = this.ctx.createBuffer(1, bufSize, sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufSize; i++) {
-      data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufSize, 1.5);
-    }
-
-    const noiseSrc = this.ctx.createBufferSource();
-    noiseSrc.buffer = buffer;
-
-    const filter = this.ctx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.Q.setValueAtTime(2.2, t);
-    filter.frequency.setValueAtTime(3600, t);
-    filter.frequency.exponentialRampToValueAtTime(1600, t + dur);
-
-    const gain = this.ctx.createGain();
-    gain.gain.setValueAtTime(0.001, t);
-    gain.gain.linearRampToValueAtTime(0.18, t + 0.006);
-    gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
-
-    noiseSrc.connect(filter);
-    filter.connect(gain);
-    gain.connect(this.ctx.destination);
-    noiseSrc.start(t);
-
-    // 2. Light papery release flick
-    const osc = this.ctx.createOscillator();
-    const oscGain = this.ctx.createGain();
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(950, t);
-    osc.frequency.exponentialRampToValueAtTime(280, t + 0.028);
-
-    oscGain.gain.setValueAtTime(0.14, t);
-    oscGain.gain.exponentialRampToValueAtTime(0.001, t + 0.028);
-
-    osc.connect(oscGain);
-    oscGain.connect(this.ctx.destination);
-    osc.start(t);
-    osc.stop(t + 0.03);
+    this.playSound('flip', 0.55, 0.06);
   }
 
-  // Sound of card movements / stacking: Authentic card slide & snap onto a stack
+  // Real card place / snap onto tableau or stack
   playPlace() {
-    if (!this.enabled) return;
-    this.init();
-    if (!this.ctx) return;
-
-    const t = this.ctx.currentTime;
-    const sampleRate = this.ctx.sampleRate;
-
-    // 1. Friction swipe: Papery/laminated card sliding into place over felt or card
-    const slideDur = 0.055;
-    const slideBufSize = Math.max(1, Math.floor(sampleRate * slideDur));
-    const slideBuffer = this.ctx.createBuffer(1, slideBufSize, sampleRate);
-    const slideData = slideBuffer.getChannelData(0);
-    for (let i = 0; i < slideBufSize; i++) {
-      slideData[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / slideBufSize, 1.2);
-    }
-
-    const slideSrc = this.ctx.createBufferSource();
-    slideSrc.buffer = slideBuffer;
-
-    const slideFilter = this.ctx.createBiquadFilter();
-    slideFilter.type = 'bandpass';
-    slideFilter.Q.setValueAtTime(1.6, t);
-    slideFilter.frequency.setValueAtTime(3200, t);
-    slideFilter.frequency.exponentialRampToValueAtTime(1400, t + slideDur);
-
-    const slideGain = this.ctx.createGain();
-    slideGain.gain.setValueAtTime(0.001, t);
-    slideGain.gain.linearRampToValueAtTime(0.18, t + 0.008);
-    slideGain.gain.exponentialRampToValueAtTime(0.001, t + slideDur);
-
-    slideSrc.connect(slideFilter);
-    slideFilter.connect(slideGain);
-    slideGain.connect(this.ctx.destination);
-    slideSrc.start(t);
-
-    // 2. Card Edge Snap: Crisp impact click as the card lands and squares with the stack
-    const tSnap = t + 0.018;
-    const snapOsc = this.ctx.createOscillator();
-    const snapGain = this.ctx.createGain();
-    snapOsc.type = 'triangle';
-    snapOsc.frequency.setValueAtTime(3800, tSnap);
-    snapOsc.frequency.exponentialRampToValueAtTime(550, tSnap + 0.016);
-
-    snapGain.gain.setValueAtTime(0.24, tSnap);
-    snapGain.gain.exponentialRampToValueAtTime(0.001, tSnap + 0.02);
-
-    snapOsc.connect(snapGain);
-    snapGain.connect(this.ctx.destination);
-    snapOsc.start(tSnap);
-    snapOsc.stop(tSnap + 0.022);
-
-    // 3. Cardstock Body Resonance: Low-mid wooden/card flex thump
-    const tBody = t + 0.02;
-    const bodyOsc = this.ctx.createOscillator();
-    const bodyGain = this.ctx.createGain();
-    bodyOsc.type = 'sine';
-    bodyOsc.frequency.setValueAtTime(230, tBody);
-    bodyOsc.frequency.exponentialRampToValueAtTime(95, tBody + 0.035);
-
-    bodyGain.gain.setValueAtTime(0.2, tBody);
-    bodyGain.gain.exponentialRampToValueAtTime(0.001, tBody + 0.04);
-
-    bodyOsc.connect(bodyGain);
-    bodyGain.connect(this.ctx.destination);
-    bodyOsc.start(tBody);
-    bodyOsc.stop(tBody + 0.042);
+    this.playSound('place', 0.65, 0.04);
   }
 
-  // Sound of moving cards to Foundation: Taking a sip/drink (liquid draw + swallow gulp + crisp finish)
+  // Real shot glass clink / cheers when moving to foundation
   playFoundation() {
-    if (!this.enabled) return;
-    this.init();
-    if (!this.ctx) return;
-
-    const t = this.ctx.currentTime;
-
-    // 1. The Sip Draw: Filtered noise suction representing liquid intake over the rim
-    const sampleRate = this.ctx.sampleRate;
-    const dur = 0.11;
-    const bufSize = Math.max(1, Math.floor(sampleRate * dur));
-    const noiseBuffer = this.ctx.createBuffer(1, bufSize, sampleRate);
-    const data = noiseBuffer.getChannelData(0);
-    for (let i = 0; i < bufSize; i++) {
-      // Shaped decaying noise burst
-      data[i] = (Math.random() * 2 - 1) * Math.sin((i / bufSize) * Math.PI);
-    }
-
-    const noiseSrc = this.ctx.createBufferSource();
-    noiseSrc.buffer = noiseBuffer;
-
-    const noiseFilter = this.ctx.createBiquadFilter();
-    noiseFilter.type = 'bandpass';
-    noiseFilter.Q.setValueAtTime(3.8, t);
-    noiseFilter.frequency.setValueAtTime(950, t);
-    noiseFilter.frequency.exponentialRampToValueAtTime(2400, t + 0.075);
-
-    const noiseGain = this.ctx.createGain();
-    noiseGain.gain.setValueAtTime(0.001, t);
-    noiseGain.gain.linearRampToValueAtTime(0.18, t + 0.03);
-    noiseGain.gain.exponentialRampToValueAtTime(0.001, t + 0.095);
-
-    noiseSrc.connect(noiseFilter);
-    noiseFilter.connect(noiseGain);
-    noiseGain.connect(this.ctx.destination);
-    noiseSrc.start(t);
-
-    // 2. The Liquid Swallow Gulp ("glup"): Resonant cavity pitch drop
-    const tGulp = t + 0.048;
-    const gulpOsc = this.ctx.createOscillator();
-    const gulpGain = this.ctx.createGain();
-    gulpOsc.type = 'sine';
-    gulpOsc.frequency.setValueAtTime(320, tGulp);
-    gulpOsc.frequency.exponentialRampToValueAtTime(140, tGulp + 0.065);
-
-    gulpGain.gain.setValueAtTime(0.001, tGulp);
-    gulpGain.gain.linearRampToValueAtTime(0.24, tGulp + 0.018);
-    gulpGain.gain.exponentialRampToValueAtTime(0.001, tGulp + 0.075);
-
-    gulpOsc.connect(gulpGain);
-    gulpGain.connect(this.ctx.destination);
-    gulpOsc.start(tGulp);
-    gulpOsc.stop(tGulp + 0.08);
-
-    // 3. Pharyngeal Formant Resonance: Warm liquid body in the throat
-    const tBody = t + 0.06;
-    const bodyOsc = this.ctx.createOscillator();
-    const bodyFilter = this.ctx.createBiquadFilter();
-    const bodyGain = this.ctx.createGain();
-
-    bodyOsc.type = 'triangle';
-    bodyOsc.frequency.setValueAtTime(440, tBody);
-    bodyOsc.frequency.exponentialRampToValueAtTime(210, tBody + 0.055);
-
-    bodyFilter.type = 'lowpass';
-    bodyFilter.frequency.setValueAtTime(600, tBody);
-
-    bodyGain.gain.setValueAtTime(0.001, tBody);
-    bodyGain.gain.linearRampToValueAtTime(0.12, tBody + 0.015);
-    bodyGain.gain.exponentialRampToValueAtTime(0.001, tBody + 0.06);
-
-    bodyOsc.connect(bodyFilter);
-    bodyFilter.connect(bodyGain);
-    bodyGain.connect(this.ctx.destination);
-    bodyOsc.start(tBody);
-    bodyOsc.stop(tBody + 0.065);
-
-    // 4. Subtle Refreshing Lip / Rim Smack
-    const tSmack = t + 0.105;
-    const smackOsc = this.ctx.createOscillator();
-    const smackGain = this.ctx.createGain();
-    smackOsc.type = 'sine';
-    smackOsc.frequency.setValueAtTime(2800, tSmack);
-    smackOsc.frequency.exponentialRampToValueAtTime(1600, tSmack + 0.025);
-
-    smackGain.gain.setValueAtTime(0.05, tSmack);
-    smackGain.gain.exponentialRampToValueAtTime(0.001, tSmack + 0.025);
-
-    smackOsc.connect(smackGain);
-    smackGain.connect(this.ctx.destination);
-    smackOsc.start(tSmack);
-    smackOsc.stop(tSmack + 0.03);
+    this.playSound('foundation', 0.70, 0.03);
   }
 
+  // Real card sweep / shove sound
+  playSweep() {
+    this.playSound('sweep', 0.65, 0.04);
+  }
+
+  // Real victory fanfare celebration
   playVictory() {
     if (!this.enabled) return;
     this.init();
-    if (!this.ctx) return;
     if (this.music) {
-      this.music.duck(0.015, 3.2);
+      // Duck Irish Folk background music during victory fanfare
+      this.music.duck(0.02, 10.0);
     }
-    const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99];
-    notes.forEach((freq, idx) => {
-      setTimeout(() => {
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-        gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.35);
-        osc.connect(gain);
-        gain.connect(this.ctx.destination);
-        osc.start();
-        osc.stop(this.ctx.currentTime + 0.35);
-      }, idx * 100);
-    });
+    this.playSound('victory', 0.85, 0.0);
   }
 }
 
