@@ -1403,9 +1403,11 @@ class SoundManager {
         'sounds/card-place-4.ogg'
       ],
       foundation: [
-        'sounds/foundation-1.ogg',
-        'sounds/foundation-2.ogg',
-        'sounds/foundation-3.ogg'
+        'sounds/drink-1.wav',
+        'sounds/drink-2.wav',
+        'sounds/drink-3.wav',
+        'sounds/drink-4.wav',
+        'sounds/drink-5.mp3'
       ],
       sweep: [
         'sounds/card-shove.ogg'
@@ -1548,9 +1550,9 @@ class SoundManager {
     this.playSound('place', 0.65, 0.04);
   }
 
-  // Real shot glass clink / cheers when moving to foundation
+  // Real sip / drink / gulp sound when moving card to foundation (drinking the shot)
   playFoundation() {
-    this.playSound('foundation', 0.70, 0.03);
+    this.playSound('foundation', 0.65, 0.04);
   }
 
   // Real card sweep / shove sound
