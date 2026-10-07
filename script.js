@@ -1293,9 +1293,9 @@ class IrishFolkMusic {
     this.timerId = null;
     this.cycleCount = 0;
 
-    // Master Gain for Music - subtle tavern ambiance ("dezent", 0.055)
+    // Master Gain for Music - gentle, pleasant tavern acoustic level
     this.masterGain = this.ctx.createGain();
-    this.masterGain.gain.setValueAtTime(0.055, this.ctx.currentTime);
+    this.masterGain.gain.setValueAtTime(0.16, this.ctx.currentTime);
     this.masterGain.connect(this.ctx.destination);
 
     // Precomputed pink noise buffer for whistle breath chiff and bodhrán brush
@@ -1424,14 +1424,15 @@ class IrishFolkMusic {
   }
 
   start() {
-    if (this.isPlaying || !this.enabled) return;
+    if (this.isPlaying) return;
+    this.enabled = true;
     if (this.ctx.state === 'suspended') {
-      this.ctx.resume();
+      this.ctx.resume().catch(() => {});
     }
     this.isPlaying = true;
     this.nextStepTime = this.ctx.currentTime + 0.05;
     this.masterGain.gain.setValueAtTime(0.001, this.ctx.currentTime);
-    this.masterGain.gain.linearRampToValueAtTime(0.055, this.ctx.currentTime + 0.8);
+    this.masterGain.gain.linearRampToValueAtTime(0.16, this.ctx.currentTime + 0.4);
 
     if (this.timerId) clearInterval(this.timerId);
     this.timerId = setInterval(() => this.schedule(), 35);
@@ -1443,40 +1444,41 @@ class IrishFolkMusic {
     if (this.masterGain) {
       const now = this.ctx.currentTime;
       this.masterGain.gain.setValueAtTime(this.masterGain.gain.value, now);
-      this.masterGain.gain.linearRampToValueAtTime(0.0001, now + 0.5);
+      this.masterGain.gain.linearRampToValueAtTime(0.0001, now + 0.35);
     }
     setTimeout(() => {
       if (!this.isPlaying && this.timerId) {
         clearInterval(this.timerId);
         this.timerId = null;
       }
-    }, 550);
+    }, 400);
   }
 
   toggle() {
     if (this.isPlaying) {
-      this.enabled = false;
       this.stop();
       return false;
     } else {
-      this.enabled = true;
       this.start();
       return true;
     }
   }
 
-  duck(targetGain = 0.015, duration = 2.5) {
+  duck(targetGain = 0.03, duration = 2.8) {
     if (!this.isPlaying || !this.masterGain) return;
     const now = this.ctx.currentTime;
     this.masterGain.gain.cancelScheduledValues(now);
     this.masterGain.gain.setValueAtTime(this.masterGain.gain.value, now);
-    this.masterGain.gain.linearRampToValueAtTime(targetGain, now + 0.25);
+    this.masterGain.gain.linearRampToValueAtTime(targetGain, now + 0.2);
     this.masterGain.gain.setValueAtTime(targetGain, now + duration - 0.4);
-    this.masterGain.gain.linearRampToValueAtTime(0.055, now + duration);
+    this.masterGain.gain.linearRampToValueAtTime(0.16, now + duration);
   }
 
   schedule() {
     if (!this.isPlaying) return;
+    if (this.nextStepTime < this.ctx.currentTime - 0.2) {
+      this.nextStepTime = this.ctx.currentTime + 0.02;
+    }
     while (this.nextStepTime < this.ctx.currentTime + 0.18) {
       this.scheduleStep(this.stepIndex, this.nextStepTime);
       this.nextStepTime += this.eighthSec;
@@ -1535,11 +1537,11 @@ class IrishFolkMusic {
     let actualDur = durSec;
     if (hasCut && durSec >= this.eighthSec * 2) {
       const cutFreq = freq * 1.122;
-      this.synthesizeWhistleTone(actualTime, cutFreq, 0.025, 0.035, false);
+      this.synthesizeWhistleTone(actualTime, cutFreq, 0.025, 0.25, false);
       actualTime += 0.025;
       actualDur -= 0.025;
     }
-    this.synthesizeWhistleTone(actualTime, freq, actualDur, 0.048, true);
+    this.synthesizeWhistleTone(actualTime, freq, actualDur, 0.38, true);
   }
 
   synthesizeWhistleTone(time, freq, dur, peakVol, addChiff) {
@@ -1548,28 +1550,29 @@ class IrishFolkMusic {
     const gain = this.ctx.createGain();
     const filter = this.ctx.createBiquadFilter();
 
-    osc.type = 'sine';
+    osc.type = 'triangle';
     osc.frequency.setValueAtTime(freq, time);
 
-    harm.type = 'triangle';
+    harm.type = 'sine';
     harm.frequency.setValueAtTime(freq * 2, time);
 
     const harmGain = this.ctx.createGain();
-    harmGain.gain.setValueAtTime(0.2, time);
+    harmGain.gain.setValueAtTime(0.25, time);
     harm.connect(harmGain);
     harmGain.connect(filter);
 
-    filter.type = 'bandpass';
-    filter.frequency.setValueAtTime(Math.min(3200, Math.max(1200, freq * 1.4)), time);
-    filter.Q.setValueAtTime(1.8, time);
+    // Warm resonant acoustic lowpass filter
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(Math.min(4800, Math.max(1800, freq * 2.8)), time);
+    filter.Q.setValueAtTime(1.2, time);
 
     if (dur >= this.eighthSec * 1.5) {
       const lfo = this.ctx.createOscillator();
       const lfoGain = this.ctx.createGain();
-      lfo.frequency.setValueAtTime(5.3, time);
+      lfo.frequency.setValueAtTime(5.2, time);
       lfoGain.gain.setValueAtTime(0, time);
       lfoGain.gain.setValueAtTime(0, time + 0.1);
-      lfoGain.linearRampToValueAtTime(3.6, time + 0.22);
+      lfoGain.linearRampToValueAtTime(4.2, time + 0.22);
       lfo.connect(lfoGain);
       lfoGain.connect(osc.frequency);
       lfo.start(time);
@@ -1582,22 +1585,22 @@ class IrishFolkMusic {
       const nFilter = this.ctx.createBiquadFilter();
       nFilter.type = 'bandpass';
       nFilter.frequency.setValueAtTime(2600, time);
-      nFilter.Q.setValueAtTime(2.2, time);
+      nFilter.Q.setValueAtTime(2.0, time);
       const nGain = this.ctx.createGain();
-      nGain.gain.setValueAtTime(0.012, time);
-      nGain.exponentialRampToValueAtTime(0.0001, time + 0.016);
+      nGain.gain.setValueAtTime(0.04, time);
+      nGain.exponentialRampToValueAtTime(0.0001, time + 0.02);
       noiseSrc.connect(nFilter);
       nFilter.connect(nGain);
       nGain.connect(this.masterGain);
       noiseSrc.start(time);
-      noiseSrc.stop(time + 0.018);
+      noiseSrc.stop(time + 0.022);
     }
 
-    const attack = 0.022;
-    const release = 0.04;
+    const attack = 0.02;
+    const release = 0.035;
     gain.gain.setValueAtTime(0.0001, time);
-    gain.linearRampToValueAtTime(peakVol, time + attack);
-    gain.gain.setValueAtTime(peakVol * 0.88, time + Math.max(attack, dur - release));
+    gain.gain.linearRampToValueAtTime(peakVol, time + attack);
+    gain.gain.setValueAtTime(peakVol * 0.9, time + Math.max(attack, dur - release));
     gain.linearRampToValueAtTime(0.0001, time + dur);
 
     osc.connect(filter);
@@ -1624,19 +1627,19 @@ class IrishFolkMusic {
     wireOsc.frequency.setValueAtTime(freq, time);
 
     const wireGain = this.ctx.createGain();
-    wireGain.gain.setValueAtTime(isBass ? 0.35 : 0.22, time);
+    wireGain.gain.setValueAtTime(isBass ? 0.38 : 0.25, time);
     wireOsc.connect(wireGain);
 
     filter.type = 'lowpass';
-    filter.Q.setValueAtTime(2.4, time);
-    filter.frequency.setValueAtTime(Math.min(5000, freq * 5.2), time);
-    filter.frequency.exponentialRampToValueAtTime(Math.max(120, freq * 1.1), time + (isBass ? 0.45 : 0.22));
+    filter.Q.setValueAtTime(2.2, time);
+    filter.frequency.setValueAtTime(Math.min(5200, freq * 5.0), time);
+    filter.frequency.exponentialRampToValueAtTime(Math.max(160, freq * 1.2), time + (isBass ? 0.45 : 0.22));
 
-    const peakVol = isBass ? 0.046 : 0.035;
-    const decayTime = isBass ? 0.85 : 0.55;
+    const peakVol = isBass ? 0.45 : 0.32;
+    const decayTime = isBass ? 0.9 : 0.6;
 
     gain.gain.setValueAtTime(0.0001, time);
-    gain.linearRampToValueAtTime(peakVol, time + 0.005);
+    gain.gain.linearRampToValueAtTime(peakVol, time + 0.005);
     gain.exponentialRampToValueAtTime(0.0001, time + decayTime);
 
     bodyOsc.connect(filter);
@@ -1657,14 +1660,14 @@ class IrishFolkMusic {
       const filter = this.ctx.createBiquadFilter();
 
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(78, time);
-      osc.frequency.exponentialRampToValueAtTime(46, time + 0.075);
+      osc.frequency.setValueAtTime(80, time);
+      osc.frequency.exponentialRampToValueAtTime(48, time + 0.075);
 
       filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(170, time);
+      filter.frequency.setValueAtTime(190, time);
       filter.Q.setValueAtTime(1.8, time);
 
-      gain.gain.setValueAtTime(0.032, time);
+      gain.gain.setValueAtTime(0.42, time);
       gain.exponentialRampToValueAtTime(0.0001, time + 0.16);
 
       osc.connect(filter);
@@ -1678,10 +1681,10 @@ class IrishFolkMusic {
       const gain = this.ctx.createGain();
 
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(92, time);
-      osc.frequency.exponentialRampToValueAtTime(54, time + 0.055);
+      osc.frequency.setValueAtTime(94, time);
+      osc.frequency.exponentialRampToValueAtTime(56, time + 0.055);
 
-      gain.gain.setValueAtTime(0.022, time);
+      gain.gain.setValueAtTime(0.28, time);
       gain.exponentialRampToValueAtTime(0.0001, time + 0.12);
 
       osc.connect(gain);
@@ -1698,7 +1701,7 @@ class IrishFolkMusic {
       filter.Q.setValueAtTime(2.0, time);
 
       const gain = this.ctx.createGain();
-      gain.gain.setValueAtTime(0.005, time);
+      gain.gain.setValueAtTime(0.10, time);
       gain.exponentialRampToValueAtTime(0.0001, time + 0.025);
 
       noiseSrc.connect(filter);
@@ -1727,10 +1730,10 @@ class IrishFolkMusic {
     d2.frequency.setValueAtTime(this.noteFreqs['D3'], time);
 
     filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(260, time);
+    filter.frequency.setValueAtTime(280, time);
 
-    gain.gain.setValueAtTime(0.012, time);
-    gain.gain.setValueAtTime(0.012, time + dur - 0.05);
+    gain.gain.setValueAtTime(0.14, time);
+    gain.gain.setValueAtTime(0.14, time + dur - 0.05);
     gain.linearRampToValueAtTime(0.0001, time + dur);
 
     d1.connect(filter);
@@ -1773,6 +1776,9 @@ class SoundManager {
 
   startMusic() {
     this.init();
+    if (this.ctx && this.ctx.state === 'suspended') {
+      this.ctx.resume().catch(() => {});
+    }
     if (this.music && this.musicEnabled && !this.music.isPlaying) {
       this.music.start();
     }
@@ -1786,12 +1792,20 @@ class SoundManager {
 
   toggleMusic() {
     this.init();
-    if (this.music) {
-      this.musicEnabled = this.music.toggle();
-      localStorage.setItem(STORAGE_KEYS.MUSIC_ENABLED, this.musicEnabled ? 'true' : 'false');
-      return this.musicEnabled;
+    if (this.ctx && this.ctx.state === 'suspended') {
+      this.ctx.resume().catch(() => {});
     }
-    this.musicEnabled = !this.musicEnabled;
+    if (this.music) {
+      if (this.music.isPlaying) {
+        this.musicEnabled = false;
+        this.music.stop();
+      } else {
+        this.musicEnabled = true;
+        this.music.start();
+      }
+    } else {
+      this.musicEnabled = !this.musicEnabled;
+    }
     localStorage.setItem(STORAGE_KEYS.MUSIC_ENABLED, this.musicEnabled ? 'true' : 'false');
     return this.musicEnabled;
   }
@@ -2555,6 +2569,7 @@ class SolitaireGame {
       const isMusicActive = this.sound.isMusicEnabled();
       this.dom.btnMusic.textContent = isMusicActive ? t.btnMusicOn : t.btnMusicOff;
       this.dom.btnMusic.title = t.btnMusicTitle;
+      this.dom.btnMusic.classList.toggle('active', isMusicActive);
     }
     if (this.dom.btnNew) {
       this.dom.btnNew.textContent = t.btnNew;
@@ -2658,24 +2673,33 @@ class SolitaireGame {
     });
 
     if (this.dom.btnMusic) {
-      this.dom.btnMusic.addEventListener('click', () => {
+      this.dom.btnMusic.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.sound.init();
         const isMusicActive = this.sound.toggleMusic();
         const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
         this.dom.btnMusic.textContent = isMusicActive ? t.btnMusicOn : t.btnMusicOff;
+        this.dom.btnMusic.classList.toggle('active', isMusicActive);
       });
     }
 
     // First user gesture listener to unlock Web Audio & start background music if enabled
-    const unlockAudioAndStartMusic = () => {
+    const unlockAudioAndStartMusic = (e) => {
+      // If user clicked directly on btn-music, let btn-music's click listener handle it
+      if (e && e.target && e.target.closest('#btn-music')) {
+        return;
+      }
       this.sound.init();
       if (this.sound.musicEnabled) {
         this.sound.startMusic();
       }
       window.removeEventListener('pointerdown', unlockAudioAndStartMusic);
       window.removeEventListener('keydown', unlockAudioAndStartMusic);
+      window.removeEventListener('click', unlockAudioAndStartMusic);
     };
     window.addEventListener('pointerdown', unlockAudioAndStartMusic, { passive: true });
     window.addEventListener('keydown', unlockAudioAndStartMusic, { passive: true });
+    window.addEventListener('click', unlockAudioAndStartMusic, { passive: true });
 
     if (this.dom.selectLanguage) {
       this.dom.selectLanguage.addEventListener('change', (e) => {

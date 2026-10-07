@@ -261,6 +261,12 @@ body {
   border-color: rgba(255, 255, 255, 0.35);
 }
 
+#btn-music.active {
+  background: rgba(46, 125, 50, 0.45);
+  border-color: rgba(129, 199, 132, 0.6);
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+}
+
 .btn-primary {
   background: linear-gradient(135deg, #2e7d32, #1b5e20);
   color: #fff;
