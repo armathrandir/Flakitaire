@@ -1376,7 +1376,7 @@ class IrishFolkMusicPlayer {
 // --- Sound Manager with Real Studio Foley Audio Assets ---
 // Audio Assets:
 // - Card Flip / Draw & Card Place: Kenney Casino Audio (CC0)
-// - Foundation Shot Glass Clink: Kenney Impact & Interface Sounds (CC0)
+// - Foundation Drink / Gulp / Sip: Bramble & Byte Cozy Farm SFX (CC-BY 4.0)
 // - Sweep Card Move: Kenney Casino Audio (CC0)
 // - Victory Fanfare: CynicMusic Heavy Concept B Fanfare (CC0)
 class SoundManager {
@@ -1407,7 +1407,7 @@ class SoundManager {
         'sounds/drink-2.wav',
         'sounds/drink-3.wav',
         'sounds/drink-4.wav',
-        'sounds/drink-5.mp3'
+        'sounds/drink-5.wav'
       ],
       sweep: [
         'sounds/card-shove.ogg'
@@ -1542,22 +1542,22 @@ class SoundManager {
 
   // Real card flip / draw sound
   playFlip() {
-    this.playSound('flip', 0.55, 0.06);
+    this.playSound('flip', 0.42, 0.05);
   }
 
   // Real card place / snap onto tableau or stack
   playPlace() {
-    this.playSound('place', 0.65, 0.04);
+    this.playSound('place', 0.48, 0.04);
   }
 
   // Real sip / drink / gulp sound when moving card to foundation (drinking the shot)
   playFoundation() {
-    this.playSound('foundation', 0.65, 0.04);
+    this.playSound('foundation', 1.20, 0.04);
   }
 
   // Real card sweep / shove sound
   playSweep() {
-    this.playSound('sweep', 0.65, 0.04);
+    this.playSound('sweep', 0.55, 0.04);
   }
 
   // Real victory fanfare celebration
