@@ -1376,7 +1376,7 @@ class IrishFolkMusicPlayer {
 // --- Sound Manager with Real Studio Foley Audio Assets ---
 // Audio Assets:
 // - Card Flip / Draw & Card Place: Kenney Casino Audio (CC0)
-// - Foundation Drink / Gulp / Sip: Bramble & Byte Cozy Farm SFX (CC-BY 4.0)
+// - Foundation Drink / Gulp / Sip: Real human drinking, sips & gulps (CC0: DasWaff, magnuswaker, SeanPorio, EchoCinematics, OwlStorm)
 // - Sweep Card Move: Kenney Casino Audio (CC0)
 // - Victory Fanfare: CynicMusic Heavy Concept B Fanfare (CC0)
 class SoundManager {
