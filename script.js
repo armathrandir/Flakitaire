@@ -58,7 +58,14 @@ const STORAGE_KEYS = {
   DRAW_MODE: 'solitaire_draw_mode',
   DEAL_TYPE: 'solitaire_deal_type',
   LANGUAGE: 'solitaire_lang_v2',
-  MUSIC_ENABLED: 'solitaire_music_v2'
+  MUSIC_ENABLED: 'solitaire_music_v2',
+  MUSIC_VOLUME: 'solitaire_music_volume',
+  SOUND_CARDS_ENABLED: 'solitaire_sound_cards_enabled',
+  SOUND_CARDS_VOLUME: 'solitaire_sound_cards_volume',
+  SOUND_DRINKS_ENABLED: 'solitaire_sound_drinks_enabled',
+  SOUND_DRINKS_VOLUME: 'solitaire_sound_drinks_volume',
+  SOUND_VICTORY_ENABLED: 'solitaire_sound_victory_enabled',
+  SOUND_VICTORY_VOLUME: 'solitaire_sound_victory_volume'
 };
 
 // --- Firebase Realtime Database for Global High Scores ---
@@ -124,6 +131,8 @@ const TRANSLATIONS = {
     btnReplayTitle: 'Diesen Spielstand von Anfang an neu starten',
     btnScores: '🏆 Rekorde',
     btnScoresTitle: 'Bestenliste anzeigen',
+    btnSettings: '⚙️ Einstellungen',
+    btnSettingsTitle: 'Einstellungen öffnen',
     btnSoundOn: '🔊 Ton',
     btnSoundOff: '🔇 Stumm',
     btnSoundTitle: 'Soundeffekte ein-/ausschalten',
@@ -199,6 +208,31 @@ const TRANSLATIONS = {
       empty: 'Noch keine Rekorde erfasst. Gewinne ein Spiel, um Geschichte zu schreiben!',
       btnClose: 'Schließen'
     },
+    settingsModal: {
+      badge: 'KONFIGURATION',
+      title: '⚙️ Einstellungen',
+      sectionGame: 'Spiel & Tisch',
+      labelDeal: 'Spielstil:',
+      optDealSolvable: '🌟 Lösbar (Präpariert)',
+      optDealRandom: '🎲 Zufällig (Klassisch)',
+      labelDraw: 'Karten ziehen:',
+      optDraw1: '1 Karte (Einfach)',
+      optDraw3: '3 Karten (Klassisch)',
+      labelFelt: 'Tisch-Oberfläche:',
+      optOak: '🪵 Eichenholz (Taverne)',
+      optEmerald: '🟢 Smaragdgrün',
+      optNavy: '🔵 Marineblau',
+      optBurgundy: '🔴 Bordeauxrot',
+      optSlate: '⚫ Schiefergrau',
+      optViolet: '🟣 Violett',
+      labelLang: 'Sprache:',
+      sectionAudio: 'Sound & Lautstärke',
+      musicLabel: '🎵 Musik (Irischer Folk)',
+      cardsLabel: '🃏 Karten-Sounds',
+      drinksLabel: '🥃 Trink-Sounds (Ablage)',
+      victoryLabel: '🎺 Sieges-Fanfare',
+      btnClose: 'Schließen'
+    },
     toasts: {
       dealSolvable: '🌟 Lösbarer Modus: Mathematisch garantiert gewinnbar!',
       dealRandom: '🎲 Zufälliger Modus: Klassisch ungemischter Zufalls-Deal.',
@@ -254,6 +288,8 @@ const TRANSLATIONS = {
     btnReplayTitle: 'Restart this exact deal from the beginning',
     btnScores: '🏆 Scores',
     btnScoresTitle: 'View High Scores leaderboards',
+    btnSettings: '⚙️ Settings',
+    btnSettingsTitle: 'Open Settings',
     btnSoundOn: '🔊 Sound',
     btnSoundOff: '🔇 Muted',
     btnSoundTitle: 'Toggle sound effects',
@@ -329,6 +365,31 @@ const TRANSLATIONS = {
       empty: 'No high scores recorded yet. Win a game to make history!',
       btnClose: 'Close'
     },
+    settingsModal: {
+      badge: 'CONFIGURATION',
+      title: '⚙️ Settings',
+      sectionGame: 'Game & Tabletop',
+      labelDeal: 'Game Style:',
+      optDealSolvable: '🌟 Rigged (Solvable)',
+      optDealRandom: '🎲 Random (Classic)',
+      labelDraw: 'Drawing Mode:',
+      optDraw1: '1 Card (Casual)',
+      optDraw3: '3 Cards (Classic)',
+      labelFelt: 'Tabletop Style:',
+      optOak: '🪵 Oak Tavern',
+      optEmerald: '🟢 Emerald Green',
+      optNavy: '🔵 Royal Navy',
+      optBurgundy: '🔴 Velvet Burgundy',
+      optSlate: '⚫ Dark Slate',
+      optViolet: '🟣 Deep Violet',
+      labelLang: 'Language:',
+      sectionAudio: 'Sound & Volume',
+      musicLabel: '🎵 Background Music (Irish Folk)',
+      cardsLabel: '🃏 Card Sounds',
+      drinksLabel: '🥃 Drinking Sounds (Foundation)',
+      victoryLabel: '🎺 Victory Fanfare',
+      btnClose: 'Close'
+    },
     toasts: {
       dealSolvable: '🌟 Solvable Mode: Guaranteed winnable deal!',
       dealRandom: '🎲 Random Mode: Unmodified shuffle.',
@@ -384,6 +445,8 @@ const TRANSLATIONS = {
     btnReplayTitle: 'Reiniciar este mismo reparto desde el principio',
     btnScores: '🏆 Récords',
     btnScoresTitle: 'Ver tabla de récords',
+    btnSettings: '⚙️ Ajustes',
+    btnSettingsTitle: 'Abrir ajustes',
     btnSoundOn: '🔊 Sonido',
     btnSoundOff: '🔇 Silencio',
     btnSoundTitle: 'Activar o desactivar efectos de sonido',
@@ -459,6 +522,31 @@ const TRANSLATIONS = {
       empty: '¡Aún no hay récords registrados! Gana una partida para entrar en la historia.',
       btnClose: 'Cerrar'
     },
+    settingsModal: {
+      badge: 'OPCIONES',
+      title: '⚙️ Ajustes',
+      sectionGame: 'Partida y Tapete',
+      labelDeal: 'Estilo de juego:',
+      optDealSolvable: '🌟 Preparada (Garantizada)',
+      optDealRandom: '🎲 Aleatoria (Clásica)',
+      labelDraw: 'Modo de robo:',
+      optDraw1: '1 Carta (Fácil)',
+      optDraw3: '3 Cartas (Clásico)',
+      labelFelt: 'Estilo del tapete:',
+      optOak: '🪵 Roble Taberna',
+      optEmerald: '🟢 Esmeralda',
+      optNavy: '🔵 Azul Marino',
+      optBurgundy: '🔴 Burdeos',
+      optSlate: '⚫ Pizarra',
+      optViolet: '🟣 Violeta',
+      labelLang: 'Idioma:',
+      sectionAudio: 'Audio y Volumen',
+      musicLabel: '🎵 Música de fondo (Irish Folk)',
+      cardsLabel: '🃏 Sonidos de cartas',
+      drinksLabel: '🥃 Sonidos de chupitos (Ablación)',
+      victoryLabel: '🎺 Sonido de victoria',
+      btnClose: 'Cerrar'
+    },
     toasts: {
       dealSolvable: '🌟 Modo con solución: ¡Partida ganable garantizada!',
       dealRandom: '🎲 Modo aleatorio: Barajado clásico sin filtros.',
@@ -514,6 +602,8 @@ const TRANSLATIONS = {
     btnReplayTitle: 'Переиграть этот расклад с начала',
     btnScores: '🏆 Рекорды',
     btnScoresTitle: 'Посмотреть таблицу рекордов',
+    btnSettings: '⚙️ Настройки',
+    btnSettingsTitle: 'Открыть настройки',
     btnSoundOn: '🔊 Звук',
     btnSoundOff: '🔇 Без звука',
     btnSoundTitle: 'Включить / выключить звуковые эффекты',
@@ -589,6 +679,31 @@ const TRANSLATIONS = {
       empty: 'Пока нет рекордов. Выиграйте партию, чтобы войти в историю!',
       btnClose: 'Закрыть'
     },
+    settingsModal: {
+      badge: 'ПАРАМЕТРЫ',
+      title: '⚙️ Настройки',
+      sectionGame: 'Игра и стол',
+      labelDeal: 'Стиль игры:',
+      optDealSolvable: '🌟 Решаемая (Гарантия)',
+      optDealRandom: '🎲 Случайная (Классика)',
+      labelDraw: 'Раздача карт:',
+      optDraw1: 'По 1 карте (Легко)',
+      optDraw3: 'По 3 карты (Классика)',
+      labelFelt: 'Сукно стола:',
+      optOak: '🪵 Таверна (Дуб)',
+      optEmerald: '🟢 Изумруд',
+      optNavy: '🔵 Морской синий',
+      optBurgundy: '🔴 Бордо',
+      optSlate: '⚫ Графит / сланец',
+      optViolet: '🟣 Фиолетовый',
+      labelLang: 'Язык:',
+      sectionAudio: 'Звук и громкость',
+      musicLabel: '🎵 Фоновая музыка (Irish Folk)',
+      cardsLabel: '🃏 Звуки карт',
+      drinksLabel: '🥃 Звуки рюмки (Сбор в дом)',
+      victoryLabel: '🎺 Победный сигнал (Фанфары)',
+      btnClose: 'Закрыть'
+    },
     toasts: {
       dealSolvable: '🌟 Решаемый режим: расклад со 100% гарантией победы!',
       dealRandom: '🎲 Случайный режим: классическая случайная тасовка.',
@@ -644,6 +759,8 @@ const TRANSLATIONS = {
     btnReplayTitle: 'Starta om denna giv från början',
     btnScores: '🏆 Topplista',
     btnScoresTitle: 'Visa poängtopplista',
+    btnSettings: '⚙️ Inställningar',
+    btnSettingsTitle: 'Öppna inställningar',
     btnSoundOn: '🔊 Ljud',
     btnSoundOff: '🔇 Ljud av',
     btnSoundTitle: 'Slå på/av ljudeffekter',
@@ -719,6 +836,31 @@ const TRANSLATIONS = {
       empty: 'Inga sparade poäng än. Vinn ett spel för att skriva historia!',
       btnClose: 'Stäng'
     },
+    settingsModal: {
+      badge: 'INSTÄLLNINGAR',
+      title: '⚙️ Inställningar',
+      sectionGame: 'Spel & Bord',
+      labelDeal: 'Spelstil:',
+      optDealSolvable: '🌟 Lösbar (Garanterad)',
+      optDealRandom: '🎲 Slumpmässig',
+      labelDraw: 'Dragläge:',
+      optDraw1: '1 kort (Lätt)',
+      optDraw3: '3 kort (Klassisk)',
+      labelFelt: 'Bordsstil:',
+      optOak: '🪵 Ek Taverna',
+      optEmerald: '🟢 Smaragd',
+      optNavy: '🔵 Marinblå',
+      optBurgundy: '🔴 Vinröd',
+      optSlate: '⚫ Skiffer',
+      optViolet: '🟣 Violett',
+      labelLang: 'Språk:',
+      sectionAudio: 'Ljud & Volym',
+      musicLabel: '🎵 Bakgrundsmusik (Irländsk folk)',
+      cardsLabel: '🃏 Kortljud',
+      drinksLabel: '🥃 Dryckesljud (Ablation)',
+      victoryLabel: '🎺 Segerljud (Fanfar)',
+      btnClose: 'Stäng'
+    },
     toasts: {
       dealSolvable: '🌟 Lösbart läge: Garanterat vinnbar giv!',
       dealRandom: '🎲 Slumpmässigt läge: Helt slumpad giv.',
@@ -774,6 +916,8 @@ const TRANSLATIONS = {
     btnReplayTitle: 'Rigioca questa stessa partita dall\'inizio',
     btnScores: '🏆 Record',
     btnScoresTitle: 'Visualizza la classifica dei record',
+    btnSettings: '⚙️ Impostazioni',
+    btnSettingsTitle: 'Apri impostazioni',
     btnSoundOn: '🔊 Audio',
     btnSoundOff: '🔇 Muto',
     btnSoundTitle: 'Attiva/disattiva effetti audio',
@@ -847,6 +991,31 @@ const TRANSLATIONS = {
       thMoves: 'Mosse',
       thDate: 'Data',
       empty: 'Nessun record salvato. Vinci una partita per entrare nella storia!',
+      btnClose: 'Chiudi'
+    },
+    settingsModal: {
+      badge: 'OPZIONI',
+      title: '⚙️ Impostazioni',
+      sectionGame: 'Gioco & Tavolo',
+      labelDeal: 'Stile di gioco:',
+      optDealSolvable: '🌟 Risolvibile (Garantito)',
+      optDealRandom: '🎲 Casuale (Classico)',
+      labelDraw: 'Pesca carte:',
+      optDraw1: '1 Carta (Facile)',
+      optDraw3: '3 Carte (Classico)',
+      labelFelt: 'Stile tavolo:',
+      optOak: '🪵 Quercia Taverna',
+      optEmerald: '🟢 Smeraldo',
+      optNavy: '🔵 Blu Navy',
+      optBurgundy: '🔴 Borgogna',
+      optSlate: '⚫ Ardesia',
+      optViolet: '🟣 Viola',
+      labelLang: 'Lingua:',
+      sectionAudio: 'Audio & Volume',
+      musicLabel: '🎵 Musica di sottofondo (Folk)',
+      cardsLabel: '🃏 Suoni delle carte',
+      drinksLabel: '🥃 Suoni del sorso (Bicchierino)',
+      victoryLabel: '🎺 Suono di vittoria (Fanfara)',
       btnClose: 'Chiudi'
     },
     toasts: {
@@ -1295,44 +1464,35 @@ class IrishFolkMusicPlayer {
     this.audio.loop = true;
     this.audio.preload = 'auto';
     this.baseVolume = 0.16; // Subtle tavern background level so card sounds stay clearly audible
-    this.audio.volume = this.baseVolume;
+    const storedVol = localStorage.getItem(STORAGE_KEYS.MUSIC_VOLUME);
+    this.volumePercent = storedVol !== null ? parseInt(storedVol, 10) : 80;
+    this.audio.volume = this.effectiveVolume;
     this.duckTimeout = null;
     this.wasPlayingBeforeHide = false;
+  }
 
-    // Synchronize UI button state directly with audio events
-    this.audio.addEventListener('play', () => {
-      this.updateButtonUI(true);
-    });
-    this.audio.addEventListener('pause', () => {
-      if (localStorage.getItem(STORAGE_KEYS.MUSIC_ENABLED) === 'false') {
-        this.updateButtonUI(false);
-      }
-    });
+  get effectiveVolume() {
+    return Math.min(1.0, Math.max(0.0, this.baseVolume * (this.volumePercent / 80)));
   }
 
   get isPlaying() {
     return !!(this.audio && !this.audio.paused && !this.audio.ended);
   }
 
-  updateButtonUI(isActive) {
-    const btn = document.getElementById('btn-music');
-    if (!btn) return;
-    btn.classList.toggle('active', isActive);
-    const lang = localStorage.getItem(STORAGE_KEYS.LANGUAGE) || 'de';
-    const t = TRANSLATIONS[lang] || TRANSLATIONS.de;
-    btn.textContent = isActive ? t.btnMusicOn : t.btnMusicOff;
-    btn.title = t.btnMusicTitle;
+  setVolume(percent) {
+    this.volumePercent = Math.min(100, Math.max(0, parseInt(percent, 10) || 0));
+    if (this.audio) {
+      this.audio.volume = this.effectiveVolume;
+    }
   }
 
   start() {
     if (!this.audio) return;
-    this.audio.volume = this.baseVolume;
+    this.audio.volume = this.effectiveVolume;
     if (this.audio.paused) {
       const playPromise = this.audio.play();
       if (playPromise !== undefined) {
-        playPromise.then(() => {
-          this.updateButtonUI(true);
-        }).catch(err => {
+        playPromise.catch(err => {
           console.log('Background music awaiting user gesture:', err);
         });
       }
@@ -1342,16 +1502,16 @@ class IrishFolkMusicPlayer {
   stop() {
     if (!this.audio) return;
     this.audio.pause();
-    this.updateButtonUI(false);
   }
 
-  duck(targetGain = 0.03, durationSec = 3.2) {
+  duck(targetGain = 0.02, durationSec = 3.2) {
     if (!this.audio) return;
     clearTimeout(this.duckTimeout);
-    this.audio.volume = Math.max(0.01, targetGain);
+    const duckedLevel = Math.max(0.005, targetGain * (this.volumePercent / 80));
+    this.audio.volume = duckedLevel;
     this.duckTimeout = setTimeout(() => {
       if (this.audio) {
-        this.audio.volume = this.baseVolume;
+        this.audio.volume = this.effectiveVolume;
       }
     }, durationSec * 1000);
   }
@@ -1373,21 +1533,40 @@ class IrishFolkMusicPlayer {
   }
 }
 
-// --- Sound Manager with Real Studio Foley Audio Assets ---
-// Audio Assets:
-// - Card Flip / Draw & Card Place: Kenney Casino Audio (CC0)
-// - Foundation Drink / Gulp / Sip: Real human sip & swallow with natural variations (CC0: OwlStorm)
-// - Sweep Card Move: Kenney Casino Audio (CC0)
-// - Victory Fanfare: CynicMusic Heavy Concept B Fanfare (CC0)
+// --- Sound Manager with Real Studio Foley Audio Assets & Multi-channel Volume Controls ---
+// Audio Channels:
+// - Background Music: Irish Folk tavern acoustic session
+// - Card Sounds: Flip / Draw, Place / Snap, and Shove / Sweep (CC0: Kenney Casino)
+// - Drinking Sounds: Real human sip & swallow with natural pitch/tempo variations (CC0: OwlStorm)
+// - Victory Sound: Authentic heavy brass/orchestral fanfare (CC0: CynicMusic)
 class SoundManager {
   constructor() {
     this.enabled = true;
     this.ctx = null;
     this.music = null;
-    this.musicEnabled = localStorage.getItem(STORAGE_KEYS.MUSIC_ENABLED) !== 'false';
     this.audioBuffers = {};
     this.audioElements = {};
     this.isPreloaded = false;
+
+    // Music channel
+    this.musicEnabled = localStorage.getItem(STORAGE_KEYS.MUSIC_ENABLED) !== 'false';
+    const storedMusicVol = localStorage.getItem(STORAGE_KEYS.MUSIC_VOLUME);
+    this.musicVolume = storedMusicVol !== null ? parseInt(storedMusicVol, 10) : 80;
+
+    // Card sounds channel (flip, place, sweep)
+    this.soundCardsEnabled = localStorage.getItem(STORAGE_KEYS.SOUND_CARDS_ENABLED) !== 'false';
+    const storedCardsVol = localStorage.getItem(STORAGE_KEYS.SOUND_CARDS_VOLUME);
+    this.soundCardsVolume = storedCardsVol !== null ? parseInt(storedCardsVol, 10) : 80;
+
+    // Drinking sounds channel (foundation sip / swallow)
+    this.soundDrinksEnabled = localStorage.getItem(STORAGE_KEYS.SOUND_DRINKS_ENABLED) !== 'false';
+    const storedDrinksVol = localStorage.getItem(STORAGE_KEYS.SOUND_DRINKS_VOLUME);
+    this.soundDrinksVolume = storedDrinksVol !== null ? parseInt(storedDrinksVol, 10) : 80;
+
+    // Victory sound channel (fanfare)
+    this.soundVictoryEnabled = localStorage.getItem(STORAGE_KEYS.SOUND_VICTORY_ENABLED) !== 'false';
+    const storedVictoryVol = localStorage.getItem(STORAGE_KEYS.SOUND_VICTORY_VOLUME);
+    this.soundVictoryVolume = storedVictoryVol !== null ? parseInt(storedVictoryVol, 10) : 80;
 
     this.soundPaths = {
       flip: [
@@ -1430,6 +1609,7 @@ class SoundManager {
     }
     if (!this.music) {
       this.music = new IrishFolkMusicPlayer();
+      this.music.setVolume(this.musicVolume);
     }
     this.preloadSounds();
   }
@@ -1465,6 +1645,61 @@ class SoundManager {
     });
   }
 
+  setMusicEnabled(enabled) {
+    this.init();
+    this.musicEnabled = !!enabled;
+    localStorage.setItem(STORAGE_KEYS.MUSIC_ENABLED, this.musicEnabled ? 'true' : 'false');
+    if (this.music) {
+      if (this.musicEnabled) {
+        this.music.start();
+      } else {
+        this.music.stop();
+      }
+    }
+    return this.musicEnabled;
+  }
+
+  setMusicVolume(volumePercent) {
+    this.musicVolume = Math.min(100, Math.max(0, parseInt(volumePercent, 10) || 0));
+    localStorage.setItem(STORAGE_KEYS.MUSIC_VOLUME, this.musicVolume.toString());
+    if (this.music) {
+      this.music.setVolume(this.musicVolume);
+    }
+  }
+
+  setSoundCardsEnabled(enabled) {
+    this.soundCardsEnabled = !!enabled;
+    localStorage.setItem(STORAGE_KEYS.SOUND_CARDS_ENABLED, this.soundCardsEnabled ? 'true' : 'false');
+    return this.soundCardsEnabled;
+  }
+
+  setSoundCardsVolume(volumePercent) {
+    this.soundCardsVolume = Math.min(100, Math.max(0, parseInt(volumePercent, 10) || 0));
+    localStorage.setItem(STORAGE_KEYS.SOUND_CARDS_VOLUME, this.soundCardsVolume.toString());
+  }
+
+  setSoundDrinksEnabled(enabled) {
+    this.soundDrinksEnabled = !!enabled;
+    localStorage.setItem(STORAGE_KEYS.SOUND_DRINKS_ENABLED, this.soundDrinksEnabled ? 'true' : 'false');
+    return this.soundDrinksEnabled;
+  }
+
+  setSoundDrinksVolume(volumePercent) {
+    this.soundDrinksVolume = Math.min(100, Math.max(0, parseInt(volumePercent, 10) || 0));
+    localStorage.setItem(STORAGE_KEYS.SOUND_DRINKS_VOLUME, this.soundDrinksVolume.toString());
+  }
+
+  setSoundVictoryEnabled(enabled) {
+    this.soundVictoryEnabled = !!enabled;
+    localStorage.setItem(STORAGE_KEYS.SOUND_VICTORY_ENABLED, this.soundVictoryEnabled ? 'true' : 'false');
+    return this.soundVictoryEnabled;
+  }
+
+  setSoundVictoryVolume(volumePercent) {
+    this.soundVictoryVolume = Math.min(100, Math.max(0, parseInt(volumePercent, 10) || 0));
+    localStorage.setItem(STORAGE_KEYS.SOUND_VICTORY_VOLUME, this.soundVictoryVolume.toString());
+  }
+
   startMusic() {
     this.init();
     if (this.music && this.musicEnabled && !this.music.isPlaying) {
@@ -1479,17 +1714,7 @@ class SoundManager {
   }
 
   toggleMusic() {
-    this.init();
-    this.musicEnabled = !this.musicEnabled;
-    localStorage.setItem(STORAGE_KEYS.MUSIC_ENABLED, this.musicEnabled ? 'true' : 'false');
-    if (this.music) {
-      if (this.musicEnabled) {
-        this.music.start();
-      } else {
-        this.music.stop();
-      }
-    }
-    return this.musicEnabled;
+    return this.setMusicEnabled(!this.musicEnabled);
   }
 
   isMusicEnabled() {
@@ -1542,33 +1767,43 @@ class SoundManager {
 
   // Real card flip / draw sound
   playFlip() {
-    this.playSound('flip', 0.42, 0.05);
+    if (!this.soundCardsEnabled) return;
+    const vol = Math.min(1.0, 0.42 * (this.soundCardsVolume / 80));
+    this.playSound('flip', vol, 0.05);
   }
 
   // Real card place / snap onto tableau or stack
   playPlace() {
-    this.playSound('place', 0.48, 0.04);
+    if (!this.soundCardsEnabled) return;
+    const vol = Math.min(1.0, 0.48 * (this.soundCardsVolume / 80));
+    this.playSound('place', vol, 0.04);
   }
 
   // Real sip / drink / gulp sound when moving card to foundation (drinking the shot)
+  // Reduced by 5 dB from 1.20 (0.675 at baseline 80% volume)
   playFoundation() {
-    this.playSound('foundation', 1.20, 0.04);
+    if (!this.soundDrinksEnabled) return;
+    const vol = Math.min(1.0, 0.675 * (this.soundDrinksVolume / 80));
+    this.playSound('foundation', vol, 0.04);
   }
 
   // Real card sweep / shove sound
   playSweep() {
-    this.playSound('sweep', 0.55, 0.04);
+    if (!this.soundCardsEnabled) return;
+    const vol = Math.min(1.0, 0.55 * (this.soundCardsVolume / 80));
+    this.playSound('sweep', vol, 0.04);
   }
 
   // Real victory fanfare celebration
   playVictory() {
-    if (!this.enabled) return;
+    if (!this.soundVictoryEnabled || !this.enabled) return;
     this.init();
     if (this.music) {
       // Duck Irish Folk background music during victory fanfare
       this.music.duck(0.02, 10.0);
     }
-    this.playSound('victory', 0.85, 0.0);
+    const vol = Math.min(1.0, 0.85 * (this.soundVictoryVolume / 80));
+    this.playSound('victory', vol, 0.0);
   }
 }
 
@@ -1970,8 +2205,22 @@ class SolitaireGame {
       btnNew: document.getElementById('btn-new'),
       btnUndo: document.getElementById('btn-undo'),
       btnHint: document.getElementById('btn-hint'),
-      btnSound: document.getElementById('btn-sound'),
-      btnMusic: document.getElementById('btn-music'),
+      btnSettings: document.getElementById('btn-settings'),
+      settingsModal: document.getElementById('settings-modal'),
+      btnCloseSettings: document.getElementById('btn-close-settings'),
+      btnSettingsX: document.getElementById('btn-settings-x'),
+      toggleMusic: document.getElementById('toggle-music'),
+      sliderMusic: document.getElementById('slider-music'),
+      valMusic: document.getElementById('val-music'),
+      toggleSoundCards: document.getElementById('toggle-sound-cards'),
+      sliderSoundCards: document.getElementById('slider-sound-cards'),
+      valSoundCards: document.getElementById('val-sound-cards'),
+      toggleSoundDrinks: document.getElementById('toggle-sound-drinks'),
+      sliderSoundDrinks: document.getElementById('slider-sound-drinks'),
+      valSoundDrinks: document.getElementById('val-sound-drinks'),
+      toggleSoundVictory: document.getElementById('toggle-sound-victory'),
+      sliderSoundVictory: document.getElementById('slider-sound-victory'),
+      valSoundVictory: document.getElementById('val-sound-victory'),
       btnScores: document.getElementById('btn-scores'),
       winModal: document.getElementById('win-modal'),
       btnWinReplay: document.getElementById('btn-win-replay'),
@@ -1995,11 +2244,57 @@ class SolitaireGame {
       btnRefreshScores: document.getElementById('btn-refresh-scores')
     };
 
-    this.dom.selectDraw.value = this.drawMode.toString();
-    this.dom.selectFelt.value = this.feltTheme;
-    this.dom.selectDeal.value = this.dealType;
+    if (this.dom.selectDraw) this.dom.selectDraw.value = this.drawMode.toString();
+    if (this.dom.selectFelt) this.dom.selectFelt.value = this.feltTheme;
+    if (this.dom.selectDeal) this.dom.selectDeal.value = this.dealType;
     if (this.dom.selectLanguage) this.dom.selectLanguage.value = this.lang;
+    this.syncSettingsUI();
     this.updateUIText();
+  }
+
+  openSettingsModal() {
+    if (!this.dom.settingsModal) return;
+    this.syncSettingsUI();
+    this.dom.settingsModal.classList.remove('hidden');
+  }
+
+  closeSettingsModal() {
+    if (!this.dom.settingsModal) return;
+    this.dom.settingsModal.classList.add('hidden');
+  }
+
+  syncSettingsUI() {
+    if (this.dom.toggleMusic) this.dom.toggleMusic.checked = this.sound.musicEnabled;
+    if (this.dom.sliderMusic) this.dom.sliderMusic.value = this.sound.musicVolume;
+    if (this.dom.valMusic) this.dom.valMusic.textContent = this.sound.musicVolume + '%';
+
+    if (this.dom.toggleSoundCards) this.dom.toggleSoundCards.checked = this.sound.soundCardsEnabled;
+    if (this.dom.sliderSoundCards) this.dom.sliderSoundCards.value = this.sound.soundCardsVolume;
+    if (this.dom.valSoundCards) this.dom.valSoundCards.textContent = this.sound.soundCardsVolume + '%';
+
+    if (this.dom.toggleSoundDrinks) this.dom.toggleSoundDrinks.checked = this.sound.soundDrinksEnabled;
+    if (this.dom.sliderSoundDrinks) this.dom.sliderSoundDrinks.value = this.sound.soundDrinksVolume;
+    if (this.dom.valSoundDrinks) this.dom.valSoundDrinks.textContent = this.sound.soundDrinksVolume + '%';
+
+    if (this.dom.toggleSoundVictory) this.dom.toggleSoundVictory.checked = this.sound.soundVictoryEnabled;
+    if (this.dom.sliderSoundVictory) this.dom.sliderSoundVictory.value = this.sound.soundVictoryVolume;
+    if (this.dom.valSoundVictory) this.dom.valSoundVictory.textContent = this.sound.soundVictoryVolume + '%';
+
+    this.updateAudioRowMuteClasses();
+  }
+
+  updateAudioRowMuteClasses() {
+    const musicRow = this.dom.toggleMusic ? this.dom.toggleMusic.closest('.audio-setting-row') : null;
+    if (musicRow) musicRow.classList.toggle('is-muted', !this.sound.musicEnabled);
+
+    const cardsRow = this.dom.toggleSoundCards ? this.dom.toggleSoundCards.closest('.audio-setting-row') : null;
+    if (cardsRow) cardsRow.classList.toggle('is-muted', !this.sound.soundCardsEnabled);
+
+    const drinksRow = this.dom.toggleSoundDrinks ? this.dom.toggleSoundDrinks.closest('.audio-setting-row') : null;
+    if (drinksRow) drinksRow.classList.toggle('is-muted', !this.sound.soundDrinksEnabled);
+
+    const victoryRow = this.dom.toggleSoundVictory ? this.dom.toggleSoundVictory.closest('.audio-setting-row') : null;
+    if (victoryRow) victoryRow.classList.toggle('is-muted', !this.sound.soundVictoryEnabled);
   }
 
   setLanguage(lang) {
@@ -2076,15 +2371,12 @@ class SolitaireGame {
       this.dom.btnScores.textContent = t.btnScores;
       this.dom.btnScores.title = t.btnScoresTitle;
     }
-    if (this.dom.btnSound) {
-      this.dom.btnSound.textContent = this.sound.enabled ? t.btnSoundOn : t.btnSoundOff;
-      this.dom.btnSound.title = t.btnSoundTitle;
-    }
-    if (this.dom.btnMusic) {
-      const isMusicActive = this.sound.isMusicEnabled();
-      this.dom.btnMusic.textContent = isMusicActive ? t.btnMusicOn : t.btnMusicOff;
-      this.dom.btnMusic.title = t.btnMusicTitle;
-      this.dom.btnMusic.classList.toggle('active', isMusicActive);
+    if (this.dom.btnSettings) {
+      const labelSettings = document.getElementById('label-btn-settings');
+      if (labelSettings) {
+        labelSettings.textContent = t.btnSettings ? t.btnSettings.replace('⚙️ ', '') : 'Einstellungen';
+      }
+      this.dom.btnSettings.title = t.btnSettingsTitle || 'Einstellungen öffnen';
     }
     if (this.dom.btnNew) {
       this.dom.btnNew.textContent = t.btnNew;
@@ -2138,6 +2430,32 @@ class SolitaireGame {
     setTxt('th-moves', t.scoresModal.thMoves);
     setTxt('th-date', t.scoresModal.thDate);
     setTxt('btn-close-scores', t.scoresModal.btnClose);
+
+    // Settings Modal Localization
+    const sm = t.settingsModal || {};
+    setTxt('settings-modal-badge', sm.badge || 'KONFIGURATION');
+    setTxt('settings-modal-title', sm.title || '⚙️ Einstellungen');
+    setTxt('section-game-title', sm.sectionGame || 'Spiel & Tisch');
+    setTxt('label-setting-deal', sm.labelDeal || t.labelDeal || 'Spielstil:');
+    setTxt('opt-deal-solvable', sm.optDealSolvable || t.optSolvable);
+    setTxt('opt-deal-random', sm.optDealRandom || t.optRandom);
+    setTxt('label-setting-draw', sm.labelDraw || t.labelDraw || 'Karten ziehen:');
+    setTxt('opt-draw-1', sm.optDraw1 || t.optDraw1);
+    setTxt('opt-draw-3', sm.optDraw3 || t.optDraw3);
+    setTxt('label-setting-felt', sm.labelFelt || t.labelFelt || 'Tisch-Oberfläche:');
+    setTxt('opt-felt-oak', sm.optOak || t.optOak);
+    setTxt('opt-felt-emerald', sm.optEmerald || t.optEmerald);
+    setTxt('opt-felt-navy', sm.optNavy || t.optNavy);
+    setTxt('opt-felt-burgundy', sm.optBurgundy || t.optBurgundy);
+    setTxt('opt-felt-slate', sm.optSlate || t.optSlate);
+    setTxt('opt-felt-violet', sm.optViolet || t.optViolet);
+    setTxt('label-setting-lang', sm.labelLang || t.labelLang || 'Sprache:');
+    setTxt('section-audio-title', sm.sectionAudio || 'Sound & Lautstärke');
+    setTxt('label-setting-music', sm.musicLabel || '🎵 Musik (Irischer Folk)');
+    setTxt('label-setting-cards', sm.cardsLabel || '🃏 Karten-Sounds');
+    setTxt('label-setting-drinks', sm.drinksLabel || '🥃 Trink-Sounds (Ablage)');
+    setTxt('label-setting-victory', sm.victoryLabel || '🎺 Sieges-Fanfare');
+    setTxt('btn-close-settings', sm.btnClose || 'Schließen');
   }
 
   applyTheme(theme) {
@@ -2181,29 +2499,111 @@ class SolitaireGame {
       });
     }
 
-    this.dom.btnSound.addEventListener('click', () => {
-      this.sound.enabled = !this.sound.enabled;
-      const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
-      this.dom.btnSound.textContent = this.sound.enabled ? t.btnSoundOn : t.btnSoundOff;
+    if (this.dom.btnSettings) {
+      this.dom.btnSettings.addEventListener('click', () => {
+        this.openSettingsModal();
+      });
+    }
+
+    if (this.dom.btnCloseSettings) {
+      this.dom.btnCloseSettings.addEventListener('click', () => {
+        this.closeSettingsModal();
+      });
+    }
+
+    if (this.dom.btnSettingsX) {
+      this.dom.btnSettingsX.addEventListener('click', () => {
+        this.closeSettingsModal();
+      });
+    }
+
+    if (this.dom.settingsModal) {
+      this.dom.settingsModal.addEventListener('click', (e) => {
+        if (e.target === this.dom.settingsModal) {
+          this.closeSettingsModal();
+        }
+      });
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (this.dom.settingsModal && !this.dom.settingsModal.classList.contains('hidden')) {
+          this.closeSettingsModal();
+        }
+      }
     });
 
-    if (this.dom.btnMusic) {
-      this.dom.btnMusic.addEventListener('click', (e) => {
-        e.stopPropagation();
-        this.sound.init();
-        const isMusicActive = this.sound.toggleMusic();
-        const t = TRANSLATIONS[this.lang] || TRANSLATIONS.de;
-        this.dom.btnMusic.textContent = isMusicActive ? t.btnMusicOn : t.btnMusicOff;
-        this.dom.btnMusic.classList.toggle('active', isMusicActive);
+    // Settings Audio Listeners
+    if (this.dom.toggleMusic) {
+      this.dom.toggleMusic.addEventListener('change', (e) => {
+        this.sound.setMusicEnabled(e.target.checked);
+        this.updateAudioRowMuteClasses();
+      });
+    }
+
+    if (this.dom.sliderMusic) {
+      this.dom.sliderMusic.addEventListener('input', (e) => {
+        const val = parseInt(e.target.value, 10);
+        this.sound.setMusicVolume(val);
+        if (this.dom.valMusic) this.dom.valMusic.textContent = val + '%';
+      });
+    }
+
+    if (this.dom.toggleSoundCards) {
+      this.dom.toggleSoundCards.addEventListener('change', (e) => {
+        this.sound.setSoundCardsEnabled(e.target.checked);
+        this.updateAudioRowMuteClasses();
+        if (e.target.checked) this.sound.playFlip();
+      });
+    }
+
+    if (this.dom.sliderSoundCards) {
+      let previewDebounce = null;
+      this.dom.sliderSoundCards.addEventListener('input', (e) => {
+        const val = parseInt(e.target.value, 10);
+        this.sound.setSoundCardsVolume(val);
+        if (this.dom.valSoundCards) this.dom.valSoundCards.textContent = val + '%';
+        clearTimeout(previewDebounce);
+        previewDebounce = setTimeout(() => this.sound.playFlip(), 120);
+      });
+    }
+
+    if (this.dom.toggleSoundDrinks) {
+      this.dom.toggleSoundDrinks.addEventListener('change', (e) => {
+        this.sound.setSoundDrinksEnabled(e.target.checked);
+        this.updateAudioRowMuteClasses();
+        if (e.target.checked) this.sound.playFoundation();
+      });
+    }
+
+    if (this.dom.sliderSoundDrinks) {
+      let previewDebounce = null;
+      this.dom.sliderSoundDrinks.addEventListener('input', (e) => {
+        const val = parseInt(e.target.value, 10);
+        this.sound.setSoundDrinksVolume(val);
+        if (this.dom.valSoundDrinks) this.dom.valSoundDrinks.textContent = val + '%';
+        clearTimeout(previewDebounce);
+        previewDebounce = setTimeout(() => this.sound.playFoundation(), 120);
+      });
+    }
+
+    if (this.dom.toggleSoundVictory) {
+      this.dom.toggleSoundVictory.addEventListener('change', (e) => {
+        this.sound.setSoundVictoryEnabled(e.target.checked);
+        this.updateAudioRowMuteClasses();
+      });
+    }
+
+    if (this.dom.sliderSoundVictory) {
+      this.dom.sliderSoundVictory.addEventListener('input', (e) => {
+        const val = parseInt(e.target.value, 10);
+        this.sound.setSoundVictoryVolume(val);
+        if (this.dom.valSoundVictory) this.dom.valSoundVictory.textContent = val + '%';
       });
     }
 
     // User gesture listener to unlock Web Audio & start background music if enabled
-    const unlockAudioAndStartMusic = (e) => {
-      // If user clicked directly on btn-music, let btn-music's click listener handle it
-      if (e && e.target && e.target.closest('#btn-music')) {
-        return;
-      }
+    const unlockAudioAndStartMusic = () => {
       this.sound.init();
       if (this.sound.isMusicEnabled()) {
         this.sound.startMusic();

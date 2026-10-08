@@ -16,49 +16,6 @@
         <span id="deal-badge" class="badge badge-gold" title="Dieses Spiel ist mathematisch garantiert zu 100% lösbar!">✨ Lösbar</span>
       </div>
 
-      <!-- Quick Settings: Deal Type, Draw Mode, Felt Theme & Language -->
-      <div class="settings-group">
-        <label class="control-label" for="select-deal-type">
-          <span id="label-deal">Spiel:</span>
-          <select id="select-deal-type" class="select-input" title="Garantiert lösbare oder zufällige Spiele wählen">
-            <option value="solvable" selected id="opt-deal-solvable">🌟 Lösbar</option>
-            <option value="random" id="opt-deal-random">🎲 Zufällig</option>
-          </select>
-        </label>
-
-        <label class="control-label" for="select-draw-mode">
-          <span id="label-draw">Karten:</span>
-          <select id="select-draw-mode" class="select-input" title="Anzahl der gezogenen Karten wählen">
-            <option value="1" selected id="opt-draw-1">1 Karte</option>
-            <option value="3" id="opt-draw-3">3 Karten</option>
-          </select>
-        </label>
-
-        <label class="control-label" for="select-felt-theme">
-          <span id="label-felt">Tisch:</span>
-          <select id="select-felt-theme" class="select-input" title="Hintergrund und Tischoberfläche anpassen">
-            <option value="oak" selected id="opt-felt-oak">🪵 Eiche</option>
-            <option value="emerald" id="opt-felt-emerald">🟢 Smaragd</option>
-            <option value="navy" id="opt-felt-navy">🔵 Marine</option>
-            <option value="burgundy" id="opt-felt-burgundy">🔴 Bordeaux</option>
-            <option value="slate" id="opt-felt-slate">⚫ Schiefer</option>
-            <option value="violet" id="opt-felt-violet">🟣 Violett</option>
-          </select>
-        </label>
-
-        <label class="control-label" for="select-language">
-          <span id="label-lang">Sprache:</span>
-          <select id="select-language" class="select-input" title="Sprache ändern / Change language">
-            <option value="de" selected>🇩🇪 DE</option>
-            <option value="en">🇬🇧 EN</option>
-            <option value="es">🇪🇸 ES</option>
-            <option value="ru">🇷🇺 RU</option>
-            <option value="sv">🇸🇪 SV</option>
-            <option value="it">🇮🇹 IT</option>
-          </select>
-        </label>
-      </div>
-
       <!-- Stats display -->
       <div class="stats-group">
         <div class="stat-box">
@@ -95,11 +52,8 @@
         <button id="btn-scores" class="btn btn-secondary" title="Bestenliste anzeigen">
           🏆 Rekorde
         </button>
-        <button id="btn-sound" class="btn btn-secondary" title="Soundeffekte ein-/ausschalten">
-          🔊 Ton
-        </button>
-        <button id="btn-music" class="btn btn-secondary" title="Hintergrundmusik ein-/ausschalten">
-          🎵 Musik
+        <button id="btn-settings" class="btn btn-secondary" title="Einstellungen öffnen">
+          ⚙️ <span id="label-btn-settings">Einstellungen</span>
         </button>
         <button id="btn-new" class="btn btn-primary" title="Ein neues Spiel beginnen">
           Neues Spiel
@@ -232,6 +186,134 @@
 
       <div class="modal-actions">
         <button id="btn-close-scores" class="btn btn-secondary btn-large">Schließen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal (Game Style, Draw Mode, Tabletop Style, Language, and Multi-channel Audio Volume Controls) -->
+  <div id="settings-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title">
+    <div class="modal-card modal-settings-card">
+      <div class="modal-header-row">
+        <div>
+          <div id="settings-modal-badge" class="modal-badge">KONFIGURATION</div>
+          <h2 id="settings-modal-title">⚙️ Einstellungen</h2>
+        </div>
+        <button id="btn-settings-x" class="modal-close-icon" title="Schließen" aria-label="Schließen">&times;</button>
+      </div>
+
+      <!-- Section 1: Game & Table Settings -->
+      <div class="settings-section">
+        <div id="section-game-title" class="settings-section-title">Spiel & Tisch</div>
+        <div class="settings-grid">
+          <div class="setting-item">
+            <label class="setting-item-label" for="select-deal-type" id="label-setting-deal">Spielstil:</label>
+            <select id="select-deal-type" class="select-input modal-select" title="Garantiert lösbare oder zufällige Spiele wählen">
+              <option value="solvable" selected id="opt-deal-solvable">🌟 Lösbar (Präpariert)</option>
+              <option value="random" id="opt-deal-random">🎲 Zufällig (Klassisch)</option>
+            </select>
+          </div>
+
+          <div class="setting-item">
+            <label class="setting-item-label" for="select-draw-mode" id="label-setting-draw">Karten ziehen:</label>
+            <select id="select-draw-mode" class="select-input modal-select" title="Anzahl der gezogenen Karten wählen">
+              <option value="1" selected id="opt-draw-1">1 Karte (Einfach)</option>
+              <option value="3" id="opt-draw-3">3 Karten (Klassisch)</option>
+            </select>
+          </div>
+
+          <div class="setting-item">
+            <label class="setting-item-label" for="select-felt-theme" id="label-setting-felt">Tisch-Oberfläche:</label>
+            <select id="select-felt-theme" class="select-input modal-select" title="Hintergrund und Tischoberfläche anpassen">
+              <option value="oak" selected id="opt-felt-oak">🪵 Eichenholz (Taverne)</option>
+              <option value="emerald" id="opt-felt-emerald">🟢 Smaragdgrün</option>
+              <option value="navy" id="opt-felt-navy">🔵 Marineblau</option>
+              <option value="burgundy" id="opt-felt-burgundy">🔴 Bordeauxrot</option>
+              <option value="slate" id="opt-felt-slate">⚫ Schiefergrau</option>
+              <option value="violet" id="opt-felt-violet">🟣 Violett</option>
+            </select>
+          </div>
+
+          <div class="setting-item">
+            <label class="setting-item-label" for="select-language" id="label-setting-lang">Sprache:</label>
+            <select id="select-language" class="select-input modal-select" title="Sprache ändern / Change language">
+              <option value="de" selected>🇩🇪 Deutsch</option>
+              <option value="en">🇬🇧 English</option>
+              <option value="es">🇪🇸 Español</option>
+              <option value="ru">🇷🇺 Русский</option>
+              <option value="sv">🇸🇪 Svenska</option>
+              <option value="it">🇮🇹 Italiano</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Audio & Volume Settings -->
+      <div class="settings-section">
+        <div id="section-audio-title" class="settings-section-title">Sound & Lautstärke</div>
+
+        <!-- Music -->
+        <div class="audio-setting-row">
+          <div class="audio-setting-label-group">
+            <label class="toggle-switch" title="Hintergrundmusik ein-/ausschalten">
+              <input type="checkbox" id="toggle-music" checked>
+              <span class="toggle-slider"></span>
+            </label>
+            <span id="label-setting-music" class="audio-setting-name">🎵 Musik (Irischer Folk)</span>
+          </div>
+          <div class="audio-setting-controls">
+            <input type="range" id="slider-music" class="volume-slider" min="0" max="100" value="80" aria-label="Musik Lautstärke">
+            <span id="val-music" class="volume-value">80%</span>
+          </div>
+        </div>
+
+        <!-- Card Sounds -->
+        <div class="audio-setting-row">
+          <div class="audio-setting-label-group">
+            <label class="toggle-switch" title="Kartengeräusche ein-/ausschalten">
+              <input type="checkbox" id="toggle-sound-cards" checked>
+              <span class="toggle-slider"></span>
+            </label>
+            <span id="label-setting-cards" class="audio-setting-name">🃏 Karten-Sounds</span>
+          </div>
+          <div class="audio-setting-controls">
+            <input type="range" id="slider-sound-cards" class="volume-slider" min="0" max="100" value="80" aria-label="Karten Lautstärke">
+            <span id="val-sound-cards" class="volume-value">80%</span>
+          </div>
+        </div>
+
+        <!-- Drinking Sounds -->
+        <div class="audio-setting-row">
+          <div class="audio-setting-label-group">
+            <label class="toggle-switch" title="Trink-Sounds ein-/ausschalten">
+              <input type="checkbox" id="toggle-sound-drinks" checked>
+              <span class="toggle-slider"></span>
+            </label>
+            <span id="label-setting-drinks" class="audio-setting-name">🥃 Trink-Sounds (Ablage)</span>
+          </div>
+          <div class="audio-setting-controls">
+            <input type="range" id="slider-sound-drinks" class="volume-slider" min="0" max="100" value="80" aria-label="Trink-Sounds Lautstärke">
+            <span id="val-sound-drinks" class="volume-value">80%</span>
+          </div>
+        </div>
+
+        <!-- Winning Sound -->
+        <div class="audio-setting-row">
+          <div class="audio-setting-label-group">
+            <label class="toggle-switch" title="Siegesfanfare ein-/ausschalten">
+              <input type="checkbox" id="toggle-sound-victory" checked>
+              <span class="toggle-slider"></span>
+            </label>
+            <span id="label-setting-victory" class="audio-setting-name">🎺 Sieges-Fanfare</span>
+          </div>
+          <div class="audio-setting-controls">
+            <input type="range" id="slider-sound-victory" class="volume-slider" min="0" max="100" value="80" aria-label="Sieges-Fanfare Lautstärke">
+            <span id="val-sound-victory" class="volume-value">80%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="btn-close-settings" class="btn btn-primary btn-large">Schließen</button>
       </div>
     </div>
   </div>
