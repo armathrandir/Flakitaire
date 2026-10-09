@@ -615,6 +615,8 @@ body.is-pointer-dragging * {
   justify-content: center;
   line-height: 1;
   padding: 2px 4px;
+  position: relative;
+  z-index: 2;
 }
 
 .card-corner.top-left {
@@ -630,6 +632,7 @@ body.is-pointer-dragging * {
   font-size: clamp(0.95rem, 1.45vw, 1.35rem);
   font-weight: 800;
   letter-spacing: -0.5px;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.95), 0 0 5px #ffffff;
 }
 
 /* SVG Shot Glass Icons */
@@ -691,15 +694,13 @@ body.is-pointer-dragging * {
    ========================================================================== */
 .card-court-container {
   position: absolute;
-  top: clamp(18px, 13%, 22px);
-  bottom: clamp(18px, 13%, 22px);
-  left: clamp(4px, 3.5%, 6px);
-  right: clamp(4px, 3.5%, 6px);
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: none;
   overflow: hidden;
+  border-radius: var(--card-radius);
 }
 
 .court-svg {
@@ -707,7 +708,6 @@ body.is-pointer-dragging * {
   height: 100%;
   max-height: 100%;
   display: block;
-  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.22));
 }
 
 /* Selected Card Highlight */
