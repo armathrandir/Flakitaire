@@ -1181,270 +1181,500 @@ function getPipsHTML(rankValue, suitName) {
   return `<div class="card-pips card-pips-${rankValue}">${pipsHtml}</div>`;
 }
 
-// --- Court Card Generator: Jack, Queen, King holding Suit Shot Glass ---
+/// --- Court Card Generator: Classical Two-Headed (Reversible) Royal Court Cards ---
+// Authentically styled Jack (11), Queen (12), King (13) holding the suit's vessel/drop
 function getCourtCardSVG(rankValue, suitName, lang = 'de') {
   const uid = Math.random().toString(36).substr(2, 6);
-  const tDict = TRANSLATIONS[lang] || TRANSLATIONS.de;
-  const roleTitle = (tDict.courtTitles && tDict.courtTitles[rankValue]) || (rankValue === 12 ? 'QUEEN' : (rankValue === 13 ? 'KING' : 'JACK'));
 
-  const themes = {
-    hearts: {
-      primary: '#007e33',
-      secondary: '#e8f5e9',
-      accent: '#00e676',
-      border: '#007e33',
-      mantle: '#1b5e20',
-      ribbonText: '#004d20'
-    },
-    diamonds: {
-      primary: '#007e33',
-      secondary: '#e8f5e9',
-      accent: '#00e676',
-      border: '#007e33',
-      mantle: '#2e7d32',
-      ribbonText: '#004d20'
-    },
+  const suitThemes = {
     clubs: {
-      primary: '#212121',
-      secondary: '#eceff1',
-      accent: '#90a4ae',
-      border: '#607d8b',
-      mantle: '#263238',
-      ribbonText: '#263238'
+      name: 'clubs',
+      isBlack: true,
+      primary: '#12161c',
+      secondary: '#1e2631',
+      accent: '#334150',
+      highlight: '#94a3b8',
+      gold: '#cba135',
+      goldLight: '#f6d860',
+      goldDark: '#785412',
+      robe: '#161d26',
+      robeAlt: '#222d3a',
+      trim: '#cba135',
+      slash: '#cbd5e1',
+      gem: '#dc2626',
+      frame: '#161d26'
     },
     spades: {
-      primary: '#181818',
-      secondary: '#eceff1',
-      accent: '#78909c',
-      border: '#546e7a',
-      mantle: '#212121',
-      ribbonText: '#212121'
+      name: 'spades',
+      isBlack: true,
+      primary: '#0d1117',
+      secondary: '#161e27',
+      accent: '#2c3949',
+      highlight: '#7d93a8',
+      gold: '#cba135',
+      goldLight: '#f6d860',
+      goldDark: '#785412',
+      robe: '#121820',
+      robeAlt: '#1d2632',
+      trim: '#cba135',
+      slash: '#e2e8f0',
+      gem: '#0284c7',
+      frame: '#121820'
+    },
+    diamonds: {
+      name: 'diamonds',
+      isBlack: false,
+      primary: '#062d16',
+      secondary: '#0c4722',
+      accent: '#15803d',
+      highlight: '#00e676',
+      gold: '#cba135',
+      goldLight: '#f6d860',
+      goldDark: '#785412',
+      robe: '#093a1c',
+      robeAlt: '#124e29',
+      trim: '#cba135',
+      slash: '#dcfce7',
+      gem: '#dc2626',
+      frame: '#093a1c'
+    },
+    hearts: {
+      name: 'hearts',
+      isBlack: false,
+      primary: '#052813',
+      secondary: '#0a3d1c',
+      accent: '#16a34a',
+      highlight: '#00e676',
+      gold: '#cba135',
+      goldLight: '#f6d860',
+      goldDark: '#785412',
+      robe: '#073318',
+      robeAlt: '#0e4622',
+      trim: '#cba135',
+      slash: '#ecfdf5',
+      gem: '#00e676',
+      frame: '#073318'
     }
   };
 
-  const t = themes[suitName] || themes.hearts;
+  const t = suitThemes[suitName] || suitThemes.diamonds;
 
-  // Vessel / Item held in character's hand (Shot Glass or Drop)
-  let heldGlassSVG = '';
+  // Held Item: Vessel or Drop held aloft in character's raised hand
+  let heldItemSVG = '';
   if (suitName === 'clubs') {
-    heldGlassSVG = `
-      <!-- Black Shot Glass (Silver Trim) -->
-      <g transform="translate(68, 16)">
-        <path d="M4 6 L6 27 Q6 30 9 30 L17 30 Q20 30 20 27 L22 6 Z" fill="rgba(255,255,255,0.12)" stroke="#cfd8dc" stroke-width="1.3" stroke-linejoin="round"/>
-        <path d="M6 25 L6.5 28 Q6.5 30 9 30 L17 30 Q19.5 30 19.5 28 L20 25 Z" fill="#b0bec5" stroke="#78909c" stroke-width="0.9"/>
-        <path d="M5 11 L6.8 26 L19.2 26 L21 11 Z" fill="#141414"/>
-        <ellipse cx="13" cy="11" rx="7.5" ry="1.8" fill="#37474f"/>
-        <path d="M5.5 8 L7 25" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
-        <ellipse cx="13" cy="6" rx="9" ry="1.8" fill="rgba(255,255,255,0.25)" stroke="#eceff1" stroke-width="1.1"/>
+    // Black Shot Glass (Faceted crystal glass with obsidian schnapps & silver trim)
+    heldItemSVG = `
+      <g id="item_clubs_${uid}">
+        <!-- Heavy glass faceted bowl -->
+        <path d="M72 13 L74 33 Q74.5 36 78 36 Q81.5 36 82 33 L84 13 Z" fill="rgba(255,255,255,0.22)" stroke="#cbd5e1" stroke-width="0.85" stroke-linejoin="round"/>
+        <!-- Thick solid crystal base -->
+        <path d="M74 31.5 L74.4 34.5 Q74.8 36 78 36 Q81.2 36 81.6 34.5 L82 31.5 Z" fill="#94a3b8" stroke="#475569" stroke-width="0.55"/>
+        <!-- Black schnapps fill -->
+        <path d="M72.8 17 L74.2 31.5 L81.8 31.5 L83.2 17 Z" fill="#0f1318"/>
+        <ellipse cx="78" cy="17" rx="5.2" ry="1.4" fill="#2d3748"/>
+        <!-- Crystal light reflections -->
+        <path d="M73.5 15 L74.7 30" stroke="#ffffff" stroke-width="0.85" stroke-linecap="round" opacity="0.9"/>
+        <path d="M82.5 15 L81.7 29" stroke="#cbd5e1" stroke-width="0.5" stroke-linecap="round" opacity="0.6"/>
+        <!-- Silver rim -->
+        <ellipse cx="78" cy="13" rx="6" ry="1.6" fill="rgba(255,255,255,0.35)" stroke="#f1f5f9" stroke-width="0.8"/>
       </g>
     `;
   } else if (suitName === 'spades') {
-    heldGlassSVG = `
-      <!-- Black Drop in Hand -->
-      <g transform="translate(71, 16)">
-        <path d="M12 4 C10.5 7, 4 14.5, 4 21 A 8 8 0 0 0 20 21 C20 14.5, 13.5 7, 12 4 Z" fill="#181818" stroke="#546e7a" stroke-width="1.2"/>
-        <path d="M7.5 19 C7 15, 10 9, 11 6.5" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" opacity="0.75"/>
-        <circle cx="8.5" cy="21.5" r="1" fill="#ffffff"/>
+    // Black Drop (Glossy obsidian jewel drop)
+    heldItemSVG = `
+      <g id="item_spades_${uid}">
+        <path d="M78 12 C75.8 16 70.5 23 70.5 29.5 A 7.5 7.5 0 0 0 85.5 29.5 C85.5 23 80.2 16 78 12 Z" fill="#11161d" stroke="#334150" stroke-width="0.9"/>
+        <!-- Curved specular highlight -->
+        <path d="M74.5 27.5 C74 23.5 76.5 18 77.5 15" stroke="#ffffff" stroke-width="1.15" stroke-linecap="round" opacity="0.95"/>
+        <circle cx="75.5" cy="30.5" r="1.15" fill="#ffffff" opacity="0.95"/>
+        <!-- Ambient rim light -->
+        <path d="M84.2 28.5 C84.2 32.5 81.5 35.8 78 36" stroke="#7d93a8" stroke-width="0.75" fill="none" stroke-linecap="round" opacity="0.65"/>
       </g>
     `;
-  } else if (suitName === 'hearts') {
-    heldGlassSVG = `
-      <!-- Green Drop in Hand -->
-      <g transform="translate(71, 16)">
-        <path d="M12 4 C10.5 7, 4 14.5, 4 21 A 8 8 0 0 0 20 21 C20 14.5, 13.5 7, 12 4 Z" fill="#008f39" stroke="#004d20" stroke-width="1.2"/>
-        <path d="M7.5 19 C7 15, 10 9, 11 6.5" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" opacity="0.85"/>
-        <circle cx="8.5" cy="21.5" r="1" fill="#ffffff"/>
-        <circle cx="12" cy="21" r="1.8" fill="#b9f6ca" opacity="0.5"/>
+  } else if (suitName === 'diamonds') {
+    // Green Shot Glass (Faceted cut crystal with glowing emerald schnapps & gold trim)
+    heldItemSVG = `
+      <g id="item_diamonds_${uid}">
+        <!-- Heavy glass faceted bowl -->
+        <path d="M72 13 L74 33 Q74.5 36 78 36 Q81.5 36 82 33 L84 13 Z" fill="rgba(34,197,94,0.18)" stroke="${t.gold}" stroke-width="0.85" stroke-linejoin="round"/>
+        <!-- Thick solid crystal base -->
+        <path d="M74 31.5 L74.4 34.5 Q74.8 36 78 36 Q81.2 36 81.6 34.5 L82 31.5 Z" fill="#86efac" stroke="#16a34a" stroke-width="0.55"/>
+        <!-- Glowing green schnapps fill -->
+        <path d="M72.8 17 L74.2 31.5 L81.8 31.5 L83.2 17 Z" fill="#00e676"/>
+        <ellipse cx="78" cy="17" rx="5.2" ry="1.4" fill="#69f0ae"/>
+        <!-- Bubbles & Sparkles -->
+        <circle cx="76" cy="24" r="0.85" fill="#ffffff" opacity="0.9"/>
+        <circle cx="80" cy="21" r="0.65" fill="#ffffff" opacity="0.8"/>
+        <!-- Crystal reflections -->
+        <path d="M73.5 15 L74.7 30" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" opacity="0.95"/>
+        <!-- Gold rim -->
+        <ellipse cx="78" cy="13" rx="6" ry="1.6" fill="rgba(255,255,255,0.35)" stroke="${t.goldLight}" stroke-width="0.8"/>
       </g>
     `;
   } else {
-    heldGlassSVG = `
-      <!-- Green Shot Glass -->
-      <g transform="translate(68, 16)">
-        <path d="M4 6 L6 27 Q6 30 9 30 L17 30 Q20 30 20 27 L22 6 Z" fill="rgba(0,230,118,0.12)" stroke="#007e33" stroke-width="1.3" stroke-linejoin="round"/>
-        <path d="M6 25 L6.5 28 Q6.5 30 9 30 L17 30 Q19.5 30 19.5 28 L20 25 Z" fill="#a7f3d0" stroke="#007e33" stroke-width="0.9"/>
-        <path d="M5 11 L6.8 26 L19.2 26 L21 11 Z" fill="#00e676"/>
-        <ellipse cx="13" cy="11" rx="7.5" ry="1.8" fill="#69f0ae"/>
-        <circle cx="15" cy="17" r="1.3" fill="#b9f6ca"/>
-        <circle cx="11" cy="22" r="0.9" fill="#b9f6ca"/>
-        <path d="M5.5 8 L7 25" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
-        <ellipse cx="13" cy="6" rx="9" ry="1.8" fill="rgba(0,230,118,0.22)" stroke="#007e33" stroke-width="1.1"/>
+    // Green Drop (Radiant emerald drop)
+    heldItemSVG = `
+      <g id="item_hearts_${uid}">
+        <path d="M78 12 C75.8 16 70.5 23 70.5 29.5 A 7.5 7.5 0 0 0 85.5 29.5 C85.5 23 80.2 16 78 12 Z" fill="#009639" stroke="#004d20" stroke-width="0.9"/>
+        <!-- Inner glow -->
+        <ellipse cx="78" cy="30" rx="5.2" ry="4.2" fill="#00e676" opacity="0.55"/>
+        <!-- Curved specular highlight -->
+        <path d="M74.5 27.5 C74 23.5 76.5 18 77.5 15" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" opacity="0.95"/>
+        <circle cx="75.5" cy="30.5" r="1.15" fill="#ffffff"/>
+        <!-- Secondary reflection -->
+        <path d="M84.2 28.5 C84.2 32.5 81.5 35.8 78 36" stroke="#b9f6ca" stroke-width="0.75" fill="none" stroke-linecap="round" opacity="0.75"/>
       </g>
     `;
   }
 
-  let characterSVG = '';
+  // Authentic Heraldic Ermine Spot
+  const ermineSpot = (x, y, s = 0.52) => `
+    <g transform="translate(${x}, ${y}) scale(${s})">
+      <circle cx="0" cy="-2.5" r="0.85" fill="#11161d"/>
+      <circle cx="-1.7" cy="-0.6" r="0.85" fill="#11161d"/>
+      <circle cx="1.7" cy="-0.6" r="0.85" fill="#11161d"/>
+      <path d="M0 -0.5 L-1.4 4 Q0 2.8 1.4 4 Z" fill="#11161d"/>
+    </g>
+  `;
+
+  let figureHalfSVG = '';
 
   if (rankValue === 13) {
-    // --- KING ---
-    characterSVG = `
-      <!-- King Robe / Mantle -->
-      <path d="M16 122 L16 80 Q16 66 32 62 Q50 58 68 62 Q84 66 84 80 L84 122 Z" fill="${t.mantle}" stroke="#222" stroke-width="0.8"/>
-      <!-- Inner Robe Vest -->
-      <path d="M34 65 L50 63 L66 65 L64 122 L36 122 Z" fill="#ffffff" stroke="${t.border}" stroke-width="0.8"/>
-      <path d="M36 78 L64 78 M36 94 L64 94 M36 110 L64 110" stroke="${t.accent}" stroke-width="0.75" stroke-dasharray="2 2"/>
+    // ==========================================
+    // KING (KÖNIG) - Majestic Sovereign Monarch
+    // ==========================================
+    figureHalfSVG = `
+      <!-- Royal Scepter held in left hand -->
+      <line x1="19" y1="18" x2="19" y2="70" stroke="${t.gold}" stroke-width="2"/>
+      <path d="M16 18 L19 12 L22 18 L19 20 Z" fill="${t.goldLight}" stroke="${t.goldDark}" stroke-width="0.6"/>
+      <circle cx="19" cy="16" r="1.2" fill="${t.gem}"/>
+
+      <!-- King Outer Robe / Mantle (Rich Velvet) -->
+      <path d="M12 70 L14 47 Q20 40 33 38 Q50 36 67 38 Q80 40 86 47 L88 70 Z" fill="${t.robe}" stroke="#0b0f14" stroke-width="0.8"/>
       
-      <!-- Ermine Collar -->
-      <path d="M22 66 Q50 56 78 66 L82 80 Q50 86 18 80 Z" fill="#ffffff" stroke="#bbb" stroke-width="0.8"/>
-      <path d="M28 72 L30 76 M42 74 L44 78 M56 74 L58 78 M70 72 L72 76" stroke="#222" stroke-width="1.2" stroke-linecap="round"/>
+      <!-- Slashed Sleeve Left -->
+      <path d="M14 47 Q20 53 22 70 L12 70 Z" fill="${t.robeAlt}"/>
+      <path d="M16 53 L20 61 M15 61 L18 68" stroke="${t.gold}" stroke-width="0.8"/>
 
-      <!-- Raised Right Arm holding shot glass -->
-      <path d="M68 68 Q80 66 82 52 L76 50 Q72 62 64 66 Z" fill="${t.mantle}" stroke="#222" stroke-width="0.8"/>
-      <path d="M78 50 L84 48 L86 54 L80 56 Z" fill="#ffffff" stroke="${t.accent}" stroke-width="0.8"/>
-      <ellipse cx="82" cy="46" rx="4.5" ry="3.5" fill="#fdd8b5" stroke="#d49b6a" stroke-width="0.8"/>
-      <path d="M80 44 Q83 41 85 44" stroke="#d49b6a" stroke-width="0.8" fill="none"/>
+      <!-- White Ermine Fur Lapels framing chest -->
+      <path d="M29 39 L23 70 L33 70 L36 41 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.75"/>
+      <path d="M71 39 L77 70 L67 70 L64 41 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.75"/>
+      ${ermineSpot(27, 51)}
+      ${ermineSpot(25, 63)}
+      ${ermineSpot(73, 51)}
+      ${ermineSpot(75, 63)}
 
-      <!-- Left Arm resting -->
-      <path d="M32 68 Q18 74 20 90 L26 90 Q26 78 36 70 Z" fill="${t.mantle}" stroke="#222" stroke-width="0.8"/>
-      <ellipse cx="23" cy="92" rx="3.5" ry="3" fill="#fdd8b5" stroke="#d49b6a" stroke-width="0.8"/>
+      <!-- Royal Tunic / Brocade Doublet Center -->
+      <path d="M33 41 L67 41 L67 70 L33 70 Z" fill="${t.robeAlt}" stroke="${t.gold}" stroke-width="0.8"/>
+      <!-- Gold Brocade Embroidery & Chevron Lace -->
+      <path d="M36 49 L64 49 M35 57 L65 57 M36 65 L64 65" stroke="${t.goldLight}" stroke-width="0.85" stroke-dasharray="2 1.5"/>
+      <line x1="50" y1="41" x2="50" y2="70" stroke="${t.gold}" stroke-width="0.75"/>
 
-      <!-- King Hair -->
-      <path d="M30 36 Q26 48 30 58 Q36 62 38 56 Q34 46 36 36 Z" fill="#e0e0e0" stroke="#bbb" stroke-width="0.6"/>
-      <path d="M70 36 Q74 48 70 58 Q64 62 62 56 Q66 46 64 36 Z" fill="#e0e0e0" stroke="#bbb" stroke-width="0.6"/>
+      <!-- Heavy Royal Collar of Office -->
+      <path d="M32 43 Q50 55 68 43" stroke="${t.gold}" stroke-width="2.3" fill="none"/>
+      <path d="M32 43 Q50 55 68 43" stroke="#ffffff" stroke-width="0.8" stroke-dasharray="1.5 1.5" fill="none"/>
+      <!-- Suspended Jeweled Pendant -->
+      <circle cx="50" cy="55" r="3" fill="${t.goldLight}" stroke="${t.goldDark}" stroke-width="0.6"/>
+      <circle cx="50" cy="55" r="1.7" fill="${t.gem}"/>
 
-      <!-- Face -->
-      <path d="M35 34 Q50 30 65 34 L64 54 Q50 63 36 54 Z" fill="#fed7b0" stroke="#d49b6a" stroke-width="0.8"/>
-      <ellipse cx="43" cy="41" rx="1.5" ry="1.2" fill="#263238"/>
-      <ellipse cx="57" cy="41" rx="1.5" ry="1.2" fill="#263238"/>
-      <path d="M39 37 Q43 35 47 37" stroke="#795548" stroke-width="0.9" fill="none"/>
-      <path d="M53 37 Q57 35 61 37" stroke="#795548" stroke-width="0.9" fill="none"/>
-      <path d="M50 39 L48 46 L52 46" stroke="#c58a58" stroke-width="0.8" fill="none"/>
+      <!-- Left Hand Gripping Scepter -->
+      <ellipse cx="19" cy="46" rx="3.4" ry="2.7" fill="#fedebb" stroke="#d49b6a" stroke-width="0.65"/>
+      <path d="M17 44 Q19 42 21 44" stroke="#b07d52" stroke-width="0.6" fill="none"/>
 
-      <!-- Royal Mustache -->
-      <path d="M50 49 Q42 47 36 51 Q44 54 50 51 Q56 54 64 51 Q58 47 50 49 Z" fill="#ffffff" stroke="#ccc" stroke-width="0.7"/>
-      <!-- Royal Beard -->
-      <path d="M38 53 Q36 68 50 72 Q64 68 62 53 Q56 58 50 56 Q44 58 38 53 Z" fill="#ffffff" stroke="#ccc" stroke-width="0.7"/>
+      <!-- Right Arm Raised Holding Vessel -->
+      <path d="M68 44 Q80 41 83 34 L77 32 Q71 38 63 42 Z" fill="${t.robe}" stroke="#0b0f14" stroke-width="0.75"/>
+      <!-- Gold cuff & Hand holding item -->
+      <rect x="76" y="31" width="5" height="4.8" rx="1.1" fill="#ffffff" stroke="${t.gold}" stroke-width="0.6"/>
+      <ellipse cx="78" cy="34" rx="3.6" ry="2.8" fill="#fedebb" stroke="#d49b6a" stroke-width="0.65"/>
+      <!-- Distinct fingers wrapping item base -->
+      <path d="M75 33 Q78 31.5 81 33 M75 35 Q78 33.5 81 35" stroke="#b07d52" stroke-width="0.55" fill="none"/>
 
-      <!-- Majestic Crown -->
-      <rect x="33" y="27" width="34" height="6" rx="1.5" fill="#ffc107" stroke="#ffa000" stroke-width="0.8"/>
-      <circle cx="39" cy="30" r="1.3" fill="#d32f2f"/>
-      <circle cx="50" cy="30" r="1.4" fill="${t.primary}"/>
-      <circle cx="61" cy="30" r="1.3" fill="#388e3c"/>
-      <path d="M33 27 L35 21 L39 27 L44 19 L50 27 L56 19 L61 27 L65 21 L67 27 Z" fill="#ffd54f" stroke="#ffa000" stroke-width="0.8"/>
-      <circle cx="50" cy="18" r="1.8" fill="#d32f2f"/>
-      <circle cx="44" cy="18" r="1.3" fill="#ffeb3b"/>
-      <circle cx="56" cy="18" r="1.3" fill="#ffeb3b"/>
+      <!-- Cascading Royal Silver/White Hair -->
+      <path d="M33 21 C24 26 23 37 27 48 C30 46 32 39 32 31 C32 25 33 22 33 21 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.8"/>
+      <path d="M67 21 C76 26 77 37 73 48 C70 46 68 39 68 31 C68 25 67 22 67 21 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.8"/>
+      <path d="M28 35 Q30 43 28 47 M72 35 Q70 43 72 47" stroke="#94a3b8" stroke-width="0.55" fill="none"/>
+
+      <!-- Sovereign Face Structure -->
+      <path d="M34 20 Q50 16 66 20 L64 36 Q50 42 36 36 Z" fill="#fedebb" stroke="#d49b6a" stroke-width="0.8"/>
+
+      <!-- Expressive Monarch Eyes -->
+      <!-- Left Eye -->
+      <path d="M39.5 25 Q43 23 46.5 25 Q43 27.5 39.5 25 Z" fill="#ffffff" stroke="#11161d" stroke-width="0.6"/>
+      <circle cx="43.5" cy="25.2" r="1.35" fill="#1e293b"/>
+      <circle cx="43" cy="24.7" r="0.45" fill="#ffffff"/>
+      <path d="M39 24.5 Q43 22.5 47 24.5" stroke="#11161d" stroke-width="0.9" fill="none"/>
+      <!-- Right Eye -->
+      <path d="M53.5 25 Q57 23 60.5 25 Q57 27.5 53.5 25 Z" fill="#ffffff" stroke="#11161d" stroke-width="0.6"/>
+      <circle cx="56.5" cy="25.2" r="1.35" fill="#1e293b"/>
+      <circle cx="56" cy="24.7" r="0.45" fill="#ffffff"/>
+      <path d="M53 24.5 Q57 22.5 61 24.5" stroke="#11161d" stroke-width="0.9" fill="none"/>
+
+      <!-- Distinguished Regal Eyebrows -->
+      <path d="M37.5 21.5 Q42.5 19.5 47.5 21.5" stroke="#271a15" stroke-width="1.25" stroke-linecap="round" fill="none"/>
+      <path d="M52.5 21.5 Q57.5 19.5 62.5 21.5" stroke="#271a15" stroke-width="1.25" stroke-linecap="round" fill="none"/>
+
+      <!-- Aquiline Nose -->
+      <path d="M50 22 L49 30 Q47.5 32 50 32 Q52 32 51 30" stroke="#b07d52" stroke-width="0.8" fill="none"/>
+
+      <!-- Imperial Swept Mustache -->
+      <path d="M50 33 C45.5 30 36 30 32 35 C37 36.5 44.5 34.5 50 34.5 C55.5 34.5 63 36.5 68 35 C64 30 54.5 30 50 33 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.75"/>
+      <path d="M40 32 Q36 34.5 33 35.5 M60 32 Q64 34.5 67 35.5" stroke="#94a3b8" stroke-width="0.55" fill="none"/>
+
+      <!-- Split Majestic Royal Beard -->
+      <path d="M35 34.5 C33 42 35 52 42 55 C46 56 48.5 51 50 49 C51.5 51 54 56 58 55 C65 52 67 42 65 34.5 C60 38.5 54.5 38 50 37 C45.5 38 40 38.5 35 34.5 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.8"/>
+      <path d="M41 40 C41 45 42 50 44 54 M59 40 C59 45 58 50 56 54 M50 38 L50 47" stroke="#94a3b8" stroke-width="0.6" fill="none"/>
+
+      <!-- Magnificent Imperial Arched Crown -->
+      <!-- Velvet Cap Dome Interior -->
+      <path d="M32 17 Q50 6 68 17 Z" fill="${t.robe}" opacity="0.9"/>
+      <!-- Gold Base Circlet with Rubies & Emeralds -->
+      <path d="M30 20 L70 20 L68 16 L32 16 Z" fill="${t.gold}" stroke="${t.goldDark}" stroke-width="0.75"/>
+      <circle cx="35" cy="18" r="1.2" fill="${t.gem}"/>
+      <circle cx="42" cy="18" r="1.2" fill="${t.highlight}"/>
+      <circle cx="50" cy="18" r="1.4" fill="${t.goldLight}" stroke="${t.goldDark}" stroke-width="0.45"/>
+      <circle cx="58" cy="18" r="1.2" fill="${t.highlight}"/>
+      <circle cx="65" cy="18" r="1.2" fill="${t.gem}"/>
+      <!-- Crown Fleur-de-lis & Spires -->
+      <path d="M32 16 L34 10 L38 16 L43 8 L48 16" fill="${t.goldLight}" stroke="${t.goldDark}" stroke-width="0.65"/>
+      <path d="M68 16 L66 10 L62 16 L57 8 L52 16" fill="${t.goldLight}" stroke="${t.goldDark}" stroke-width="0.65"/>
+      <!-- Center Imperial Fleur-de-lis -->
+      <path d="M50 6 L47.5 11 L50 16 L52.5 11 Z M50 6 Q45 8.5 47.5 11 M50 6 Q55 8.5 52.5 11" fill="${t.goldLight}" stroke="${t.goldDark}" stroke-width="0.65"/>
+      <!-- Spires Jewels -->
+      <circle cx="50" cy="5.5" r="1.4" fill="${t.gem}" stroke="${t.goldDark}" stroke-width="0.5"/>
+      <circle cx="43" cy="7.5" r="1.1" fill="${t.goldLight}"/>
+      <circle cx="57" cy="7.5" r="1.1" fill="${t.goldLight}"/>
+      <circle cx="34" cy="9.5" r="1" fill="${t.highlight}"/>
+      <circle cx="66" cy="9.5" r="1" fill="${t.highlight}"/>
     `;
   } else if (rankValue === 12) {
-    // --- QUEEN ---
-    characterSVG = `
-      <!-- Queen Gown Bodice -->
-      <path d="M18 122 L20 78 Q22 66 36 64 Q50 60 64 64 Q78 66 80 78 L82 122 Z" fill="${t.mantle}" stroke="#222" stroke-width="0.8"/>
-      <!-- Gown Lace Inset -->
-      <path d="M34 68 Q50 78 66 68 L62 122 L38 122 Z" fill="#ffffff" stroke="${t.border}" stroke-width="0.8"/>
-      <path d="M42 82 Q50 86 58 82 M40 96 Q50 100 60 96 M38 110 Q50 114 62 110" stroke="${t.accent}" stroke-width="0.7" fill="none"/>
+    // ==========================================
+    // QUEEN (DAME) - Majestic Renaissance Queen
+    // ==========================================
+    figureHalfSVG = `
+      <!-- Translucent Royal Mantilla Veil -->
+      <path d="M28 16 C20 24 18 42 20 67 C24 64 26 50 28 36 Z" fill="rgba(255,255,255,0.45)" stroke="#cbd5e1" stroke-width="0.55"/>
+      <path d="M72 16 C80 24 82 42 80 67 C76 64 74 50 72 36 Z" fill="rgba(255,255,255,0.45)" stroke="#cbd5e1" stroke-width="0.55"/>
 
-      <!-- Raised Right Arm holding shot glass -->
-      <path d="M66 68 Q78 64 82 52 L76 50 Q72 60 62 66 Z" fill="${t.mantle}" stroke="#222" stroke-width="0.8"/>
-      <path d="M78 50 L84 48 L86 54 L80 56 Z" fill="#ffffff" stroke="${t.accent}" stroke-width="0.8"/>
-      <ellipse cx="82" cy="46" rx="4" ry="3.2" fill="#fff0e0" stroke="#d49b6a" stroke-width="0.7"/>
-      <path d="M80 44 Q83 42 85 44" stroke="#d49b6a" stroke-width="0.7" fill="none"/>
+      <!-- Golden Scepter with Heraldic Rose held in left hand -->
+      <line x1="20" y1="30" x2="20" y2="70" stroke="#1e7e34" stroke-width="1.3"/>
+      <path d="M20 43 Q16 41 15 44 Q18 45 20 43" fill="#1e7e34"/>
+      <!-- Golden Rose Blossom -->
+      <circle cx="20" cy="28" r="3.4" fill="${t.goldLight}" stroke="${t.goldDark}" stroke-width="0.65"/>
+      <circle cx="20" cy="28" r="1.9" fill="${t.gem}"/>
+      <path d="M18.5 25 Q20 23 21.5 25 M17 27 Q15 28 17 29 M23 27 Q25 28 23 29 M18.5 31 Q20 33 21.5 31" stroke="${t.goldDark}" stroke-width="0.6" fill="none"/>
 
-      <!-- Left Arm & Fan/Rose -->
-      <path d="M34 68 Q22 74 24 88 L30 88 Q30 78 38 70 Z" fill="${t.mantle}" stroke="#222" stroke-width="0.8"/>
-      <ellipse cx="27" cy="90" rx="3.5" ry="3" fill="#fff0e0" stroke="#d49b6a" stroke-width="0.7"/>
-      <circle cx="25" cy="85" r="2.5" fill="${t.accent}"/>
-      <circle cx="25" cy="85" r="1.2" fill="#ffffff"/>
+      <!-- Queen Renaissance Gown Shoulders & Bodice -->
+      <path d="M13 70 L15 48 Q21 40 33 42 Q41 44 50 49 Q59 44 67 42 Q79 40 85 48 L87 70 Z" fill="${t.robe}" stroke="#0b0f14" stroke-width="0.8"/>
+      <!-- Puffed Slashed Sleeves Left & Right -->
+      <path d="M15 48 Q21 54 23 70 L13 70 Z" fill="${t.robeAlt}"/>
+      <path d="M85 48 Q79 54 77 70 L87 70 Z" fill="${t.robeAlt}"/>
+      <path d="M17 54 L21 62 M83 54 L79 62" stroke="${t.gold}" stroke-width="0.8"/>
 
-      <!-- Flowing Hair curls -->
-      <path d="M31 34 Q24 46 28 62 Q34 66 36 58 Q32 46 34 34 Z" fill="#8d6e63" stroke="#5d4037" stroke-width="0.6"/>
-      <path d="M69 34 Q76 46 72 62 Q66 66 64 58 Q68 46 66 34 Z" fill="#8d6e63" stroke="#5d4037" stroke-width="0.6"/>
+      <!-- Sweetheart Lace Bodice Inset -->
+      <path d="M41 46 Q50 51 59 46 L57 70 L43 70 Z" fill="#ffffff" stroke="${t.gold}" stroke-width="0.8"/>
+      <!-- Bodice Gold Lacing & Filigree -->
+      <path d="M43 52 Q50 56 57 52 M42 59 Q50 63 58 59 M41 66 Q50 70 59 66" stroke="${t.goldLight}" stroke-width="0.8" fill="none"/>
 
-      <!-- Queen Face -->
-      <path d="M36 33 Q50 28 64 33 L62 52 Q50 62 38 52 Z" fill="#fff0e0" stroke="#d49b6a" stroke-width="0.8"/>
-      <circle cx="42" cy="46" r="3" fill="#ffcdd2" opacity="0.45"/>
-      <circle cx="58" cy="46" r="3" fill="#ffcdd2" opacity="0.45"/>
-      <ellipse cx="43" cy="40" rx="1.5" ry="1.2" fill="#37474f"/>
-      <ellipse cx="57" cy="40" rx="1.5" ry="1.2" fill="#37474f"/>
-      <path d="M41 38 Q43 36 46 38" stroke="#4e342e" stroke-width="0.8" fill="none"/>
-      <path d="M54 38 Q57 36 59 38" stroke="#4e342e" stroke-width="0.8" fill="none"/>
-      <path d="M50 40 L49 45 L51 45" stroke="#d49b6a" stroke-width="0.7" fill="none"/>
-      <path d="M46 50 Q50 53 54 50" stroke="#d81b60" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+      <!-- Left Hand Holding Rose Stem -->
+      <ellipse cx="20" cy="48" rx="3.1" ry="2.5" fill="#fff5ea" stroke="#d49b6a" stroke-width="0.6"/>
 
-      <!-- Pearl Necklace -->
-      <path d="M42 58 Q50 63 58 58" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2" fill="none"/>
-      <circle cx="50" cy="62" r="1.5" fill="${t.accent}"/>
+      <!-- Right Arm Raised Gracefully Holding Vessel -->
+      <path d="M66 44 Q79 41 83 34 L77 32 Q71 38 63 42 Z" fill="${t.robe}" stroke="#0b0f14" stroke-width="0.75"/>
+      <!-- Fine Lace Frilled Cuff -->
+      <path d="M76 31 Q79 30 82 33 L78 36 Z" fill="#ffffff" stroke="${t.gold}" stroke-width="0.6"/>
+      <!-- Slender Aristocratic Hand -->
+      <ellipse cx="78" cy="34" rx="3.4" ry="2.6" fill="#fff5ea" stroke="#d49b6a" stroke-width="0.6"/>
+      <path d="M75 33 Q78 31.5 81 33 M75 35 Q78 33.5 81 35" stroke="#b07d52" stroke-width="0.55" fill="none"/>
 
-      <!-- Queen Tiara -->
-      <path d="M34 28 Q50 22 66 28 L64 31 Q50 26 36 31 Z" fill="#ffd54f" stroke="#ffa000" stroke-width="0.8"/>
-      <circle cx="50" cy="20" r="2.2" fill="${t.primary}" stroke="#ffd54f" stroke-width="0.7"/>
-      <circle cx="42" cy="23" r="1.6" fill="#ffffff" stroke="#ffd54f" stroke-width="0.6"/>
-      <circle cx="58" cy="23" r="1.6" fill="#ffffff" stroke="#ffd54f" stroke-width="0.6"/>
-      <circle cx="35" cy="27" r="1.2" fill="#ffffff"/>
-      <circle cx="65" cy="27" r="1.2" fill="#ffffff"/>
+      <!-- Rich Styled Brunette Coiffure Framing Head -->
+      <path d="M33 15 Q50 11 67 15 C71 20 70 30 67 39 C64 36 63 28 63 21 C57 18 43 18 37 21 C37 28 36 36 33 39 C30 30 29 20 33 15 Z" fill="#4e342e" stroke="#271a15" stroke-width="0.75"/>
+
+      <!-- Slender Graceful Queen Neck -->
+      <path d="M43 35 L43 43 Q50 45 57 43 L57 35 Z" fill="#fff5ea" stroke="#d49b6a" stroke-width="0.65"/>
+
+      <!-- Elegant Queen Face Contours (Graceful Tapered Oval) -->
+      <path d="M36 18 Q50 14 64 18 C64 25 61 33 50 37 C39 33 36 25 36 18 Z" fill="#fff5ea" stroke="#d49b6a" stroke-width="0.75"/>
+
+      <!-- Soft Rosy Blush Glow -->
+      <circle cx="41.5" cy="28.5" r="3" fill="#ffb4a2" opacity="0.42"/>
+      <circle cx="58.5" cy="28.5" r="3" fill="#ffb4a2" opacity="0.42"/>
+
+      <!-- Sovereign Almond Eyes with Delicate Eyelashes -->
+      <!-- Left Eye -->
+      <path d="M40 23.5 Q43.5 21.8 47 23.5 Q43.5 25.8 40 23.5 Z" fill="#ffffff" stroke="#11161d" stroke-width="0.5"/>
+      <circle cx="43.8" cy="23.8" r="1.3" fill="#1e293b"/>
+      <circle cx="43.3" cy="23.3" r="0.4" fill="#ffffff"/>
+      <path d="M39.5 23 Q43.5 20.8 47.5 23" stroke="#11161d" stroke-width="0.95" fill="none"/>
+      <!-- Right Eye -->
+      <path d="M53 23.5 Q56.5 21.8 60 23.5 Q56.5 25.8 53 23.5 Z" fill="#ffffff" stroke="#11161d" stroke-width="0.5"/>
+      <circle cx="56.2" cy="23.8" r="1.3" fill="#1e293b"/>
+      <circle cx="55.7" cy="23.3" r="0.4" fill="#ffffff"/>
+      <path d="M52.5 23 Q56.5 20.8 60.5 23" stroke="#11161d" stroke-width="0.95" fill="none"/>
+
+      <!-- Gracefully Arched Eyebrows -->
+      <path d="M38.5 20 Q43 18.5 47.5 20.5" stroke="#3e2723" stroke-width="0.8" fill="none"/>
+      <path d="M52.5 20.5 Q57 18.5 61.5 20" stroke="#3e2723" stroke-width="0.8" fill="none"/>
+
+      <!-- Sculpted Nose -->
+      <path d="M50 21.5 L49 28.5 Q48 30 50 30" stroke="#d49b6a" stroke-width="0.7" fill="none"/>
+
+      <!-- Painted Rose / Crimson Lips with Cupid's Bow -->
+      <path d="M46.5 33 Q48.5 31.8 50 32.5 Q51.5 31.8 53.5 33 Q50 35.8 46.5 33 Z" fill="#c2185b" stroke="#880e4f" stroke-width="0.55"/>
+
+      <!-- Triple-Strand Pearl Choker & Pendant -->
+      <path d="M42 41 Q50 46 58 41" stroke="#ffffff" stroke-width="1.8" stroke-dasharray="1.8 1.4" fill="none"/>
+      <circle cx="50" cy="46" r="2.2" fill="${t.gem}" stroke="${t.gold}" stroke-width="0.6"/>
+
+      <!-- Radiant Gold Queen Coronet / Tiara -->
+      <path d="M31 15 Q50 11 69 15 L67 18 Q50 14 33 18 Z" fill="${t.gold}" stroke="${t.goldDark}" stroke-width="0.75"/>
+      <!-- Spires & Pearls -->
+      <circle cx="50" cy="9" r="2.5" fill="${t.gem}" stroke="${t.goldLight}" stroke-width="0.65"/>
+      <circle cx="41" cy="11" r="1.5" fill="#ffffff" stroke="${t.goldDark}" stroke-width="0.5"/>
+      <circle cx="59" cy="11" r="1.5" fill="#ffffff" stroke="${t.goldDark}" stroke-width="0.5"/>
+      <circle cx="34" cy="13" r="1.3" fill="#ffffff"/>
+      <circle cx="66" cy="13" r="1.3" fill="#ffffff"/>
     `;
   } else {
-    // --- JACK ---
-    characterSVG = `
-      <!-- Jack Squire Doublet -->
-      <path d="M18 122 L20 78 Q22 66 36 62 Q50 58 64 62 Q78 66 80 78 L82 122 Z" fill="${t.mantle}" stroke="#222" stroke-width="0.8"/>
-      <!-- Slashed Doublet Inset -->
-      <path d="M36 65 L50 62 L64 65 L61 122 L39 122 Z" fill="#ffffff" stroke="${t.border}" stroke-width="0.8"/>
-      <path d="M40 74 L48 82 M52 74 L60 82 M40 92 L48 100 M52 92 L60 100" stroke="${t.accent}" stroke-width="1.4" stroke-linecap="round"/>
+    // ==========================================
+    // JACK (BUBE) - Gallant Cavalier Squire
+    // ==========================================
+    figureHalfSVG = `
+      <!-- Ceremonial Halberd / Polearm held in left hand -->
+      <line x1="19" y1="9" x2="19" y2="70" stroke="#94a3b8" stroke-width="1.8"/>
+      <!-- Halberd Axe Blade & Spear Point -->
+      <path d="M19 9 L19 2 L17 0.5 L13 5 L15 13 Z" fill="#cbd5e1" stroke="#475569" stroke-width="0.75"/>
+      <path d="M19 7 Q26 5 26 11 L19 12 Z" fill="#94a3b8" stroke="#475569" stroke-width="0.65"/>
 
-      <!-- Elizabethan Frilled Collar -->
-      <path d="M34 62 Q50 56 66 62 L64 68 Q50 64 36 68 Z" fill="#ffffff" stroke="#bbb" stroke-width="0.8"/>
+      <!-- Slashed Cavalier Doublet (Rich Velvet) -->
+      <path d="M13 70 L15 48 Q21 40 33 38 Q50 36 67 38 Q79 40 85 48 L87 70 Z" fill="${t.robe}" stroke="#0b0f14" stroke-width="0.8"/>
+      <!-- Slashed Sleeve Puffs Left & Right -->
+      <path d="M15 48 Q21 54 23 70 L13 70 Z" fill="${t.robeAlt}"/>
+      <path d="M85 48 Q79 54 77 70 L87 70 Z" fill="${t.robeAlt}"/>
 
-      <!-- Raised Right Arm holding shot glass salute -->
-      <path d="M66 66 Q78 62 82 50 L76 48 Q72 58 62 64 Z" fill="${t.mantle}" stroke="#222" stroke-width="0.8"/>
-      <path d="M78 48 L84 46 L86 52 L80 54 Z" fill="#ffffff" stroke="${t.accent}" stroke-width="0.8"/>
-      <ellipse cx="82" cy="44" rx="4.2" ry="3.2" fill="#fed7b0" stroke="#d49b6a" stroke-width="0.7"/>
-      <path d="M80 42 Q83 40 85 42" stroke="#d49b6a" stroke-width="0.7" fill="none"/>
+      <!-- Slashed Doublet Inset with Contrasting Silk -->
+      <path d="M39 39 L61 39 L58 70 L42 70 Z" fill="${t.slash}" stroke="${t.gold}" stroke-width="0.8"/>
+      <!-- Diagonal Slashes with Gold Piping -->
+      <path d="M43 45 L47 51 M53 45 L57 51 M43 55 L47 61 M53 55 L57 61" stroke="${t.gold}" stroke-width="1.4" stroke-linecap="round"/>
 
-      <!-- Left Arm & Belt/Hilt -->
-      <path d="M34 66 Q20 72 22 88 L28 88 Q28 76 38 68 Z" fill="${t.mantle}" stroke="#222" stroke-width="0.8"/>
-      <ellipse cx="25" cy="89" rx="3.5" ry="3" fill="#fed7b0" stroke="#d49b6a" stroke-width="0.7"/>
-      <circle cx="28" cy="94" r="3.2" fill="#ffc107" stroke="#ffa000" stroke-width="0.7"/>
-      <rect x="27" y="94" width="2" height="12" fill="#90a4ae"/>
+      <!-- Diagonal Leather & Gold Baldric / Sword Belt -->
+      <path d="M30 40 L69 66 L65 70 L26 43 Z" fill="${t.gold}" stroke="${t.goldDark}" stroke-width="0.65"/>
+      <!-- Gold Belt Buckle -->
+      <rect x="46" y="52" width="6.5" height="5.5" rx="1.2" fill="${t.goldLight}" stroke="${t.goldDark}" stroke-width="0.65"/>
 
-      <!-- Young Noble Face -->
-      <path d="M36 34 Q50 30 64 34 L62 53 Q50 62 38 53 Z" fill="#fed7b0" stroke="#d49b6a" stroke-width="0.8"/>
-      <path d="M32 32 Q26 44 32 54 Q38 56 36 48 Q34 40 38 32 Z" fill="#5d4037" stroke="#3e2723" stroke-width="0.6"/>
-      <path d="M68 32 Q74 44 68 54 Q62 56 64 48 Q66 40 62 32 Z" fill="#5d4037" stroke="#3e2723" stroke-width="0.6"/>
+      <!-- Left Hand Gripping Halberd Shaft -->
+      <ellipse cx="19" cy="46" rx="3.3" ry="2.6" fill="#fedebb" stroke="#d49b6a" stroke-width="0.65"/>
 
-      <ellipse cx="43" cy="41" rx="1.5" ry="1.2" fill="#263238"/>
-      <ellipse cx="57" cy="41" rx="1.5" ry="1.2" fill="#263238"/>
-      <path d="M40 37 Q43 35 46 37" stroke="#3e2723" stroke-width="0.8" fill="none"/>
-      <path d="M54 37 Q57 35 60 37" stroke="#3e2723" stroke-width="0.8" fill="none"/>
-      <path d="M50 40 L49 46 L51 46" stroke="#c58a58" stroke-width="0.7" fill="none"/>
-      <path d="M44 48 Q50 47 56 48" stroke="#5d4037" stroke-width="0.8" fill="none"/>
-      <path d="M46 51 Q50 54 54 51" stroke="#c2185b" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+      <!-- Right Arm Raised in Salute Holding Vessel -->
+      <path d="M66 43 Q79 40 83 33 L77 31 Q71 37 63 41 Z" fill="${t.robe}" stroke="#0b0f14" stroke-width="0.75"/>
+      <!-- Pleated Cuff -->
+      <rect x="76" y="30" width="4.8" height="4.8" rx="1" fill="#ffffff" stroke="${t.gold}" stroke-width="0.6"/>
+      <!-- Hand Holding Item -->
+      <ellipse cx="78" cy="33" rx="3.6" ry="2.7" fill="#fedebb" stroke="#d49b6a" stroke-width="0.65"/>
+      <path d="M75 32 Q78 30.5 81 32 M75 34 Q78 32.5 81 34" stroke="#b07d52" stroke-width="0.55" fill="none"/>
 
-      <!-- Cavalier Beret Cap with Plume -->
-      <ellipse cx="50" cy="27" rx="22" ry="7" fill="${t.mantle}" stroke="#222" stroke-width="0.8" transform="rotate(-6 50 27)"/>
-      <circle cx="42" cy="27" r="2.2" fill="#ffd54f" stroke="#ffa000" stroke-width="0.6"/>
-      <path d="M42 27 Q30 15 36 8 Q46 11 45 23 Z" fill="#ff4081" stroke="#c2185b" stroke-width="0.7"/>
-      <path d="M37 18 Q41 14 43 19" stroke="#ffffff" stroke-width="0.7" fill="none"/>
+      <!-- Winged Standing Elizabethan Collar -->
+      <path d="M33 35 L43 42 L50 37 L57 42 L67 35 L50 33 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.8"/>
+
+      <!-- Shoulder-length Wavy Locks framing head -->
+      <path d="M31 16 C25 22 26 34 31 42 C33 37 33 28 34 20 Z" fill="#3e2723" stroke="#211512" stroke-width="0.7"/>
+      <path d="M65 16 C71 22 70 34 65 42 C63 37 63 28 62 20 Z" fill="#3e2723" stroke="#211512" stroke-width="0.7"/>
+
+      <!-- Gallant Youthful Face -->
+      <path d="M35 18 Q50 15 65 18 L63 34 Q50 42 37 34 Z" fill="#fedebb" stroke="#d49b6a" stroke-width="0.8"/>
+
+      <!-- Spirited Confident Eyes -->
+      <!-- Left Eye -->
+      <path d="M40 23.5 Q43.5 21.8 47 23.5 Q43.5 25.8 40 23.5 Z" fill="#ffffff" stroke="#11161d" stroke-width="0.55"/>
+      <circle cx="43.8" cy="23.8" r="1.3" fill="#1e293b"/>
+      <circle cx="43.3" cy="23.3" r="0.4" fill="#ffffff"/>
+      <path d="M39.5 23 Q43.5 20.5 47.5 23" stroke="#11161d" stroke-width="0.85" fill="none"/>
+      <!-- Right Eye -->
+      <path d="M53 23.5 Q56.5 21.8 60 23.5 Q56.5 25.8 53 23.5 Z" fill="#ffffff" stroke="#11161d" stroke-width="0.55"/>
+      <circle cx="56.2" cy="23.8" r="1.3" fill="#1e293b"/>
+      <circle cx="55.7" cy="23.3" r="0.4" fill="#ffffff"/>
+      <path d="M52.5 23 Q56.5 20.5 60.5 23" stroke="#11161d" stroke-width="0.85" fill="none"/>
+
+      <!-- Confident Eyebrows -->
+      <path d="M38 20 Q42.5 18.5 47 20.5" stroke="#2c1b18" stroke-width="0.95" fill="none"/>
+      <path d="M53 20.5 Q57.5 18.5 62 20" stroke="#2c1b18" stroke-width="0.95" fill="none"/>
+
+      <!-- Nose -->
+      <path d="M50 21 L49 28 Q48 29.5 50 29.5" stroke="#d49b6a" stroke-width="0.75" fill="none"/>
+
+      <!-- Gallant Smile -->
+      <path d="M45.5 32.5 Q50 35.5 54.5 32.5" stroke="#c2185b" stroke-width="0.95" fill="none" stroke-linecap="round"/>
+
+      <!-- Jaunty Velvet Cavalier Beret Cap -->
+      <ellipse cx="48" cy="14" rx="22" ry="7.5" fill="${t.robe}" stroke="${t.gold}" stroke-width="0.85" transform="rotate(-9 48 14)"/>
+      <!-- Golden Sunburst Brooch -->
+      <circle cx="36" cy="14" r="3" fill="${t.goldLight}" stroke="${t.goldDark}" stroke-width="0.65"/>
+      <circle cx="36" cy="14" r="1.5" fill="${t.gem}"/>
+      <!-- Curving Ostrich Plume Feather -->
+      <path d="M36 14 C27 5 33 -1 46 0.5 C57 1.5 64 5.5 68 10 C62 7 53 5 44 5 C35 5 32 9 36 14 Z" fill="#e11d48" stroke="#9f1239" stroke-width="0.75"/>
+      <path d="M40 3 Q44 1 48 3 M50 5 Q54 3 58 6 M36 8 Q40 5 44 8" stroke="#ffffff" stroke-width="0.65" stroke-linecap="round" fill="none"/>
     `;
   }
 
   return `
-    <svg class="court-svg" viewBox="0 0 100 136" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg class="court-svg" viewBox="0 0 100 140" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="bgGrad_${uid}" x1="50" y1="0" x2="50" y2="136" gradientUnits="userSpaceOnUse">
-          <stop stop-color="${t.secondary}"/>
-          <stop offset="0.7" stop-color="#ffffff"/>
-          <stop offset="1" stop-color="${t.secondary}"/>
+        <!-- Clip for the top half (y: 0 to 70) -->
+        <clipPath id="topClip_${uid}">
+          <rect x="0" y="0" width="100" height="70"/>
+        </clipPath>
+
+        <!-- Card Background Gradient -->
+        <linearGradient id="cardBg_${uid}" x1="50" y1="0" x2="50" y2="140" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#ffffff"/>
+          <stop offset="50%" stop-color="#faf8f2"/>
+          <stop offset="100%" stop-color="#ffffff"/>
         </linearGradient>
+
+        <!-- Reusable Half Portrait Group -->
+        <g id="portrait_${uid}">
+          <g clip-path="url(#topClip_${uid})">
+            ${figureHalfSVG}
+            ${heldItemSVG}
+          </g>
+        </g>
       </defs>
 
-      <!-- Frame & Background Panel -->
-      <rect x="2.5" y="2.5" width="95" height="131" rx="5" fill="url(#bgGrad_${uid})" stroke="${t.border}" stroke-width="1.5"/>
-      <rect x="5.5" y="5.5" width="89" height="125" rx="3.5" fill="none" stroke="${t.accent}" stroke-width="0.6" stroke-dasharray="2 2" opacity="0.6"/>
-      
-      <!-- Inner Arch Window -->
-      <path d="M10 120 L10 36 Q10 8 50 8 Q90 8 90 36 L90 120 Z" fill="${t.secondary}" opacity="0.45"/>
-      <path d="M13 120 L13 38 Q13 11 50 11 Q87 11 87 38 L87 120" fill="none" stroke="${t.border}" stroke-width="0.7" opacity="0.4"/>
+      <!-- Background Panel -->
+      <rect x="2" y="2" width="96" height="136" rx="3" fill="url(#cardBg_${uid})"/>
 
-      <!-- Character Artwork -->
-      ${characterSVG}
+      <!-- Classical Inner Frame -->
+      <rect x="3.5" y="3.5" width="93" height="133" rx="2.5" fill="none" stroke="${t.frame}" stroke-width="1.3"/>
+      <rect x="5.5" y="5.5" width="89" height="129" rx="1.5" fill="none" stroke="${t.gold}" stroke-width="0.8"/>
 
-      <!-- Held Shot Glass of the Suit -->
-      ${heldGlassSVG}
+      <!-- Corner Fleurons -->
+      <g stroke="${t.gold}" stroke-width="0.65" fill="none">
+        <path d="M7 11 Q11 11 11 7 M8 8 L10 10"/>
+        <path d="M93 11 Q89 11 89 7 M92 8 L90 10"/>
+        <path d="M7 129 Q11 129 11 133 M8 132 L10 130"/>
+        <path d="M93 129 Q89 129 89 133 M92 132 L90 130"/>
+      </g>
 
-      <!-- Bottom Banner Ribbon -->
-      <rect x="20" y="119" width="60" height="13" rx="2.5" fill="#ffffff" stroke="${t.border}" stroke-width="1.1"/>
-      <text x="50" y="129" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="8.5" font-weight="900" fill="${t.ribbonText}" text-anchor="middle" letter-spacing="1.5">${roleTitle}</text>
+      <!-- TOP HALF PORTRAIT -->
+      <use href="#portrait_${uid}"/>
+
+      <!-- BOTTOM HALF PORTRAIT (180° Inverted for Reversible Playing Card) -->
+      <g transform="rotate(180 50 70)">
+        <use href="#portrait_${uid}"/>
+      </g>
+
+      <!-- CENTRAL HERALDIC WAIST SASH & GEM MEDALLION -->
+      <g class="court-dividing-sash">
+        <!-- Gold Ribbon Band across waist -->
+        <rect x="4.5" y="66" width="91" height="8" fill="${t.gold}" stroke="${t.goldDark}" stroke-width="0.7"/>
+        <rect x="6" y="67.5" width="88" height="5" fill="${t.primary}" opacity="0.75"/>
+        <line x1="6" y1="70" x2="94" y2="70" stroke="${t.goldLight}" stroke-width="0.85" stroke-dasharray="2 1.5"/>
+        
+        <!-- Center Heraldic Medallion with Faceted Gem -->
+        <circle cx="50" cy="70" r="6.6" fill="${t.goldLight}" stroke="${t.goldDark}" stroke-width="0.8"/>
+        <circle cx="50" cy="70" r="5" fill="${t.primary}" stroke="${t.gold}" stroke-width="0.65"/>
+        <circle cx="50" cy="70" r="2.8" fill="${t.gem}"/>
+        <circle cx="49" cy="69" r="0.85" fill="#ffffff" opacity="0.95"/>
+      </g>
     </svg>
   `;
 }
@@ -4050,5 +4280,7 @@ class SolitaireGame {
 
 // Initialize on page load
 window.addEventListener('DOMContentLoaded', () => {
-  window.solitaireApp = new SolitaireGame();
+  if (document.getElementById('stock-pile')) {
+    window.solitaireApp = new SolitaireGame();
+  }
 });

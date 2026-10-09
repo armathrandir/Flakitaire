@@ -691,10 +691,10 @@ body.is-pointer-dragging * {
    ========================================================================== */
 .card-court-container {
   position: absolute;
-  top: 24px;
-  bottom: 24px;
-  left: 8px;
-  right: 8px;
+  top: clamp(18px, 13%, 22px);
+  bottom: clamp(18px, 13%, 22px);
+  left: clamp(4px, 3.5%, 6px);
+  right: clamp(4px, 3.5%, 6px);
   display: flex;
   align-items: center;
   justify-content: center;
