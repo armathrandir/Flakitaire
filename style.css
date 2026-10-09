@@ -591,21 +591,21 @@ body.is-pointer-dragging * {
   overflow: hidden;
 }
 
-/* Specific suit rank colors: Two Colors (Black & Green) */
-.card.suit-hearts {
-  color: var(--suit-green); /* Green Drop */
-}
-
-.card.suit-diamonds {
-  color: var(--suit-green); /* Green Shot Glass */
-}
-
+/* Specific suit rank colors: Dunkel (Farbe 1 & 2) ⇄ Hell (Farbe 3 & 4) */
 .card.suit-clubs {
-  color: var(--suit-black); /* Black Shot Glass */
+  color: #1a1a1a; /* Farbe 1: Schwarzbier (Dunkel) */
 }
 
 .card.suit-spades {
-  color: var(--suit-black); /* Black Drop */
+  color: #072210; /* Farbe 2: Dunkelgrüner Shot, kurz vor Schwarz (Dunkel) */
+}
+
+.card.suit-hearts {
+  color: #b45309; /* Farbe 3: Pilsbier Bernstein-Gold (Hell) */
+}
+
+.card.suit-diamonds {
+  color: #c25e00; /* Farbe 4: Holunderschnaps Sonnengold (Hell) */
 }
 
 /* Card Corners - Rank only, no corner glasses */
@@ -778,30 +778,34 @@ body.is-pointer-dragging * {
   box-shadow: 0 0 4px rgba(0,0,0,0.5);
 }
 
+.dot-dark-beer,
 .dot-black-glass {
-  background: #111111;
-  border: 1.5px solid #cfd8dc;
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
+  background: #1c0d06;
+  border: 1.5px solid #fef3c7;
+  box-shadow: 0 0 5px rgba(254, 243, 199, 0.4);
 }
 
+.dot-dark-shot,
 .dot-black-drop,
 .dot-black-flask {
-  background: #1e272c;
-  border: 1.5px solid #90a4ae;
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+  background: #071f10;
+  border: 1.5px solid #1b5e20;
+  box-shadow: 0 0 5px rgba(27, 94, 32, 0.4);
 }
 
-.dot-green-glass {
-  background: #00e676;
-  border: 1.5px solid #b9f6ca;
-  box-shadow: 0 0 6px rgba(0, 230, 118, 0.6);
-}
-
+.dot-pils-beer,
 .dot-green-drop,
 .dot-green-flask {
-  background: #007e33;
-  border: 1.5px solid #69f0ae;
-  box-shadow: 0 0 6px rgba(0, 126, 51, 0.6);
+  background: #facc15;
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 0 6px rgba(250, 204, 21, 0.6);
+}
+
+.dot-elder-shot,
+.dot-green-glass {
+  background: #fef08a;
+  border: 1.5px solid #b45309;
+  box-shadow: 0 0 6px rgba(254, 240, 138, 0.6);
 }
 
 .legend-swap {

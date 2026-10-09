@@ -28,10 +28,10 @@
 
 // --- Constants & Config ---
 const SUITS = [
-  { name: 'clubs', title: 'Black Shot Glass', color: 'black', symbol: 'glass' },
-  { name: 'spades', title: 'Black Drop', color: 'black', symbol: 'drop' },
-  { name: 'diamonds', title: 'Green Shot Glass', color: 'green', symbol: 'glass' },
-  { name: 'hearts', title: 'Green Drop', color: 'green', symbol: 'drop' }
+  { name: 'clubs', title: 'Schwarzbier-Glas', color: 'dark', symbol: 'mug-dark' },
+  { name: 'spades', title: 'Dunkelgrünes Shotglas', color: 'dark', symbol: 'shot-darkgreen' },
+  { name: 'hearts', title: 'Pilsbier-Glas', color: 'light', symbol: 'mug-pils' },
+  { name: 'diamonds', title: 'Holunderschnaps-Shotglas', color: 'light', symbol: 'shot-holunder' }
 ];
 
 const RANKS = [
@@ -144,17 +144,17 @@ const TRANSLATIONS = {
     stockTitle: 'Klicken zum Ziehen',
     wasteTitle: 'Gezogene Karten',
     foundations: {
-      clubs: 'Schwarzes Schnapsglas Ablage',
-      spades: 'Schwarzer Tropfen Ablage',
-      diamonds: 'Grünes Schnapsglas Ablage',
-      hearts: 'Grüner Tropfen Ablage'
+      clubs: 'Schwarzbier-Glas Ablage',
+      spades: 'Dunkelgrüner Shot Ablage',
+      hearts: 'Pilsbier-Glas Ablage',
+      diamonds: 'Holunderschnaps Ablage'
     },
     legend: {
-      rulesTitle: '🥃 <strong>Regeln: Wechselnde Farben (Schwarz ⇄ Grün):</strong>',
-      blackGlass: 'Schwarzes Schnapsglas (♣)',
-      blackDrop: 'Schwarzer Tropfen (♠)',
-      greenGlass: 'Grünes Schnapsglas (♦)',
-      greenDrop: 'Grüner Tropfen (♥)',
+      rulesTitle: '🍺🥃 <strong>Regeln: Wechselnde Farben (Dunkel ⇄ Hell):</strong>',
+      blackGlass: 'Schwarzbier-Glas (♣)',
+      blackDrop: 'Dunkelgrüner Shot (♠)',
+      greenDrop: 'Pilsbier-Glas (♥)',
+      greenGlass: 'Holunderschnaps (♦)',
       sweepHint: '🖱️ <em>Rechtsklick</em>, <strong>⚡ Abräumen</strong> tippen oder Spielfeld doppeltippen zum Ablegen!'
     },
     courtTitles: {
@@ -163,10 +163,10 @@ const TRANSLATIONS = {
       13: 'KÖNIG'
     },
     suitTitles: {
-      clubs: 'Schwarzes Schnapsglas',
-      spades: 'Schwarzer Tropfen',
-      diamonds: 'Grünes Schnapsglas',
-      hearts: 'Grüner Tropfen'
+      clubs: 'Schwarzbier-Glas',
+      spades: 'Dunkelgrüner Shot',
+      hearts: 'Pilsbier-Glas',
+      diamonds: 'Holunderschnaps'
     },
     winModal: {
       badge: '🏆 PROST! GEWONNEN!',
@@ -301,17 +301,17 @@ const TRANSLATIONS = {
     stockTitle: 'Click to draw cards',
     wasteTitle: 'Drawn cards',
     foundations: {
-      clubs: 'Black Shot Glass Foundation',
-      spades: 'Black Drop Foundation',
-      diamonds: 'Green Shot Glass Foundation',
-      hearts: 'Green Drop Foundation'
+      clubs: 'Dark Beer Mug Foundation',
+      spades: 'Dark Green Shot Foundation',
+      hearts: 'Pilsner Beer Mug Foundation',
+      diamonds: 'Elderberry Shot Foundation'
     },
     legend: {
-      rulesTitle: '🥃 <strong>Alternating Rules (Black ⇄ Green):</strong>',
-      blackGlass: 'Black Shot Glass (♣)',
-      blackDrop: 'Black Drop (♠)',
-      greenGlass: 'Green Shot Glass (♦)',
-      greenDrop: 'Green Drop (♥)',
+      rulesTitle: '🍺🥃 <strong>Alternating Rules (Dark ⇄ Light):</strong>',
+      blackGlass: 'Dark Beer Mug (♣)',
+      blackDrop: 'Dark Green Shot (♠)',
+      greenDrop: 'Pilsner Beer Mug (♥)',
+      greenGlass: 'Elderberry Shot (♦)',
       sweepHint: '🖱️ <em>Right-click</em>, tap <strong>⚡ Sweep</strong>, or double-tap felt to auto-sweep cards to Foundations!'
     },
     courtTitles: {
@@ -320,10 +320,10 @@ const TRANSLATIONS = {
       13: 'KING'
     },
     suitTitles: {
-      clubs: 'Black Shot Glass',
-      spades: 'Black Drop',
-      diamonds: 'Green Shot Glass',
-      hearts: 'Green Drop'
+      clubs: 'Dark Beer Mug',
+      spades: 'Dark Green Shot',
+      hearts: 'Pilsner Beer Mug',
+      diamonds: 'Elderberry Shot'
     },
     winModal: {
       badge: '🏆 PROST! VICTORY!',
@@ -458,17 +458,17 @@ const TRANSLATIONS = {
     stockTitle: 'Clic para robar cartas',
     wasteTitle: 'Cartas robadas',
     foundations: {
-      clubs: 'Base de vaso de chupito negro',
-      spades: 'Base de gota negra',
-      diamonds: 'Base de vaso de chupito verde',
-      hearts: 'Base de gota verde'
+      clubs: 'Base de jarra de cerveza negra',
+      spades: 'Base de chupito verde oscuro',
+      hearts: 'Base de jarra de cerveza rubia',
+      diamonds: 'Base de chupito de saúco'
     },
     legend: {
-      rulesTitle: '🥃 <strong>Reglas de alternancia (Negro ⇄ Verde):</strong>',
-      blackGlass: 'Vaso de chupito negro (♣)',
-      blackDrop: 'Gota negra (♠)',
-      greenGlass: 'Vaso de chupito verde (♦)',
-      greenDrop: 'Gota verde (♥)',
+      rulesTitle: '🍺🥃 <strong>Reglas de alternancia (Oscuro ⇄ Claro):</strong>',
+      blackGlass: 'Cerveza negra (♣)',
+      blackDrop: 'Chupito verde oscuro (♠)',
+      greenDrop: 'Cerveza rubia (♥)',
+      greenGlass: 'Chupito de saúco (♦)',
       sweepHint: '🖱️ <em>Clic derecho</em>, pulsa <strong>⚡ Recoger</strong> o doble toque al tapete para enviar a las bases!'
     },
     courtTitles: {
@@ -477,10 +477,10 @@ const TRANSLATIONS = {
       13: 'REY'
     },
     suitTitles: {
-      clubs: 'Vaso de chupito negro',
-      spades: 'Gota negra',
-      diamonds: 'Vaso de chupito verde',
-      hearts: 'Gota verde'
+      clubs: 'Jarra de cerveza negra',
+      spades: 'Chupito verde oscuro',
+      hearts: 'Jarra de cerveza rubia',
+      diamonds: 'Chupito de saúco'
     },
     winModal: {
       badge: '🏆 ¡SALUD! ¡VICTORIA!',
@@ -615,17 +615,17 @@ const TRANSLATIONS = {
     stockTitle: 'Нажмите, чтобы взять карту',
     wasteTitle: 'Сброс',
     foundations: {
-      clubs: 'Дом чёрной рюмки',
-      spades: 'Дом чёрной капли',
-      diamonds: 'Дом зелёной рюмки',
-      hearts: 'Дом зелёной капли'
+      clubs: 'Дом тёмного пива',
+      spades: 'Дом тёмно-зелёного шота',
+      hearts: 'Дом светлого пива',
+      diamonds: 'Дом бузинного шота'
     },
     legend: {
-      rulesTitle: '🥃 <strong>Правило чередования (Чёрный ⇄ Зелёный):</strong>',
-      blackGlass: 'Чёрная рюмка (♣)',
-      blackDrop: 'Чёрная капля (♠)',
-      greenGlass: 'Зелёная рюмка (♦)',
-      greenDrop: 'Зелёная капля (♥)',
+      rulesTitle: '🍺🥃 <strong>Правило чередования (Тёмное ⇄ Светлое):</strong>',
+      blackGlass: 'Кружка тёмного пива (♣)',
+      blackDrop: 'Тёмно-зелёный шот (♠)',
+      greenDrop: 'Кружка светлого пива (♥)',
+      greenGlass: 'Бузинный шот (♦)',
       sweepHint: '🖱️ <em>Правый клик</em>, кнопка <strong>⚡ Собрать</strong> или двойной тап по столу для автосбора в дом!'
     },
     courtTitles: {
@@ -634,10 +634,10 @@ const TRANSLATIONS = {
       13: 'КОРОЛЬ'
     },
     suitTitles: {
-      clubs: 'Чёрная рюмка',
-      spades: 'Чёрная капля',
-      diamonds: 'Зелёная рюмка',
-      hearts: 'Зелёная капля'
+      clubs: 'Кружка тёмного пива',
+      spades: 'Тёмно-зелёный шот',
+      hearts: 'Кружка светлого пива',
+      diamonds: 'Бузинный шот'
     },
     winModal: {
       badge: '🏆 НА ЗДОРОВЬЕ! ПОБЕДА!',
@@ -772,17 +772,17 @@ const TRANSLATIONS = {
     stockTitle: 'Klicka för att dra kort',
     wasteTitle: 'Draget kort',
     foundations: {
-      clubs: 'Bas för svart snapsglas',
-      spades: 'Bas för svart droppe',
-      diamonds: 'Bas för grönt snapsglas',
-      hearts: 'Bas för grön droppe'
+      clubs: 'Bas för mörk ölsejdel',
+      spades: 'Bas för mörkgrön shot',
+      hearts: 'Bas för ljus ölsejdel',
+      diamonds: 'Bas för flädershot'
     },
     legend: {
-      rulesTitle: '🥃 <strong>Regler: Växlande färger (Svart ⇄ Grön):</strong>',
-      blackGlass: 'Svart snapsglas (♣)',
-      blackDrop: 'Svart droppe (♠)',
-      greenGlass: 'Grönt snapsglas (♦)',
-      greenDrop: 'Grön droppe (♥)',
+      rulesTitle: '🍺🥃 <strong>Regler: Växlande färger (Mörk ⇄ Ljus):</strong>',
+      blackGlass: 'Mörk ölsejdel (♣)',
+      blackDrop: 'Mörkgrön shot (♠)',
+      greenDrop: 'Ljus ölsejdel (♥)',
+      greenGlass: 'Flädershot (♦)',
       sweepHint: '🖱️ <em>Högerklicka</em>, tryck <strong>⚡ Samla in</strong> eller dubbeltryck på filten för automatisk insamling!'
     },
     courtTitles: {
@@ -791,10 +791,10 @@ const TRANSLATIONS = {
       13: 'KUNG'
     },
     suitTitles: {
-      clubs: 'Svart snapsglas',
-      spades: 'Svart droppe',
-      diamonds: 'Grönt snapsglas',
-      hearts: 'Grön droppe'
+      clubs: 'Mörk ölsejdel',
+      spades: 'Mörkgrön shot',
+      hearts: 'Ljus ölsejdel',
+      diamonds: 'Flädershot'
     },
     winModal: {
       badge: '🏆 SKÅL! SEGER!',
@@ -929,17 +929,17 @@ const TRANSLATIONS = {
     stockTitle: 'Clicca per pescare carte',
     wasteTitle: 'Carte pescate',
     foundations: {
-      clubs: 'Base bicchierino nero',
-      spades: 'Base goccia nera',
-      diamonds: 'Base bicchierino verde',
-      hearts: 'Base goccia verde'
+      clubs: 'Base boccale birra scura',
+      spades: 'Base cicchetto verde scuro',
+      hearts: 'Base boccale birra bionda',
+      diamonds: 'Base cicchetto sambuco'
     },
     legend: {
-      rulesTitle: '🥃 <strong>Regole: Colori alternati (Nero ⇄ Verde):</strong>',
-      blackGlass: 'Bicchierino nero (♣)',
-      blackDrop: 'Goccia nera (♠)',
-      greenGlass: 'Bicchierino verde (♦)',
-      greenDrop: 'Goccia verde (♥)',
+      rulesTitle: '🍺🥃 <strong>Regole: Colori alternati (Scuro ⇄ Chiaro):</strong>',
+      blackGlass: 'Birra scura (♣)',
+      blackDrop: 'Cicchetto verde scuro (♠)',
+      greenDrop: 'Birra bionda (♥)',
+      greenGlass: 'Cicchetto sambuco (♦)',
       sweepHint: '🖱️ <em>Clic destro</em>, tocca <strong>⚡ Raccogli</strong> o doppio tocco sul tavolo per inviare alle basi!'
     },
     courtTitles: {
@@ -948,10 +948,10 @@ const TRANSLATIONS = {
       13: 'RE'
     },
     suitTitles: {
-      clubs: 'Bicchierino nero',
-      spades: 'Goccia nera',
-      diamonds: 'Bicchierino verde',
-      hearts: 'Goccia verde'
+      clubs: 'Boccale birra scura',
+      spades: 'Cicchetto verde scuro',
+      hearts: 'Boccale birra bionda',
+      diamonds: 'Cicchetto sambuco'
     },
     winModal: {
       badge: '🏆 PROSIT! VITTORIA!',
@@ -1038,114 +1038,183 @@ const TRANSLATIONS = {
   }
 };
 
-// --- Custom Schnaps Shot Glass SVG Generator ---
+// --- Custom Schnaps & Beer SVG Generator (4 New Suits) ---
 function getShotGlassSVG(suitName, size = 'small') {
   const sizeClass = `shot-svg shot-svg-${size}`;
+  const uid = Math.random().toString(36).substr(2, 6);
 
   switch (suitName) {
-    case 'clubs': // 🖤 Black Lakritz Schnaps (Silver / Chrome Trim)
+    case 'clubs': // 🍺 Farbe 1: Voll gefülltes Bierglas mit Henkel, Inhalt Schwarzbier
       return `
         <svg class="${sizeClass}" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="sbGrad_${uid}" x1="13" y1="12" x2="13" y2="34" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#2d1508"/>
+              <stop offset="0.3" stop-color="#190a03"/>
+              <stop offset="0.7" stop-color="#0e0401"/>
+              <stop offset="1" stop-color="#050100"/>
+            </linearGradient>
+            <linearGradient id="sbFoam_${uid}" x1="13" y1="5" x2="13" y2="13" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#fffbeb"/>
+              <stop offset="0.6" stop-color="#fef3c7"/>
+              <stop offset="1" stop-color="#fde68a"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Sturdy Mug Handle (Henkel on right) -->
+          <path d="M20 14 C27.5 14, 28 27.5, 19.5 27.5 C25 26.5, 25 15.5, 20 16 Z" fill="rgba(255,255,255,0.2)" stroke="#94a3b8" stroke-width="1.3" stroke-linejoin="round"/>
+
+          <!-- Heavy Glass Base -->
+          <path d="M6 31 L6.5 35 Q6.5 38 9.5 38 L16.5 38 Q19.5 38 19.5 35 L20 31 Z" fill="#b0bec5" stroke="#64748b" stroke-width="1"/>
+
+          <!-- Dark Schwarzbier Liquid Body -->
+          <path d="M5.2 12.5 L6.8 32 L19.2 32 L20.8 12.5 Z" fill="url(#sbGrad_${uid})"/>
+
+          <!-- Glass Body Outline -->
+          <path d="M4.5 12 L6.2 32.5 Q6.5 38 9.5 38 L16.5 38 Q19.5 38 19.8 32.5 L21.5 12 Z" fill="rgba(255,255,255,0.06)" stroke="#64748b" stroke-width="1.4" stroke-linejoin="round"/>
+
+          <!-- Ruby malt edge reflex -->
+          <line x1="18.5" y1="14" x2="17.5" y2="30" stroke="#78350f" stroke-width="1" opacity="0.65"/>
+
+          <!-- Glass Vertical Facet Reflections -->
+          <line x1="9.5" y1="14" x2="9.5" y2="29" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+          <line x1="16.5" y1="14" x2="16.5" y2="29" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+
+          <!-- Strong Left Glass Specular Reflection Streak -->
+          <path d="M6.8 14 L8.2 30" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>
+
+          <!-- Generous Creamy Foam Head (Cresting on top) -->
+          <path d="M4 12 C3.5 8.5, 7.5 7, 9.5 8.5 C11.5 6, 15 6, 17 8 C19 7, 22 8.5, 21.5 12 C20 14, 5.5 14, 4 12 Z" fill="url(#sbFoam_${uid})" stroke="#d97706" stroke-width="0.8" stroke-linejoin="round"/>
+          <circle cx="8" cy="9" r="1.3" fill="#ffffff" opacity="0.8"/>
+          <circle cx="13" cy="7.5" r="1.5" fill="#ffffff" opacity="0.85"/>
+          <circle cx="17.5" cy="8.5" r="1.2" fill="#ffffff" opacity="0.75"/>
+        </svg>
+      `;
+
+    case 'spades': // 🥃 Farbe 2: Das bisherige schwarze Shotglas, aber statt schwarz ein sehr dunkles grün, kurz vor schwarz
+      return `
+        <svg class="${sizeClass}" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="dgGrad_${uid}" x1="16" y1="14" x2="16" y2="33" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#0d2b17"/>
+              <stop offset="0.35" stop-color="#071b0e"/>
+              <stop offset="0.75" stop-color="#041208"/>
+              <stop offset="1" stop-color="#020804"/>
+            </linearGradient>
+          </defs>
+
           <!-- Glass Body -->
-          <path d="M5 6 L8 34 Q8 38 12 38 L20 38 Q24 38 24 34 L27 6 Z" fill="rgba(255,255,255,0.08)" stroke="#cfd8dc" stroke-width="1.6" stroke-linejoin="round"/>
-          <!-- Heavy Glass Base - Silver Tone -->
-          <path d="M8 32 L8.5 35 Q8.5 38 12 38 L20 38 Q23.5 38 23.5 35 L24 32 Z" fill="#b0bec5" stroke="#78909c" stroke-width="1"/>
-          <!-- Pure Jet-Black Lakritz Liquid -->
-          <path d="M7 14 L8.8 33 L23.2 33 L25 14 Z" fill="#141414"/>
-          <!-- Liquid Surface Meniscus -->
-          <ellipse cx="16" cy="14" rx="9" ry="2.2" fill="#37474f" stroke="#263238" stroke-width="0.8"/>
-          <!-- Silver Specular Streak & Star -->
+          <path d="M5 6 L8 34 Q8 38 12 38 L20 38 Q24 38 24 34 L27 6 Z" fill="rgba(255,255,255,0.08)" stroke="#4b5563" stroke-width="1.6" stroke-linejoin="round"/>
+
+          <!-- Heavy Glass Base -->
+          <path d="M8 32 L8.5 35 Q8.5 38 12 38 L20 38 Q23.5 38 23.5 35 L24 32 Z" fill="#374151" stroke="#1f2937" stroke-width="1"/>
+
+          <!-- Very Dark Green (Kurz vor Schwarz) Liquid -->
+          <path d="M7 14 L8.8 33 L23.2 33 L25 14 Z" fill="url(#dgGrad_${uid})"/>
+
+          <!-- Liquid Surface Meniscus (Subtle Dark Emerald Glow) -->
+          <ellipse cx="16" cy="14" rx="9" ry="2.2" fill="#0f381e" stroke="#082212" stroke-width="0.8"/>
+
+          <!-- Subtle Deep Forest Bubble -->
+          <circle cx="18" cy="22" r="1.5" fill="#1b5e20" opacity="0.6"/>
+          <circle cx="13" cy="27" r="1" fill="#1b5e20" opacity="0.5"/>
+
+          <!-- Specular Reflection Streak -->
           <path d="M7.5 9 L9.5 32" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
           <path d="M24.5 9 L22.8 31" stroke="rgba(255,255,255,0.35)" stroke-width="0.9" stroke-linecap="round"/>
-          <!-- Silver Rim -->
-          <ellipse cx="16" cy="6" rx="11" ry="2.2" fill="rgba(255,255,255,0.25)" stroke="#eceff1" stroke-width="1.4"/>
+
+          <!-- Silver/Glass Rim -->
+          <ellipse cx="16" cy="6" rx="11" ry="2.2" fill="rgba(255,255,255,0.25)" stroke="#6b7280" stroke-width="1.4"/>
           <ellipse cx="16" cy="6" rx="10" ry="1.7" fill="none" stroke="#ffffff" stroke-width="0.9"/>
         </svg>
       `;
 
-    case 'spades': // 🖤 Black Drop (Dark Herbal / Licorice Liqueur Droplet)
+    case 'hearts': // 🍺 Farbe 3: Voll gefülltes Bierglas mit Henkel, Inhalt Pilsbier
       return `
         <svg class="${sizeClass}" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="blackDropGrad" x1="10" y1="4" x2="22" y2="36" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#37474f"/>
-              <stop offset="0.3" stop-color="#212121"/>
-              <stop offset="0.75" stop-color="#111111"/>
-              <stop offset="1" stop-color="#020202"/>
+            <linearGradient id="pilsGrad_${uid}" x1="13" y1="12" x2="13" y2="34" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#fef08a"/>
+              <stop offset="0.3" stop-color="#facc15"/>
+              <stop offset="0.75" stop-color="#eab308"/>
+              <stop offset="1" stop-color="#ca8a04"/>
+            </linearGradient>
+            <linearGradient id="pilsFoam_${uid}" x1="13" y1="5" x2="13" y2="13" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#ffffff"/>
+              <stop offset="0.7" stop-color="#f8fafc"/>
+              <stop offset="1" stop-color="#e2e8f0"/>
             </linearGradient>
           </defs>
 
-          <!-- Liquid Droplet Body -->
-          <path d="M16 4 C14 8, 6.5 17.5, 6.5 26 A 9.5 9.5 0 0 0 25.5 26 C25.5 17.5, 18 8, 16 4 Z" fill="url(#blackDropGrad)" stroke="#546e7a" stroke-width="1.4" stroke-linejoin="round"/>
-          
-          <!-- Inner Rim Gloss -->
-          <path d="M16 6 C14.5 9.5, 8.2 18, 8.2 25.5 A 7.8 7.8 0 0 0 23.8 25.5 C23.8 18, 17.5 9.5, 16 6 Z" fill="none" stroke="#37474f" stroke-width="0.8" opacity="0.6"/>
+          <!-- Sturdy Mug Handle (Henkel on right) -->
+          <path d="M20 14 C27.5 14, 28 27.5, 19.5 27.5 C25 26.5, 25 15.5, 20 16 Z" fill="rgba(255,255,255,0.35)" stroke="#94a3b8" stroke-width="1.3" stroke-linejoin="round"/>
 
-          <!-- Specular Highlight Curve -->
-          <path d="M10.5 24 C10 18.5, 13.5 11, 15 8" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" opacity="0.85"/>
-          <circle cx="11.5" cy="27" r="1.3" fill="#ffffff" opacity="0.9"/>
-
-          <!-- Secondary Soft Rim Reflection -->
-          <path d="M22.5 22 C23 25, 20.5 32, 17 33.5" stroke="rgba(255,255,255,0.25)" stroke-width="0.9" stroke-linecap="round"/>
-        </svg>
-      `;
-
-    case 'hearts': // 💚 Green Drop (Mint / Emerald Schnaps Droplet)
-      return `
-        <svg class="${sizeClass}" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="greenDropGrad" x1="10" y1="4" x2="22" y2="36" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#00e676"/>
-              <stop offset="0.4" stop-color="#00a844"/>
-              <stop offset="0.85" stop-color="#006022"/>
-              <stop offset="1" stop-color="#003814"/>
-            </linearGradient>
-          </defs>
-
-          <!-- Liquid Droplet Body -->
-          <path d="M16 4 C14 8, 6.5 17.5, 6.5 26 A 9.5 9.5 0 0 0 25.5 26 C25.5 17.5, 18 8, 16 4 Z" fill="url(#greenDropGrad)" stroke="#004d20" stroke-width="1.4" stroke-linejoin="round"/>
-          
-          <!-- Inner Glow Contour -->
-          <path d="M16 6 C14.5 9.5, 8.2 18, 8.2 25.5 A 7.8 7.8 0 0 0 23.8 25.5 C23.8 18, 17.5 9.5, 16 6 Z" fill="none" stroke="#69f0ae" stroke-width="0.8" opacity="0.5"/>
-
-          <!-- Specular Highlight Curve -->
-          <path d="M10.5 24 C10 18.5, 13.5 11, 15 8" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" opacity="0.9"/>
-          <circle cx="11.5" cy="27" r="1.3" fill="#ffffff" opacity="0.95"/>
-
-          <!-- Liquid Core Bubble -->
-          <circle cx="16" cy="27" r="2.2" fill="#b9f6ca" opacity="0.6"/>
-
-          <!-- Secondary Soft Rim Reflection -->
-          <path d="M22.5 22 C23 25, 20.5 32, 17 33.5" stroke="rgba(255,255,255,0.3)" stroke-width="0.9" stroke-linecap="round"/>
-        </svg>
-      `;
-
-    case 'diamonds': // 💚 Green Peppermint Schnaps (Pfeffi)
-      return `
-        <svg class="${sizeClass}" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Glass Body -->
-          <path d="M5 6 L8 34 Q8 38 12 38 L20 38 Q24 38 24 34 L27 6 Z" fill="rgba(0,230,118,0.06)" stroke="#007e33" stroke-width="1.6" stroke-linejoin="round"/>
           <!-- Heavy Glass Base -->
-          <path d="M8 32 L8.5 35 Q8.5 38 12 38 L20 38 Q23.5 38 23.5 35 L24 32 Z" fill="#a7f3d0" stroke="#007e33" stroke-width="1"/>
-          <!-- Green Mint Liquid -->
-          <path d="M7 14 L8.8 33 L23.2 33 L25 14 Z" fill="url(#mintGrad2)"/>
-          <!-- Liquid Surface Meniscus -->
-          <ellipse cx="16" cy="14" rx="9" ry="2.2" fill="#69f0ae" stroke="#00c853" stroke-width="0.8"/>
-          <!-- Mint Bubble Accent -->
-          <circle cx="18" cy="22" r="1.5" fill="#b9f6ca" opacity="0.85"/>
-          <circle cx="13" cy="27" r="1" fill="#b9f6ca" opacity="0.7"/>
-          <!-- Vertical Glass Reflection -->
-          <path d="M7.5 9 L9.5 32" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M24.5 9 L22.8 31" stroke="rgba(255,255,255,0.3)" stroke-width="0.9" stroke-linecap="round"/>
-          <!-- Glass Rim -->
-          <ellipse cx="16" cy="6" rx="11" ry="2.2" fill="rgba(0,230,118,0.18)" stroke="#007e33" stroke-width="1.3"/>
-          <ellipse cx="16" cy="6" rx="10" ry="1.7" fill="none" stroke="#e8f5e9" stroke-width="0.9"/>
+          <path d="M6 31 L6.5 35 Q6.5 38 9.5 38 L16.5 38 Q19.5 38 19.5 35 L20 31 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1"/>
+
+          <!-- Golden Pilsner Liquid Body -->
+          <path d="M5.2 12.5 L6.8 32 L19.2 32 L20.8 12.5 Z" fill="url(#pilsGrad_${uid})"/>
+
+          <!-- Glass Body Outline -->
+          <path d="M4.5 12 L6.2 32.5 Q6.5 38 9.5 38 L16.5 38 Q19.5 38 19.8 32.5 L21.5 12 Z" fill="rgba(255,255,255,0.1)" stroke="#b45309" stroke-width="1.4" stroke-linejoin="round"/>
+
+          <!-- Rising Carbonation Bubbles -->
+          <circle cx="10" cy="27" r="0.9" fill="#ffffff" opacity="0.85"/>
+          <circle cx="13" cy="21" r="0.7" fill="#ffffff" opacity="0.8"/>
+          <circle cx="16" cy="25" r="0.8" fill="#ffffff" opacity="0.85"/>
+          <circle cx="14" cy="16" r="0.6" fill="#ffffff" opacity="0.9"/>
+          <circle cx="17.5" cy="18" r="0.7" fill="#ffffff" opacity="0.8"/>
+
+          <!-- Glass Vertical Facet Reflections -->
+          <line x1="9.5" y1="14" x2="9.5" y2="29" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
+          <line x1="16.5" y1="14" x2="16.5" y2="29" stroke="rgba(255,255,255,0.3)" stroke-width="0.8"/>
+
+          <!-- Left Glass Specular Reflection Streak -->
+          <path d="M6.8 14 L8.2 30" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" opacity="0.95"/>
+
+          <!-- Pure Snow-White Foam Head (Cresting on top) -->
+          <path d="M4 12 C3.5 8, 7.5 6.5, 9.5 8 C11.5 5, 15 5, 17 7 C19 6, 22 7.5, 21.5 12 C20 14, 5.5 14, 4 12 Z" fill="url(#pilsFoam_${uid})" stroke="#94a3b8" stroke-width="0.8" stroke-linejoin="round"/>
+          <circle cx="8" cy="8.5" r="1.3" fill="#ffffff"/>
+          <circle cx="13" cy="6.5" r="1.6" fill="#ffffff"/>
+          <circle cx="17.5" cy="7.5" r="1.2" fill="#ffffff"/>
+        </svg>
+      `;
+
+    case 'diamonds': // 🥃 Farbe 4: Das bisherige grüne Shotglas, aber Inhalt transparent hell-gelb (Holunderschnaps)
+      return `
+        <svg class="${sizeClass}" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="mintGrad2" x1="16" y1="14" x2="16" y2="33" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#00e676"/>
-              <stop offset="1" stop-color="#008f39"/>
+            <linearGradient id="holunderGrad_${uid}" x1="16" y1="14" x2="16" y2="33" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#fef9c3"/>
+              <stop offset="0.4" stop-color="#fef08a"/>
+              <stop offset="0.8" stop-color="#fde047"/>
+              <stop offset="1" stop-color="#eab308"/>
             </linearGradient>
           </defs>
+
+          <!-- Glass Body -->
+          <path d="M5 6 L8 34 Q8 38 12 38 L20 38 Q24 38 24 34 L27 6 Z" fill="rgba(254,240,138,0.12)" stroke="#b45309" stroke-width="1.6" stroke-linejoin="round"/>
+
+          <!-- Heavy Glass Base -->
+          <path d="M8 32 L8.5 35 Q8.5 38 12 38 L20 38 Q23.5 38 23.5 35 L24 32 Z" fill="#fef9c3" stroke="#ca8a04" stroke-width="1"/>
+
+          <!-- Transparent Hell-Gelb (Holunderschnaps) Liquid -->
+          <path d="M7 14 L8.8 33 L23.2 33 L25 14 Z" fill="url(#holunderGrad_${uid})" opacity="0.88"/>
+
+          <!-- Liquid Surface Meniscus -->
+          <ellipse cx="16" cy="14" rx="9" ry="2.2" fill="#fffbeb" stroke="#d97706" stroke-width="0.8"/>
+
+          <!-- Elderflower Dew Sparkles -->
+          <circle cx="18" cy="22" r="1.4" fill="#ffffff" opacity="0.9"/>
+          <circle cx="13" cy="27" r="1" fill="#ffffff" opacity="0.85"/>
+
+          <!-- Vertical Glass Reflections -->
+          <path d="M7.5 9 L9.5 32" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M24.5 9 L22.8 31" stroke="rgba(255,255,255,0.4)" stroke-width="0.9" stroke-linecap="round"/>
+
+          <!-- Glass Rim -->
+          <ellipse cx="16" cy="6" rx="11" ry="2.2" fill="rgba(254,240,138,0.25)" stroke="#b45309" stroke-width="1.3"/>
+          <ellipse cx="16" cy="6" rx="10" ry="1.7" fill="none" stroke="#ffffff" stroke-width="0.9"/>
         </svg>
       `;
 
@@ -1189,9 +1258,9 @@ function getPipsHTML(rankValue, suitName) {
 // - Colors: Two-color deck (Black for Clubs/Spades, Green for Diamonds/Hearts)
 const COURT_SUIT_THEMES = {
   clubs: {
+    key: 'clubs',
     color: '#1a1a1a',
-    isBlack: true,
-    symbol: 'glass',
+    isDark: true,
     tunicK: '#15803d',  // Forest green
     mantleK: '#b91c1c', // Crimson velvet
     bodiceQ: '#b91c1c', // Crimson bodice
@@ -1200,9 +1269,9 @@ const COURT_SUIT_THEMES = {
     beretJ: '#15803d'   // Green beret
   },
   spades: {
-    color: '#1a1a1a',
-    isBlack: true,
-    symbol: 'drop',
+    key: 'spades',
+    color: '#072210',
+    isDark: true,
     tunicK: '#1d4ed8',  // Royal blue
     mantleK: '#b91c1c',
     bodiceQ: '#15803d', // Green bodice
@@ -1210,48 +1279,76 @@ const COURT_SUIT_THEMES = {
     doubletJ: '#15803d',// Green doublet
     beretJ: '#b91c1c'   // Red beret
   },
-  diamonds: {
-    color: '#007e33',
-    isBlack: false,
-    symbol: 'glass',
-    tunicK: '#0284c7',  // Blue tunic
-    mantleK: '#b91c1c',
-    bodiceQ: '#0284c7', // Blue bodice
-    bowsQ: '#f59e0b',   // Gold bows
-    doubletJ: '#0284c7',// Blue doublet
-    beretJ: '#15803d'   // Green beret
-  },
   hearts: {
-    color: '#007e33',
-    isBlack: false,
-    symbol: 'drop',
+    key: 'hearts',
+    color: '#b45309',
+    isDark: false,
     tunicK: '#b91c1c',  // Red tunic
     mantleK: '#991b1b',
     bodiceQ: '#15803d', // Green bodice
     bowsQ: '#dc2626',   // Ruby bows
     doubletJ: '#0284c7',// Blue doublet
     beretJ: '#b91c1c'   // Red beret
+  },
+  diamonds: {
+    key: 'diamonds',
+    color: '#c25e00',
+    isDark: false,
+    tunicK: '#0284c7',  // Blue tunic
+    mantleK: '#b91c1c',
+    bodiceQ: '#0284c7', // Blue bodice
+    bowsQ: '#f59e0b',   // Gold bows
+    doubletJ: '#0284c7',// Blue doublet
+    beretJ: '#15803d'   // Green beret
   }
 };
 
-function getCourtEmblemSVG(symbolType, isBlack) {
-  const color = isBlack ? '#1a1a1a' : '#007e33';
-  const rim = isBlack ? '#4b5563' : '#6ee7b7';
-  if (symbolType === 'glass') {
-    return `
-      <g transform="scale(0.9)">
-        <path d="M-4 -5.5 L-2.8 5 Q-2.8 6.5 0 6.5 Q2.8 6.5 2.8 5 L4 -5.5 Z" fill="${color}" stroke="#0f172a" stroke-width="0.8"/>
-        <ellipse cx="0" cy="-5.5" rx="4" ry="1.3" fill="${rim}" stroke="#0f172a" stroke-width="0.6"/>
-        <line x1="-2.2" y1="-3.2" x2="-1.6" y2="4" stroke="#ffffff" stroke-width="0.75" stroke-linecap="round" opacity="0.9"/>
-      </g>
-    `;
-  } else {
-    return `
-      <g transform="scale(0.9)">
-        <path d="M0 -7 C-1 -4.8, -4.5 0.5, -4.5 4 A4.5 4.5 0 0 0 4.5 4 C4.5 0.5, 1 -4.8, 0 -7 Z" fill="${color}" stroke="#0f172a" stroke-width="0.8"/>
-        <path d="M-2 3 C-2 0.8, -0.6 -2, 0 -4.5" stroke="#ffffff" stroke-width="0.8" stroke-linecap="round" opacity="0.9"/>
-      </g>
-    `;
+function getCourtEmblemSVG(suitKey) {
+  switch (suitKey) {
+    case 'clubs': // 🍺 Bierglas mit Henkel (Schwarzbier)
+      return `
+        <g transform="scale(0.85) translate(-1, -1)">
+          <path d="M3 0 C7.5 0, 7.5 7, 2.5 7 C6 6.5, 6 1, 3 1 Z" fill="rgba(255,255,255,0.25)" stroke="#64748b" stroke-width="0.8"/>
+          <path d="M-4.5 8 L-4.2 9.5 Q-4.2 10.5 -2.5 10.5 L1.5 10.5 Q3.2 10.5 3.2 9.5 L3.5 8 Z" fill="#94a3b8" stroke="#475569" stroke-width="0.6"/>
+          <path d="M-4.5 -1 L-3.5 8 L2.5 8 L3.5 -1 Z" fill="#1a0a03" stroke="#000000" stroke-width="0.7"/>
+          <path d="M-3.5 0 L-2.8 7" stroke="#ffffff" stroke-width="0.7" stroke-linecap="round" opacity="0.8"/>
+          <path d="M-5 -1 C-5.5 -3.5, -2.5 -4.5, -1 -3.5 C0.5 -5, 3 -4.5, 3.5 -2.5 C4.5 -2, 4.5 -0.5, 3.5 0 C2.5 1, -4.5 1, -5 -1 Z" fill="#fef3c7" stroke="#d97706" stroke-width="0.6"/>
+        </g>
+      `;
+
+    case 'spades': // 🥃 Shotglas dunkelgrün kurz vor schwarz
+      return `
+        <g transform="scale(0.85)">
+          <path d="M-4 -5.5 L-2.8 5 Q-2.8 6.5 0 6.5 Q2.8 6.5 2.8 5 L4 -5.5 Z" fill="#061d0d" stroke="#000000" stroke-width="0.8"/>
+          <path d="M-2.8 4 L-2.6 6 Q-2.6 7 0 7 Q2.6 7 2.6 6 L2.8 4 Z" fill="#374151" stroke="#1f2937" stroke-width="0.5"/>
+          <ellipse cx="0" cy="-5.5" rx="4" ry="1.3" fill="#0f381e" stroke="#041208" stroke-width="0.6"/>
+          <line x1="-2.2" y1="-3.2" x2="-1.6" y2="4" stroke="#ffffff" stroke-width="0.75" stroke-linecap="round" opacity="0.9"/>
+        </g>
+      `;
+
+    case 'hearts': // 🍺 Bierglas mit Henkel (Pilsbier)
+      return `
+        <g transform="scale(0.85) translate(-1, -1)">
+          <path d="M3 0 C7.5 0, 7.5 7, 2.5 7 C6 6.5, 6 1, 3 1 Z" fill="rgba(255,255,255,0.3)" stroke="#94a3b8" stroke-width="0.8"/>
+          <path d="M-4.5 8 L-4.2 9.5 Q-4.2 10.5 -2.5 10.5 L1.5 10.5 Q3.2 10.5 3.2 9.5 L3.5 8 Z" fill="#cbd5e1" stroke="#64748b" stroke-width="0.6"/>
+          <path d="M-4.5 -1 L-3.5 8 L2.5 8 L3.5 -1 Z" fill="#facc15" stroke="#b45309" stroke-width="0.7"/>
+          <path d="M-3.5 0 L-2.8 7" stroke="#ffffff" stroke-width="0.7" stroke-linecap="round" opacity="0.9"/>
+          <path d="M-5 -1 C-5.5 -3.5, -2.5 -4.5, -1 -3.5 C0.5 -5, 3 -4.5, 3.5 -2.5 C4.5 -2, 4.5 -0.5, 3.5 0 C2.5 1, -4.5 1, -5 -1 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="0.6"/>
+        </g>
+      `;
+
+    case 'diamonds': // 🥃 Shotglas transparent hell-gelb (Holunderschnaps)
+      return `
+        <g transform="scale(0.85)">
+          <path d="M-4 -5.5 L-2.8 5 Q-2.8 6.5 0 6.5 Q2.8 6.5 2.8 5 L4 -5.5 Z" fill="#fef08a" stroke="#ca8a04" stroke-width="0.8"/>
+          <path d="M-2.8 4 L-2.6 6 Q-2.6 7 0 7 Q2.6 7 2.6 6 L2.8 4 Z" fill="#fef9c3" stroke="#ca8a04" stroke-width="0.5"/>
+          <ellipse cx="0" cy="-5.5" rx="4" ry="1.3" fill="#fffbeb" stroke="#d97706" stroke-width="0.6"/>
+          <line x1="-2.2" y1="-3.2" x2="-1.6" y2="4" stroke="#ffffff" stroke-width="0.75" stroke-linecap="round" opacity="0.9"/>
+        </g>
+      `;
+
+    default:
+      return '';
   }
 }
 
@@ -1260,7 +1357,7 @@ function renderKingFigureSVG(suit) {
   const goldLight = '#fde047';
   const goldDark = '#78350f';
   const goldRim = '#fbbf24';
-  const emblem = getCourtEmblemSVG(suit.symbol, suit.isBlack);
+  const emblem = getCourtEmblemSVG(suit.key || suit.name);
 
   return `
     <g>
@@ -1444,7 +1541,7 @@ function renderQueenFigureSVG(suit) {
   const goldLight = '#fde047';
   const goldDark = '#78350f';
   const goldRim = '#fbbf24';
-  const emblem = getCourtEmblemSVG(suit.symbol, suit.isBlack);
+  const emblem = getCourtEmblemSVG(suit.key || suit.name);
 
   return `
     <g>
@@ -1585,7 +1682,7 @@ function renderJackFigureSVG(suit) {
   const goldLight = '#fde047';
   const goldDark = '#78350f';
   const goldRim = '#fbbf24';
-  const emblem = getCourtEmblemSVG(suit.symbol, suit.isBlack);
+  const emblem = getCourtEmblemSVG(suit.key || suit.name);
 
   return `
     <g>
@@ -2242,7 +2339,7 @@ class SolvableDealGenerator {
         tableau[c].push({
           suit: Math.floor(id / 13),
           rank: (id % 13) + 1,
-          color: Math.floor(id / 13) < 2 ? 'black' : 'green',
+          color: Math.floor(id / 13) < 2 ? 'dark' : 'light',
           faceUp: r === c
         });
       }
@@ -2254,7 +2351,7 @@ class SolvableDealGenerator {
       stock.push({
         suit: Math.floor(id / 13),
         rank: (id % 13) + 1,
-        color: Math.floor(id / 13) < 2 ? 'black' : 'green',
+        color: Math.floor(id / 13) < 2 ? 'dark' : 'light',
         faceUp: false
       });
     }
@@ -2689,7 +2786,7 @@ class SolitaireGame {
     if (this.dom.stock) this.dom.stock.title = t.stockTitle;
     if (this.dom.waste) this.dom.waste.title = t.wasteTitle;
     if (this.dom.foundations) {
-      const suits = ['clubs', 'spades', 'diamonds', 'hearts'];
+      const suits = ['clubs', 'spades', 'hearts', 'diamonds'];
       suits.forEach((suit, i) => {
         if (this.dom.foundations[i]) {
           this.dom.foundations[i].title = t.foundations[suit];
@@ -3210,7 +3307,7 @@ class SolitaireGame {
     this.stock = deck;
 
     if (window.location && window.location.search && window.location.search.includes('test_court')) {
-      const courtSuits = ['clubs', 'spades', 'diamonds', 'hearts', 'clubs', 'spades', 'diamonds'];
+      const courtSuits = ['clubs', 'spades', 'hearts', 'diamonds', 'clubs', 'spades', 'hearts'];
       const courtRanks = [13, 12, 11, 13, 12, 11, 13];
       for (let col = 0; col < 7; col++) {
         const topCard = this.tableau[col][this.tableau[col].length - 1];
@@ -3218,7 +3315,7 @@ class SolitaireGame {
         topCard.value = courtRanks[col];
         topCard.label = courtRanks[col] === 13 ? (this.lang === 'de' ? 'K' : 'K') : courtRanks[col] === 12 ? (this.lang === 'de' ? 'D' : 'Q') : (this.lang === 'de' ? 'B' : 'J');
         topCard.suit = courtSuits[col];
-        topCard.color = (courtSuits[col] === 'diamonds' || courtSuits[col] === 'hearts') ? 'green' : 'black';
+        topCard.color = (courtSuits[col] === 'hearts' || courtSuits[col] === 'diamonds') ? 'light' : 'dark';
       }
     }
 
