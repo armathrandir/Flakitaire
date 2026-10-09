@@ -1044,58 +1044,58 @@ function getShotGlassSVG(suitName, size = 'small') {
   const uid = Math.random().toString(36).substr(2, 6);
 
   switch (suitName) {
-    case 'clubs': // 🍺 Farbe 1: Voll gefülltes Bierglas mit Henkel, Inhalt Schwarzbier
+    case 'clubs': // 🍺 GROSSES BIERGLAS MIT HENKEL (Schwarzbier)
       return `
         <svg class="${sizeClass}" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="sbGrad_${uid}" x1="13" y1="12" x2="13" y2="34" gradientUnits="userSpaceOnUse">
+            <linearGradient id="sbGrad_${uid}" x1="12" y1="10" x2="12" y2="35" gradientUnits="userSpaceOnUse">
               <stop stop-color="#2d1508"/>
               <stop offset="0.3" stop-color="#190a03"/>
-              <stop offset="0.7" stop-color="#0e0401"/>
+              <stop offset="0.75" stop-color="#0e0401"/>
               <stop offset="1" stop-color="#050100"/>
             </linearGradient>
-            <linearGradient id="sbFoam_${uid}" x1="13" y1="5" x2="13" y2="13" gradientUnits="userSpaceOnUse">
+            <linearGradient id="sbFoam_${uid}" x1="12" y1="3" x2="12" y2="12" gradientUnits="userSpaceOnUse">
               <stop stop-color="#fffbeb"/>
               <stop offset="0.6" stop-color="#fef3c7"/>
               <stop offset="1" stop-color="#fde68a"/>
             </linearGradient>
           </defs>
 
-          <!-- Sturdy Mug Handle (Henkel on right) -->
-          <path d="M20 14 C27.5 14, 28 27.5, 19.5 27.5 C25 26.5, 25 15.5, 20 16 Z" fill="rgba(255,255,255,0.2)" stroke="#94a3b8" stroke-width="1.3" stroke-linejoin="round"/>
+          <!-- Big Sturdy Handle (Henkel on right) -->
+          <path d="M21 12 C29.5 12, 30 29, 20 29 C26.5 28, 26.5 13.5, 21 14 Z" fill="rgba(255,255,255,0.25)" stroke="#94a3b8" stroke-width="1.4" stroke-linejoin="round"/>
 
-          <!-- Heavy Glass Base -->
-          <path d="M6 31 L6.5 35 Q6.5 38 9.5 38 L16.5 38 Q19.5 38 19.5 35 L20 31 Z" fill="#b0bec5" stroke="#64748b" stroke-width="1"/>
+          <!-- Heavy Solid Base -->
+          <path d="M4.5 32 L5.2 36 Q5.5 38.5 8.5 38.5 L17.5 38.5 Q20.5 38.5 20.8 36 L21.5 32 Z" fill="#b0bec5" stroke="#64748b" stroke-width="1.1"/>
 
           <!-- Dark Schwarzbier Liquid Body -->
-          <path d="M5.2 12.5 L6.8 32 L19.2 32 L20.8 12.5 Z" fill="url(#sbGrad_${uid})"/>
+          <path d="M3.8 11.5 L5.5 33 L20.5 33 L22.2 11.5 Z" fill="url(#sbGrad_${uid})"/>
 
           <!-- Glass Body Outline -->
-          <path d="M4.5 12 L6.2 32.5 Q6.5 38 9.5 38 L16.5 38 Q19.5 38 19.8 32.5 L21.5 12 Z" fill="rgba(255,255,255,0.06)" stroke="#64748b" stroke-width="1.4" stroke-linejoin="round"/>
+          <path d="M3.2 11 L5.2 33 Q5.5 38.5 8.5 38.5 L17.5 38.5 Q20.5 38.5 20.8 33 L22.8 11 Z" fill="rgba(255,255,255,0.06)" stroke="#64748b" stroke-width="1.4" stroke-linejoin="round"/>
 
           <!-- Ruby malt edge reflex -->
-          <line x1="18.5" y1="14" x2="17.5" y2="30" stroke="#78350f" stroke-width="1" opacity="0.65"/>
+          <line x1="20" y1="13" x2="18.5" y2="31" stroke="#78350f" stroke-width="1.1" opacity="0.7"/>
 
           <!-- Glass Vertical Facet Reflections -->
-          <line x1="9.5" y1="14" x2="9.5" y2="29" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
-          <line x1="16.5" y1="14" x2="16.5" y2="29" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+          <line x1="8.5" y1="13" x2="8.5" y2="30" stroke="rgba(255,255,255,0.22)" stroke-width="0.9"/>
+          <line x1="16.5" y1="13" x2="16.5" y2="30" stroke="rgba(255,255,255,0.18)" stroke-width="0.9"/>
 
-          <!-- Strong Left Glass Specular Reflection Streak -->
-          <path d="M6.8 14 L8.2 30" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>
+          <!-- Left Glass Specular Reflection Streak -->
+          <path d="M5.5 13 L6.8 31" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" opacity="0.95"/>
 
           <!-- Generous Creamy Foam Head (Cresting on top) -->
-          <path d="M4 12 C3.5 8.5, 7.5 7, 9.5 8.5 C11.5 6, 15 6, 17 8 C19 7, 22 8.5, 21.5 12 C20 14, 5.5 14, 4 12 Z" fill="url(#sbFoam_${uid})" stroke="#d97706" stroke-width="0.8" stroke-linejoin="round"/>
-          <circle cx="8" cy="9" r="1.3" fill="#ffffff" opacity="0.8"/>
-          <circle cx="13" cy="7.5" r="1.5" fill="#ffffff" opacity="0.85"/>
-          <circle cx="17.5" cy="8.5" r="1.2" fill="#ffffff" opacity="0.75"/>
+          <path d="M2.5 11 C2 7, 6.5 5, 8.5 7 C10.5 4, 15 4, 17.5 6 C19.5 5, 23.5 7, 23 11 C21.5 13.5, 4 13.5, 2.5 11 Z" fill="url(#sbFoam_${uid})" stroke="#d97706" stroke-width="0.8"/>
+          <circle cx="7" cy="7.5" r="1.4" fill="#ffffff" opacity="0.8"/>
+          <circle cx="13" cy="5.5" r="1.7" fill="#ffffff" opacity="0.85"/>
+          <circle cx="18.5" cy="7" r="1.3" fill="#ffffff" opacity="0.75"/>
         </svg>
       `;
 
-    case 'spades': // 🥃 Farbe 2: Das bisherige schwarze Shotglas, aber statt schwarz ein sehr dunkles grün, kurz vor schwarz
+    case 'spades': // 🥃 KLEINES SHOTGLAS (Dunkelgrün, kurz vor schwarz)
       return `
         <svg class="${sizeClass}" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="dgGrad_${uid}" x1="16" y1="14" x2="16" y2="33" gradientUnits="userSpaceOnUse">
+            <linearGradient id="dgGrad_${uid}" x1="16" y1="16" x2="16" y2="35" gradientUnits="userSpaceOnUse">
               <stop stop-color="#0d2b17"/>
               <stop offset="0.35" stop-color="#071b0e"/>
               <stop offset="0.75" stop-color="#041208"/>
@@ -1104,87 +1104,86 @@ function getShotGlassSVG(suitName, size = 'small') {
           </defs>
 
           <!-- Glass Body -->
-          <path d="M5 6 L8 34 Q8 38 12 38 L20 38 Q24 38 24 34 L27 6 Z" fill="rgba(255,255,255,0.08)" stroke="#4b5563" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M9 14 L11 33 Q11 36 13.5 36 L18.5 36 Q21 36 21 33 L23 14 Z" fill="rgba(255,255,255,0.08)" stroke="#4b5563" stroke-width="1.3" stroke-linejoin="round"/>
 
           <!-- Heavy Glass Base -->
-          <path d="M8 32 L8.5 35 Q8.5 38 12 38 L20 38 Q23.5 38 23.5 35 L24 32 Z" fill="#374151" stroke="#1f2937" stroke-width="1"/>
+          <path d="M11 31 L11.4 33.5 Q11.4 36 13.5 36 L18.5 36 Q20.6 36 20.6 33.5 L21 31 Z" fill="#374151" stroke="#1f2937" stroke-width="0.8"/>
 
-          <!-- Very Dark Green (Kurz vor Schwarz) Liquid -->
-          <path d="M7 14 L8.8 33 L23.2 33 L25 14 Z" fill="url(#dgGrad_${uid})"/>
+          <!-- Very Dark Green Liquid -->
+          <path d="M10.2 19 L11.5 32 L20.5 32 L21.8 19 Z" fill="url(#dgGrad_${uid})"/>
 
-          <!-- Liquid Surface Meniscus (Subtle Dark Emerald Glow) -->
-          <ellipse cx="16" cy="14" rx="9" ry="2.2" fill="#0f381e" stroke="#082212" stroke-width="0.8"/>
+          <!-- Liquid Surface Meniscus -->
+          <ellipse cx="16" cy="19" rx="6" ry="1.6" fill="#0f381e" stroke="#082212" stroke-width="0.6"/>
 
-          <!-- Subtle Deep Forest Bubble -->
-          <circle cx="18" cy="22" r="1.5" fill="#1b5e20" opacity="0.6"/>
-          <circle cx="13" cy="27" r="1" fill="#1b5e20" opacity="0.5"/>
+          <!-- Subtle Bubble -->
+          <circle cx="17.5" cy="24" r="1.1" fill="#1b5e20" opacity="0.6"/>
 
-          <!-- Specular Reflection Streak -->
-          <path d="M7.5 9 L9.5 32" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M24.5 9 L22.8 31" stroke="rgba(255,255,255,0.35)" stroke-width="0.9" stroke-linecap="round"/>
+          <!-- Specular Reflection Streaks -->
+          <path d="M10.8 16 L12 31" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M21.2 16 L20.2 30" stroke="rgba(255,255,255,0.3)" stroke-width="0.7" stroke-linecap="round"/>
 
-          <!-- Silver/Glass Rim -->
-          <ellipse cx="16" cy="6" rx="11" ry="2.2" fill="rgba(255,255,255,0.25)" stroke="#6b7280" stroke-width="1.4"/>
-          <ellipse cx="16" cy="6" rx="10" ry="1.7" fill="none" stroke="#ffffff" stroke-width="0.9"/>
+          <!-- Rim -->
+          <ellipse cx="16" cy="14" rx="7" ry="1.7" fill="rgba(255,255,255,0.22)" stroke="#6b7280" stroke-width="1.1"/>
+          <ellipse cx="16" cy="14" rx="6.2" ry="1.3" fill="none" stroke="#ffffff" stroke-width="0.7"/>
         </svg>
       `;
 
-    case 'hearts': // 🍺 Farbe 3: Voll gefülltes Bierglas mit Henkel, Inhalt Pilsbier
+    case 'hearts': // 🍺 GROSSES BIERGLAS (Pilsbier)
       return `
         <svg class="${sizeClass}" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="pilsGrad_${uid}" x1="13" y1="12" x2="13" y2="34" gradientUnits="userSpaceOnUse">
+            <linearGradient id="pilsGrad_${uid}" x1="12" y1="10" x2="12" y2="35" gradientUnits="userSpaceOnUse">
               <stop stop-color="#fef08a"/>
               <stop offset="0.3" stop-color="#facc15"/>
               <stop offset="0.75" stop-color="#eab308"/>
               <stop offset="1" stop-color="#ca8a04"/>
             </linearGradient>
-            <linearGradient id="pilsFoam_${uid}" x1="13" y1="5" x2="13" y2="13" gradientUnits="userSpaceOnUse">
+            <linearGradient id="pilsFoam_${uid}" x1="12" y1="3" x2="12" y2="12" gradientUnits="userSpaceOnUse">
               <stop stop-color="#ffffff"/>
               <stop offset="0.7" stop-color="#f8fafc"/>
               <stop offset="1" stop-color="#e2e8f0"/>
             </linearGradient>
           </defs>
 
-          <!-- Sturdy Mug Handle (Henkel on right) -->
-          <path d="M20 14 C27.5 14, 28 27.5, 19.5 27.5 C25 26.5, 25 15.5, 20 16 Z" fill="rgba(255,255,255,0.35)" stroke="#94a3b8" stroke-width="1.3" stroke-linejoin="round"/>
+          <!-- Big Sturdy Mug Handle (Henkel on right) -->
+          <path d="M21 12 C29.5 12, 30 29, 20 29 C26.5 28, 26.5 13.5, 21 14 Z" fill="rgba(255,255,255,0.35)" stroke="#94a3b8" stroke-width="1.4" stroke-linejoin="round"/>
 
           <!-- Heavy Glass Base -->
-          <path d="M6 31 L6.5 35 Q6.5 38 9.5 38 L16.5 38 Q19.5 38 19.5 35 L20 31 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1"/>
+          <path d="M4.5 32 L5.2 36 Q5.5 38.5 8.5 38.5 L17.5 38.5 Q20.5 38.5 20.8 36 L21.5 32 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.1"/>
 
           <!-- Golden Pilsner Liquid Body -->
-          <path d="M5.2 12.5 L6.8 32 L19.2 32 L20.8 12.5 Z" fill="url(#pilsGrad_${uid})"/>
+          <path d="M3.8 11.5 L5.5 33 L20.5 33 L22.2 11.5 Z" fill="url(#pilsGrad_${uid})"/>
 
           <!-- Glass Body Outline -->
-          <path d="M4.5 12 L6.2 32.5 Q6.5 38 9.5 38 L16.5 38 Q19.5 38 19.8 32.5 L21.5 12 Z" fill="rgba(255,255,255,0.1)" stroke="#b45309" stroke-width="1.4" stroke-linejoin="round"/>
+          <path d="M3.2 11 L5.2 33 Q5.5 38.5 8.5 38.5 L17.5 38.5 Q20.5 38.5 20.8 33 L22.8 11 Z" fill="rgba(255,255,255,0.1)" stroke="#b45309" stroke-width="1.4" stroke-linejoin="round"/>
 
           <!-- Rising Carbonation Bubbles -->
-          <circle cx="10" cy="27" r="0.9" fill="#ffffff" opacity="0.85"/>
-          <circle cx="13" cy="21" r="0.7" fill="#ffffff" opacity="0.8"/>
-          <circle cx="16" cy="25" r="0.8" fill="#ffffff" opacity="0.85"/>
-          <circle cx="14" cy="16" r="0.6" fill="#ffffff" opacity="0.9"/>
-          <circle cx="17.5" cy="18" r="0.7" fill="#ffffff" opacity="0.8"/>
+          <circle cx="8" cy="28" r="0.9" fill="#ffffff" opacity="0.85"/>
+          <circle cx="11" cy="22" r="0.7" fill="#ffffff" opacity="0.8"/>
+          <circle cx="15" cy="26" r="0.8" fill="#ffffff" opacity="0.85"/>
+          <circle cx="14" cy="17" r="0.6" fill="#ffffff" opacity="0.9"/>
+          <circle cx="18" cy="20" r="0.7" fill="#ffffff" opacity="0.8"/>
 
           <!-- Glass Vertical Facet Reflections -->
-          <line x1="9.5" y1="14" x2="9.5" y2="29" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
-          <line x1="16.5" y1="14" x2="16.5" y2="29" stroke="rgba(255,255,255,0.3)" stroke-width="0.8"/>
+          <line x1="8.5" y1="13" x2="8.5" y2="30" stroke="rgba(255,255,255,0.4)" stroke-width="0.9"/>
+          <line x1="16.5" y1="13" x2="16.5" y2="30" stroke="rgba(255,255,255,0.3)" stroke-width="0.9"/>
 
           <!-- Left Glass Specular Reflection Streak -->
-          <path d="M6.8 14 L8.2 30" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" opacity="0.95"/>
+          <path d="M5.5 13 L6.8 31" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" opacity="0.95"/>
 
           <!-- Pure Snow-White Foam Head (Cresting on top) -->
-          <path d="M4 12 C3.5 8, 7.5 6.5, 9.5 8 C11.5 5, 15 5, 17 7 C19 6, 22 7.5, 21.5 12 C20 14, 5.5 14, 4 12 Z" fill="url(#pilsFoam_${uid})" stroke="#94a3b8" stroke-width="0.8" stroke-linejoin="round"/>
-          <circle cx="8" cy="8.5" r="1.3" fill="#ffffff"/>
-          <circle cx="13" cy="6.5" r="1.6" fill="#ffffff"/>
-          <circle cx="17.5" cy="7.5" r="1.2" fill="#ffffff"/>
+          <path d="M2.5 11 C2 6.5, 6.5 4.5, 8.5 6.5 C10.5 3.5, 15 3.5, 17.5 5.5 C19.5 4.5, 23.5 6.5, 23 11 C21.5 13.5, 4 13.5, 2.5 11 Z" fill="url(#pilsFoam_${uid})" stroke="#94a3b8" stroke-width="0.8"/>
+          <circle cx="7" cy="7" r="1.4" fill="#ffffff"/>
+          <circle cx="13" cy="5" r="1.8" fill="#ffffff"/>
+          <circle cx="18.5" cy="6.5" r="1.3" fill="#ffffff"/>
         </svg>
       `;
 
-    case 'diamonds': // 🥃 Farbe 4: Das bisherige grüne Shotglas, aber Inhalt transparent hell-gelb (Holunderschnaps)
+    case 'diamonds': // 🥃 KLEINES SHOTGLAS (Holunderschnaps)
       return `
         <svg class="${sizeClass}" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="holunderGrad_${uid}" x1="16" y1="14" x2="16" y2="33" gradientUnits="userSpaceOnUse">
+            <linearGradient id="holunderGrad_${uid}" x1="16" y1="16" x2="16" y2="35" gradientUnits="userSpaceOnUse">
               <stop stop-color="#fef9c3"/>
               <stop offset="0.4" stop-color="#fef08a"/>
               <stop offset="0.8" stop-color="#fde047"/>
@@ -1193,28 +1192,27 @@ function getShotGlassSVG(suitName, size = 'small') {
           </defs>
 
           <!-- Glass Body -->
-          <path d="M5 6 L8 34 Q8 38 12 38 L20 38 Q24 38 24 34 L27 6 Z" fill="rgba(254,240,138,0.12)" stroke="#b45309" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M9 14 L11 33 Q11 36 13.5 36 L18.5 36 Q21 36 21 33 L23 14 Z" fill="rgba(254,240,138,0.12)" stroke="#b45309" stroke-width="1.3" stroke-linejoin="round"/>
 
           <!-- Heavy Glass Base -->
-          <path d="M8 32 L8.5 35 Q8.5 38 12 38 L20 38 Q23.5 38 23.5 35 L24 32 Z" fill="#fef9c3" stroke="#ca8a04" stroke-width="1"/>
+          <path d="M11 31 L11.4 33.5 Q11.4 36 13.5 36 L18.5 36 Q20.6 36 20.6 33.5 L21 31 Z" fill="#fef9c3" stroke="#ca8a04" stroke-width="0.8"/>
 
-          <!-- Transparent Hell-Gelb (Holunderschnaps) Liquid -->
-          <path d="M7 14 L8.8 33 L23.2 33 L25 14 Z" fill="url(#holunderGrad_${uid})" opacity="0.88"/>
+          <!-- Transparent Hell-Gelb Liquid -->
+          <path d="M10.2 19 L11.5 32 L20.5 32 L21.8 19 Z" fill="url(#holunderGrad_${uid})" opacity="0.88"/>
 
           <!-- Liquid Surface Meniscus -->
-          <ellipse cx="16" cy="14" rx="9" ry="2.2" fill="#fffbeb" stroke="#d97706" stroke-width="0.8"/>
+          <ellipse cx="16" cy="19" rx="6" ry="1.6" fill="#fffbeb" stroke="#d97706" stroke-width="0.6"/>
 
-          <!-- Elderflower Dew Sparkles -->
-          <circle cx="18" cy="22" r="1.4" fill="#ffffff" opacity="0.9"/>
-          <circle cx="13" cy="27" r="1" fill="#ffffff" opacity="0.85"/>
+          <!-- Dew Sparkle -->
+          <circle cx="17.5" cy="24" r="1.1" fill="#ffffff" opacity="0.9"/>
 
-          <!-- Vertical Glass Reflections -->
-          <path d="M7.5 9 L9.5 32" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M24.5 9 L22.8 31" stroke="rgba(255,255,255,0.4)" stroke-width="0.9" stroke-linecap="round"/>
+          <!-- Specular Reflections -->
+          <path d="M10.8 16 L12 31" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M21.2 16 L20.2 30" stroke="rgba(255,255,255,0.4)" stroke-width="0.7" stroke-linecap="round"/>
 
-          <!-- Glass Rim -->
-          <ellipse cx="16" cy="6" rx="11" ry="2.2" fill="rgba(254,240,138,0.25)" stroke="#b45309" stroke-width="1.3"/>
-          <ellipse cx="16" cy="6" rx="10" ry="1.7" fill="none" stroke="#ffffff" stroke-width="0.9"/>
+          <!-- Rim -->
+          <ellipse cx="16" cy="14" rx="7" ry="1.7" fill="rgba(254,240,138,0.22)" stroke="#b45309" stroke-width="1.1"/>
+          <ellipse cx="16" cy="14" rx="6.2" ry="1.3" fill="none" stroke="#ffffff" stroke-width="0.7"/>
         </svg>
       `;
 
@@ -1307,7 +1305,7 @@ function getCourtEmblemSVG(suitKey) {
   switch (suitKey) {
     case 'clubs': // 🍺 Bierglas mit Henkel (Schwarzbier)
       return `
-        <g transform="scale(0.85) translate(-1, -1)">
+        <g transform="scale(0.95) translate(-1, -1)">
           <path d="M3 0 C7.5 0, 7.5 7, 2.5 7 C6 6.5, 6 1, 3 1 Z" fill="rgba(255,255,255,0.25)" stroke="#64748b" stroke-width="0.8"/>
           <path d="M-4.5 8 L-4.2 9.5 Q-4.2 10.5 -2.5 10.5 L1.5 10.5 Q3.2 10.5 3.2 9.5 L3.5 8 Z" fill="#94a3b8" stroke="#475569" stroke-width="0.6"/>
           <path d="M-4.5 -1 L-3.5 8 L2.5 8 L3.5 -1 Z" fill="#1a0a03" stroke="#000000" stroke-width="0.7"/>
@@ -1318,7 +1316,7 @@ function getCourtEmblemSVG(suitKey) {
 
     case 'spades': // 🥃 Shotglas dunkelgrün kurz vor schwarz
       return `
-        <g transform="scale(0.85)">
+        <g transform="scale(0.72) translate(0, 1)">
           <path d="M-4 -5.5 L-2.8 5 Q-2.8 6.5 0 6.5 Q2.8 6.5 2.8 5 L4 -5.5 Z" fill="#061d0d" stroke="#000000" stroke-width="0.8"/>
           <path d="M-2.8 4 L-2.6 6 Q-2.6 7 0 7 Q2.6 7 2.6 6 L2.8 4 Z" fill="#374151" stroke="#1f2937" stroke-width="0.5"/>
           <ellipse cx="0" cy="-5.5" rx="4" ry="1.3" fill="#0f381e" stroke="#041208" stroke-width="0.6"/>
@@ -1328,7 +1326,7 @@ function getCourtEmblemSVG(suitKey) {
 
     case 'hearts': // 🍺 Bierglas mit Henkel (Pilsbier)
       return `
-        <g transform="scale(0.85) translate(-1, -1)">
+        <g transform="scale(0.95) translate(-1, -1)">
           <path d="M3 0 C7.5 0, 7.5 7, 2.5 7 C6 6.5, 6 1, 3 1 Z" fill="rgba(255,255,255,0.3)" stroke="#94a3b8" stroke-width="0.8"/>
           <path d="M-4.5 8 L-4.2 9.5 Q-4.2 10.5 -2.5 10.5 L1.5 10.5 Q3.2 10.5 3.2 9.5 L3.5 8 Z" fill="#cbd5e1" stroke="#64748b" stroke-width="0.6"/>
           <path d="M-4.5 -1 L-3.5 8 L2.5 8 L3.5 -1 Z" fill="#facc15" stroke="#b45309" stroke-width="0.7"/>
@@ -1339,7 +1337,7 @@ function getCourtEmblemSVG(suitKey) {
 
     case 'diamonds': // 🥃 Shotglas transparent hell-gelb (Holunderschnaps)
       return `
-        <g transform="scale(0.85)">
+        <g transform="scale(0.72) translate(0, 1)">
           <path d="M-4 -5.5 L-2.8 5 Q-2.8 6.5 0 6.5 Q2.8 6.5 2.8 5 L4 -5.5 Z" fill="#fef08a" stroke="#ca8a04" stroke-width="0.8"/>
           <path d="M-2.8 4 L-2.6 6 Q-2.6 7 0 7 Q2.6 7 2.6 6 L2.8 4 Z" fill="#fef9c3" stroke="#ca8a04" stroke-width="0.5"/>
           <ellipse cx="0" cy="-5.5" rx="4" ry="1.3" fill="#fffbeb" stroke="#d97706" stroke-width="0.6"/>
