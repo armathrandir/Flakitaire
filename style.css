@@ -697,25 +697,10 @@ body.is-pointer-dragging * {
   overflow: hidden !important;
 }
 
-.card.card-court .court-img {
+.card.card-court .court-svg {
   width: 100%;
   height: 100%;
-  object-fit: fill;
   display: block;
-  user-select: none;
-  -webkit-user-drag: none;
-  pointer-events: none;
-}
-
-.card-court-container {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  overflow: hidden;
-  border-radius: var(--card-radius);
 }
 
 .court-svg {
@@ -1548,13 +1533,6 @@ body.is-pointer-dragging * {
   .shot-svg-small {
     width: 11px;
     height: 14px;
-  }
-
-  .card-court-container {
-    top: 12px;
-    bottom: 12px;
-    left: 3px;
-    right: 3px;
   }
 
   .card-pips {
